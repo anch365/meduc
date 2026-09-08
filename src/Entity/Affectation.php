@@ -31,6 +31,10 @@ class Affectation
 
     #[ORM\ManyToOne(inversedBy: 'affectations')]
     #[ORM\JoinColumn(nullable: false)]
+    private ?Enseignant $enseignant = null;
+
+    #[ORM\ManyToOne(inversedBy: 'affectations')]
+    #[ORM\JoinColumn(nullable: false)]
     private ?etablissement $etablissement = null;
 
     public function getId(): ?int
@@ -94,6 +98,18 @@ class Affectation
     public function setStatut(string $statut): static
     {
         $this->statut = $statut;
+
+        return $this;
+    }
+
+    public function getEnseignant(): ?Enseignant
+    {
+        return $this->enseignant;
+    }
+
+    public function setEnseignant(?Enseignant $enseignant): static
+    {
+        $this->enseignant = $enseignant;
 
         return $this;
     }

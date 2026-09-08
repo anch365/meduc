@@ -5,6 +5,8 @@ namespace App\Entity;
 use App\Repository\EnseignantRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity(repositoryClass: EnseignantRepository::class)]
 class Enseignant
@@ -36,11 +38,14 @@ class Enseignant
     private ?\DateTime $deletedAt = null;
 
     #[ORM\ManyToOne(inversedBy: 'enseignants')]
-    private ?localite $localite = null;
+    private ?Localite $localite = null;
 
     #[ORM\OneToOne(inversedBy: 'enseignant', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
-    private ?utilisateur $utilisateur = null;
+    private ?Utilisateur $utilisateur = null;
+
+    #[ORM\OneToMany(mappedBy: 'enseignant', targetEntity: Affectation::class)]
+    private Collection $affectations;
 
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
@@ -51,6 +56,7 @@ class Enseignant
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
+        $this->affectations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -186,6 +192,35 @@ class Enseignant
     public function setUpdatedAt(?\DateTimeImmutable $updatedAt): static
     {
         $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Affectation>
+     */
+    public function getAffectations(): Collection
+    {
+        return $this->affectations;
+    }
+
+    public function addAffectation(Affectation $affectation): static
+    {
+        if (!$this->affectations->contains($affectation)) {
+            $this->affectations->add($affectation);
+            $affectation->setEnseignant($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAffectation(Affectation $affectation): static
+    {
+        if ($this->affectations->removeElement($affectation)) {
+            if ($affectation->getEnseignant() === $this) {
+                $affectation->setEnseignant(null);
+            }
+        }
 
         return $this;
     }

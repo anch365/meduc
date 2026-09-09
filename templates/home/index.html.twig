@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accueil — MEDUC{% endblock %}
+
+{% block body %}
+    <main class="home">
+        <h1>MEDUC</h1>
+        <p>Plateforme de gestion des affectations des enseignants</p>
+        <p>Ministère de l'Éducation de l'Union des Comores</p>
+
+        {% if app.user %}
+        {% else %}
+            <a href="{{ path('app_login') }}">Se connecter</a>
+        {% endif %}
+        {# {% if is_granted('ROLE_ADMIN') %}
+            <a href="{{ path('app_admin_dashboard') }}">Accéder à l'espace admin</a>
+        {% else %}
+            <a href="{{ path('app_espace') }}">Accéder à mon espace</a>
+        {% endif %} #}
+   
+    </main>
+{% endblock %}

@@ -7,6 +7,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: EnseignantRepository::class)]
 class Enseignant
@@ -40,6 +41,7 @@ class Enseignant
     #[ORM\ManyToOne(inversedBy: 'enseignants')]
     private ?Localite $localite = null;
 
+    #[Assert\Valid]
     #[ORM\OneToOne(inversedBy: 'enseignant', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
     private ?Utilisateur $utilisateur = null;

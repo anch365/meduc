@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Localite index{% endblock %}
+
+{% block body %}
+    <h1>Localite index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nom</th>
+                <th>Ile</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for localite in localites %}
+            <tr>
+                <td>{{ localite.id }}</td>
+                <td>{{ localite.nom }}</td>
+                <td>{{ localite.ile }}</td>
+                <td>
+                    <a href="{{ path('app_localite_show', {'id': localite.id}) }}">show</a>
+                    <a href="{{ path('app_localite_edit', {'id': localite.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_localite_new') }}">Create new</a>
+{% endblock %}

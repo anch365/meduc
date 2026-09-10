@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouvel enseignant{% endblock %}
+
+{% block body %}
+<h1>Créer un enseignant</h1>
+
+{{ form_start(form) }}
+    {{ form_widget(form) }}
+    <button type="submit">Créer l'enseignant</button>
+{{ form_end(form) }}
+{% endblock %}

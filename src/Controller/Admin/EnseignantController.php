@@ -10,12 +10,21 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
+use App\Repository\EnseignantRepository;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/admin/enseignant')]
 #[IsGranted('ROLE_ADMIN')]
 class EnseignantController extends AbstractController
 {
+        #[Route('/', name: 'app_enseignant_index', methods: ['GET'])]
+    public function index(EnseignantRepository $enseignantRepository): Response
+    {
+        return $this->render('admin/enseignant/index.html.twig', [
+            'enseignants' => $enseignantRepository->findActifs(),
+        ]);
+    }
+
     #[Route('/new', name: 'app_enseignant_new', methods: ['GET', 'POST'])]
     public function new(
         Request $request,

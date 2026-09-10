@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des enseignants{% endblock %}
+
+{% block body %}
+<h1>Liste des enseignants</h1>
+
+<a href="{{ path('app_enseignant_new') }}">+ Créer un enseignant</a>
+
+<table>
+    <thead>
+        <tr>
+            <th>Nom</th>
+            <th>Prénom</th>
+            <th>Matricule</th>
+            <th>Email</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for enseignant in enseignants %}
+        <tr>
+            <td>{{ enseignant.utilisateur.nom }}</td>
+            <td>{{ enseignant.utilisateur.prenom }}</td>
+            <td>{{ enseignant.utilisateur.matricule }}</td>
+            <td>{{ enseignant.utilisateur.email }}</td>
+        </tr>
+    {% else %}
+        <tr><td colspan="4">Aucun enseignant.</td></tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

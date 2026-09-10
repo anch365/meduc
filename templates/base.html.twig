@@ -31,6 +31,7 @@
                 {% if app.user %}
                     {% if is_granted('ROLE_ADMIN') %}
                         <a href="{{ path('app_admin_dashboard') }}">Tableau de bord</a>
+                        <a href="{{ path('app_enseignant_index') }}">Enseignants</a>
                     {% else %}
                         <a href="{{ path('app_espace') }}">Mon espace</a>
                     {% endif %}

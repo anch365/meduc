@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier un etablissement{% endblock %}
+
+{% block body %}
+    <h1>Modifier un etablissement</h1>
+
+    {{ include('etablissement/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_etablissement_index') }}">Retour à la liste</a>
+
+    {{ include('etablissement/_delete_form.html.twig') }}
+{% endblock %}

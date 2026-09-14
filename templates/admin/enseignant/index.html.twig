@@ -27,6 +27,7 @@
                     <td>{{ enseignant.utilisateur.email }}</td>
                     <td>
                         <a href="{{ path('app_enseignant_edit', {id: enseignant.id}) }}">Modifier</a>
+                        <a href="{{ path('app_enseignant_show', {id: enseignant.id}) }}">Voir</a>
                         <form
                             method="post"
                             action="{{ path('app_enseignant_archive', {id: enseignant.id}) }}"

@@ -12,6 +12,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use App\Repository\EnseignantRepository;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use App\Repository\AffectationRepository;
 
 #[Route('/admin/enseignant')]
 #[IsGranted('ROLE_ADMIN')]
@@ -138,5 +139,21 @@ class EnseignantController extends AbstractController
         }
 
         return $this->redirectToRoute('app_enseignant_archives');
+    }
+
+    #[Route('/{id}', name: 'app_enseignant_show', methods: ['GET'])]
+    public function show(
+        Enseignant $enseignant,
+        AffectationRepository $affectationRepository
+    ): Response {
+        // L'affectation EN COURS de cet enseignant (ou null s'il n'en a pas)
+        $affectationActive = $affectationRepository->findUneActive($enseignant);
+        $historique = $affectationRepository->findHistorique($enseignant);
+
+        return $this->render('admin/enseignant/show.html.twig', [
+            'enseignant' => $enseignant,
+            'affectationActive' => $affectationActive,
+            'historique' => $historique,
+        ]);
     }
 }

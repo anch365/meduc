@@ -1,0 +1,79 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Fiche de {{ enseignant.utilisateur.prenom }} {{ enseignant.utilisateur.nom }}{% endblock %}
+
+{% block body %}
+    <h1>{{ enseignant.utilisateur.prenom }} {{ enseignant.utilisateur.nom }}</h1>
+    <p><em>Matricule : {{ enseignant.utilisateur.matricule }}</em></p>
+    <h2>Établissement actuel</h2>
+
+    {% if affectationActive %}
+        <p>
+            <strong>{{ affectationActive.etablissement.nom }}</strong>
+            ({{ affectationActive.classe }} — {{ affectationActive.matiere }})
+            depuis le {{ affectationActive.dateDebut|date('d/m/Y') }}
+        </p>
+    {% else %}
+        <p><em>Non affecté actuellement.</em></p>
+    {% endif %}
+
+    <table>
+        <tr><th>Nom</th><td>{{ enseignant.utilisateur.nom }}</td></tr>
+        <tr><th>Prénom</th><td>{{ enseignant.utilisateur.prenom }}</td></tr>
+        <tr><th>Date de naissance</th><td>{{ enseignant.dateNaissance|date('d/m/Y') }}</td></tr>
+        <tr><th>Âge</th><td>{{ enseignant.age }} ans</td></tr>
+        <tr><th>Genre</th><td>{{ enseignant.genre }}</td></tr>
+        <tr>
+            {# Si l'enseignant à 64 ans ou plus, ça doit afficher "Retraité" #}
+            <th>Statut</th>
+            <td>
+                {% if enseignant.estRetraite %}
+                    <strong>Retraité</strong>
+                {% else %}
+                    <strong>Actif</strong>
+                {% endif %}
+            </td>
+        </tr>    
+        <tr>
+            <th>Localité</th>
+            <td>{{ enseignant.localite ? enseignant.localite.nom : '—' }}</td>
+        </tr>
+    </table>
+
+    <h2>Historique des affectations</h2>
+
+    {% if historique is empty %}
+        <p><em>Aucune affectation passée ou en cours.</em></p>
+    {% else %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Établissement</th>
+                    <th>Classe</th>
+                    <th>Matière</th>
+                    <th>Début</th>
+                    <th>Fin</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for affectation in historique %}
+                    <tr>
+                        <td>{{ affectation.etablissement.nom }}</td>
+                        <td>{{ affectation.classe }}</td>
+                        <td>{{ affectation.matiere }}</td>
+                        <td>{{ affectation.dateDebut|date('d/m/Y') }}</td>
+                        <td>
+                            {% if affectation.dateFin %}
+                                {{ affectation.dateFin|date('d/m/Y') }}
+                            {% else %}
+                                <strong>En cours</strong>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+
+    <a href="{{ path('app_enseignant_index') }}">← Retour à la liste</a>
+{% endblock %}

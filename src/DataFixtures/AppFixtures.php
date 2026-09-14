@@ -139,7 +139,7 @@ class AppFixtures extends Fixture
         foreach ($enseignants as $i => $compte) {
             $enseignant = new Enseignant();
             $enseignant->setGenre($i % 2 === 0 ? 'M' : 'F');
-            $enseignant->setDateNaissance(new \DateTime('1980-01-15'));
+            $enseignant->setDateNaissance(new \DateTime('1955-01-15'));
             $enseignant->setNiveauEnseignement('secondaire');
             $enseignant->setStatutProfessionnel('actif');
             $enseignant->setUtilisateur($compte);

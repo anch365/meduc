@@ -12,6 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: EnseignantRepository::class)]
 class Enseignant
 {
+    public const AGE_RETRAITE = 64;
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -225,5 +226,29 @@ class Enseignant
         }
 
         return $this;
+    }
+
+    public function age(): int
+    {
+        $aujourdhui = new \DateTimeImmutable();
+        $naissance = $this->dateNaissance;
+
+        return $naissance->diff($aujourdhui)->y;
+    }
+
+    /**
+     * L'enseignant a-t-il atteint l'âge de la retraite ?
+     */
+    public function estRetraite(): bool
+    {
+        // 1. Aujourd'hui
+        $aujourdhui = new \DateTimeImmutable();
+
+        // 2. La date où il atteindra 64 ans (sa naissance + 64 ans)
+        $dateRetraite = \DateTimeImmutable::createFromInterface($this->dateNaissance)
+            ->modify('+' . self::AGE_RETRAITE . ' years');
+
+        // 3. Retraité si aujourd'hui est arrivé (au moins) à cette date
+        return $aujourdhui >= $dateRetraite;
     }
 }

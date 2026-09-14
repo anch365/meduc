@@ -36,15 +36,16 @@ class AffectationController extends AbstractController
             if ($affectationExistante) {
                 //Erreur attachée au FORMULAIRE : elle s'affiche IMMÉDIATEMENT
                 $form->addError(new FormError('Cet enseignant a déjà une affectation en cours !'));
-
             } else {
                 $affectation->setDateFin(null); // en cours
                 $affectation->setStatut('en_cours');
                 $entityManager->persist($affectation);
                 $entityManager->flush();
 
-                $this->addFlash('success', 'Affectation créée !');
-                return $this->redirectToRoute('app_affectation_new');
+                // On envoie l'admin sur la FICHE de l'enseignant concerné
+                return $this->redirectToRoute('app_enseignant_show', [
+                    'id' => $affectation->getEnseignant()->getId(),
+                ]);
             }
         }
 

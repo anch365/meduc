@@ -45,6 +45,20 @@ class AffectationRepository extends ServiceEntityRepository
             ->getQuery()
             ->getOneOrNullResult();
     }
+
+    /**
+     * TOUTES les affectations d'un enseignant, de la plus récente à la plus ancienne.
+     */
+    public function findHistorique(Enseignant $enseignant): array
+    {
+        return $this->createQueryBuilder('a')
+            ->andWhere('a.enseignant = :enseignant')
+            ->setParameter('enseignant', $enseignant)
+            ->orderBy('a.dateDebut', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+    
     //    /**
     //     * @return Affectation[] Returns an array of Affectation objects
     //     */

@@ -150,7 +150,7 @@ class Enseignant
         return $this;
     }
 
-    public function getLocalite(): ?localite
+    public function getLocalite(): ?Localite
     {
         return $this->localite;
     }
@@ -162,7 +162,7 @@ class Enseignant
         return $this;
     }
 
-    public function getUtilisateur(): ?utilisateur
+    public function getUtilisateur(): ?Utilisateur
     {
         return $this->utilisateur;
     }

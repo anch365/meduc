@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Enseignants archivés{% endblock %}
+
+{% block body %}
+<h1>Enseignants archivés</h1>
+
+<a href="{{ path('app_enseignant_index') }}">← Retour à la liste active</a>
+
+<table>
+    <thead>
+        <tr>
+            <th>Nom</th>
+            <th>Prénom</th>
+            <th>Matricule</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for enseignant in enseignants %}
+        <tr>
+            <td>{{ enseignant.utilisateur.nom }}</td>
+            <td>{{ enseignant.utilisateur.prenom }}</td>
+            <td>{{ enseignant.utilisateur.matricule }}</td>
+            <td>
+                <form method="post" action="{{ path('app_enseignant_desarchiver', {id: enseignant.id}) }}"
+                      onsubmit="return confirm('Voulez-vous réactiver cet enseignant ?');"
+                      style="display:inline;">
+                    <input type="hidden" name="_token" value="{{ csrf_token('desarchiver' ~ enseignant.id) }}">
+                    <button type="submit">Réactiver</button>
+                </form>
+            </td>
+        </tr>
+    {% else %}
+        <tr><td colspan="4">Aucun enseignant archivé.</td></tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

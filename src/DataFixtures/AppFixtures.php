@@ -150,19 +150,54 @@ class AppFixtures extends Fixture
         }
 
         // ===================== 5. AFFECTATIONS =====================
-        // Une affectation par enseignant : au lycée de Moroni, en cours
-        foreach ($profils as $i => $enseignant) {   // ← on boucle sur les PROFILS
+        // Répartition réaliste : Moroni, Mutsamudu, 1 historique, 4 non affectés
+
+        foreach ($profils as $i => $enseignant) {
+            // Enseignants 17 à 20 : NON affectés (pour tester la création !)
+            if ($i >= 17) {
+                continue;
+            }
+
+            // Enseignant 16 : un HISTORIQUE (ancienne fermée + actuelle ouverte)
+            if ($i === 16) {
+                // Ancienne affectation : École de Fomboni, terminée
+                $ancienne = new Affectation();
+                $ancienne->setClasse('CE2');
+                $ancienne->setMatiere('Mathématiques');
+                $ancienne->setDateDebut(new \DateTime('2022-09-05'));
+                $ancienne->setDateFin(new \DateTime('2024-06-28'));
+                $ancienne->setStatut('terminee');
+                $ancienne->setEnseignant($enseignant);
+                $ancienne->setEtablissement($ecoleFomboni);
+                $manager->persist($ancienne);
+
+                // Affectation actuelle : Lycée de Mutsamudu, en cours
+                $actuelle = new Affectation();
+                $actuelle->setClasse('Terminale');
+                $actuelle->setMatiere('Français');
+                $actuelle->setDateDebut(new \DateTime('2024-09-02'));
+                $actuelle->setDateFin(null);
+                $actuelle->setStatut('en_cours');
+                $actuelle->setEnseignant($enseignant);
+                $actuelle->setEtablissement($lyceeMutsamudu);
+                $manager->persist($actuelle);
+
+                continue;
+            }
+
+            // Enseignants 1-10 : Lycée de Moroni · Enseignants 11-15 : Lycée de Mutsamudu
+            $etablissement = ($i <= 10) ? $lyceeMoroni : $lyceeMutsamudu;
+
             $affectation = new Affectation();
             $affectation->setClasse('Terminale');
             $affectation->setMatiere($i % 2 === 0 ? 'Mathématiques' : 'Français');
             $affectation->setDateDebut(new \DateTime('2024-09-02'));
-            $affectation->setDateFin(null);  // NULL = affectation EN COURS
+            $affectation->setDateFin(null);
             $affectation->setStatut('en_cours');
-            $affectation->setEnseignant($enseignant);   // ← directement le profil            
-            $affectation->setEtablissement($lyceeMoroni);
+            $affectation->setEnseignant($enseignant);
+            $affectation->setEtablissement($etablissement);
             $manager->persist($affectation);
         }
-
         $manager->flush();
     }
 }

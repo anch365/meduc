@@ -49,9 +49,8 @@ class UtilisateurType extends AbstractType
             ->add('plainPassword', PasswordType::class, [
                 'label' => 'Mot de passe',
                 'mapped' => false,
-                'constraints' => [
-                    new NotBlank(message: 'Mot de passe obligatoire'),
-                ],
+                'required' => false,
+                'help' => 'Laisser vide pour conserver le mot de passe actuel',
             ]);
     }
 

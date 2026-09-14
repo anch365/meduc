@@ -16,7 +16,7 @@ class EnseignantRepository extends ServiceEntityRepository
         parent::__construct($registry, Enseignant::class);
     }
 
-     /**
+    /**
      * Les enseignants dont le compte est ACTIF (archivés exclus).
      */
     public function findActifs(): array
@@ -24,6 +24,19 @@ class EnseignantRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('e')
             ->innerJoin('e.utilisateur', 'u')
             ->andWhere('u.actif = true')
+            ->orderBy('u.nom', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * Les enseignants dont le compte est INACTIF (archivés).
+     */
+    public function findArchives(): array
+    {
+        return $this->createQueryBuilder('e')
+            ->innerJoin('e.utilisateur', 'u')
+            ->andWhere('u.actif = false')
             ->orderBy('u.nom', 'ASC')
             ->getQuery()
             ->getResult();

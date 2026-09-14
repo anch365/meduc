@@ -17,7 +17,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[IsGranted('ROLE_ADMIN')]
 class EnseignantController extends AbstractController
 {
-        #[Route('/', name: 'app_enseignant_index', methods: ['GET'])]
+    #[Route('/', name: 'app_enseignant_index', methods: ['GET'])]
     public function index(EnseignantRepository $enseignantRepository): Response
     {
         return $this->render('admin/enseignant/index.html.twig', [
@@ -31,6 +31,7 @@ class EnseignantController extends AbstractController
         EntityManagerInterface $entityManager,
         UserPasswordHasherInterface $passwordHasher
     ): Response {
+
         // 1. On crée un Enseignant VIDE (avec son Utilisateur imbriqué)
         $enseignant = new Enseignant();
         $enseignant->setUtilisateur(new \App\Entity\Utilisateur());
@@ -39,27 +40,103 @@ class EnseignantController extends AbstractController
         $form = $this->createForm(EnseignantType::class, $enseignant);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            // 3. Le mot de passe saisi (champ non mappé)
+        if ($form->isSubmitted()) {
             $plainPassword = $form->get('utilisateur')->get('plainPassword')->getData();
 
-            // 4. On le HASHE et on le met sur le compte
-            $utilisateur = $enseignant->getUtilisateur();
-            $utilisateur->setPassword($passwordHasher->hashPassword($utilisateur, $plainPassword));
+            // À la CRÉATION, le mot de passe est OBLIGATOIRE (vérification manuelle)
+            if (!$plainPassword) {
+                $form->get('utilisateur')->get('plainPassword')->addError(
+                    new \Symfony\Component\Form\FormError('Le mot de passe est obligatoire à la création.')
+                );
+            }
 
-            // 5. On FORCE le rôle enseignant (sécurité : jamais choisi par le client !)
-            $utilisateur->setRoles(['ROLE_ENSEIGNANT']);
+            if ($form->isValid()) {
+                $utilisateur = $enseignant->getUtilisateur();
+                $utilisateur->setPassword($passwordHasher->hashPassword($utilisateur, $plainPassword));
+                $utilisateur->setRoles(['ROLE_ENSEIGNANT']);
 
-            // 6. On enregistre TOUT (le compte + le profil liés)
-            $entityManager->persist($enseignant);
-            $entityManager->flush();
+                $entityManager->persist($enseignant);
+                $entityManager->flush();
 
-            $this->addFlash('success', 'Enseignant créé avec succès !');
-            return $this->redirectToRoute('app_enseignant_new');
+                $this->addFlash('success', 'Enseignant créé avec succès !');
+                return $this->redirectToRoute('app_enseignant_index');
+            }
         }
 
         return $this->render('admin/enseignant/new.html.twig', [
             'form' => $form,
         ]);
+    }
+
+    #[Route('/{id}/edit', name: 'app_enseignant_edit', methods: ['GET', 'POST'])]
+    public function edit(
+        Enseignant $enseignant,
+        Request $request,
+        EntityManagerInterface $entityManager,
+        UserPasswordHasherInterface $passwordHasher
+    ): Response {
+        $form = $this->createForm(EnseignantType::class, $enseignant);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $plainPassword = $form->get('utilisateur')->get('plainPassword')->getData();
+
+            // Uniquement si l'admin a saisi un NOUVEAU mot de passe
+            if ($plainPassword) {
+                $utilisateur = $enseignant->getUtilisateur();
+                $utilisateur->setPassword($passwordHasher->hashPassword($utilisateur, $plainPassword));
+            }
+
+            $entityManager->flush();
+
+            $this->addFlash('success', 'Enseignant modifié avec succès !');
+            return $this->redirectToRoute('app_enseignant_index');
+        }
+
+        return $this->render('admin/enseignant/edit.html.twig', [
+            'enseignant' => $enseignant,
+            'form' => $form,
+        ]);
+    }
+
+    #[Route('/archives', name: 'app_enseignant_archives', methods: ['GET'])]
+    public function archives(EnseignantRepository $enseignantRepository): Response
+    {
+        return $this->render('admin/enseignant/archives.html.twig', [
+            'enseignants' => $enseignantRepository->findArchives(),
+        ]);
+    }
+
+    #[Route('/{id}/archive', name: 'app_enseignant_archive', methods: ['POST'])]
+    public function archive(
+        Enseignant $enseignant,
+        Request $request,
+        EntityManagerInterface $entityManager
+    ): Response {
+        // Vérification CSRF : la requête doit venir du formulaire, pas d'un lien piégé
+        if ($this->isCsrfTokenValid('archive' . $enseignant->getId(), $request->getPayload()->get('_token'))) {
+            $enseignant->getUtilisateur()->setActif(false);
+            $entityManager->flush();
+
+            $this->addFlash('success', 'Enseignant archivé.');
+        }
+
+        return $this->redirectToRoute('app_enseignant_index');
+    }
+
+    #[Route('/{id}/desarchiver', name: 'app_enseignant_desarchiver', methods: ['POST'])]
+    public function desarchiver(
+        Enseignant $enseignant,
+        Request $request,
+        EntityManagerInterface $entityManager
+    ): Response {
+        if ($this->isCsrfTokenValid('desarchiver' . $enseignant->getId(), $request->getPayload()->get('_token'))) {
+            $enseignant->getUtilisateur()->setActif(true);
+            $entityManager->flush();
+
+            $this->addFlash('success', 'Enseignant réactivé.');
+        }
+
+        return $this->redirectToRoute('app_enseignant_archives');
     }
 }

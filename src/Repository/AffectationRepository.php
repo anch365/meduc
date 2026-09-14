@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Affectation;
+use App\Entity\Enseignant;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use App\Entity\Etablissement;
@@ -29,6 +30,20 @@ class AffectationRepository extends ServiceEntityRepository
             ->orderBy('a.dateDebut', 'DESC')
             ->getQuery()
             ->getResult();
+    }
+
+    /**
+     * L'affectation EN COURS d'un enseignant (ou null s'il n'en a pas).
+     */
+    public function findUneActive(Enseignant $enseignant): ?Affectation
+    {
+        return $this->createQueryBuilder('a')
+            ->andWhere('a.enseignant = :enseignant')
+            ->andWhere('a.dateFin IS NULL')
+            ->setParameter('enseignant', $enseignant)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
     }
     //    /**
     //     * @return Affectation[] Returns an array of Affectation objects

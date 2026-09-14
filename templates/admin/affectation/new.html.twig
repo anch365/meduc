@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouvelle affectation{% endblock %}
+
+{% block body %}
+<h1>Nouvelle affectation</h1>
+
+{{ form_start(form) }}
+    {{ form_widget(form) }}
+    <button type="submit">Affecter l'enseignant</button>
+{{ form_end(form) }}
+{% endblock %}

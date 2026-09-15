@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier mon mot de passe{% endblock %}
+
+{% block body %}
+<h1>Modifier mon mot de passe</h1>
+
+{{ form_start(form) }}
+    {{ form_widget(form) }}
+    <button type="submit">Changer le mot de passe</button>
+{{ form_end(form) }}
+
+<a href="{{ path('app_espace') }}">← Retour à mon espace</a>
+{% endblock %}

@@ -23,6 +23,7 @@ class EnseignantRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('e')
             ->innerJoin('e.utilisateur', 'u')
+            ->addSelect('u')                          // ← la SEULE ligne ajoutée
             ->andWhere('u.actif = true')
             ->orderBy('u.nom', 'ASC')
             ->getQuery()

@@ -17,6 +17,14 @@ use Symfony\Component\Form\FormError;
 #[IsGranted('ROLE_ADMIN')]
 class AffectationController extends AbstractController
 {
+    #[Route('/', name: 'app_affectation_index', methods: ['GET'])]
+    public function index(AffectationRepository $affectationRepository): Response
+    {
+        return $this->render('admin/affectation/index.html.twig', [
+            'affectations' => $affectationRepository->findBy([], ['dateDebut' => 'DESC']),
+        ]);
+    }
+    
     #[Route('/new', name: 'app_affectation_new', methods: ['GET', 'POST'])]
     public function new(
         Request $request,
@@ -29,14 +37,25 @@ class AffectationController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            // LA RÈGLE MÉTIER : l'enseignant a-t-il déjà une affectation OUVERTE ?
             $enseignant = $affectation->getEnseignant();
+
+            // ⭐ RÈGLE n°1 : l'enseignant est-il RETRAITÉ ?
+            if ($enseignant->estRetraite()) {
+                $form->addError(new FormError(
+                    'Impossible : cet enseignant a atteint l\'âge de la retraite.'
+                ));
+            }
+
+            // ⭐ RÈGLE n°2 : a-t-il déjà une affectation OUVERTE ?
             $affectationExistante = $affectationRepository->findUneActive($enseignant);
 
             if ($affectationExistante) {
-                //Erreur attachée au FORMULAIRE : elle s'affiche IMMÉDIATEMENT
+
                 $form->addError(new FormError('Cet enseignant a déjà une affectation en cours !'));
-            } else {
+            }
+
+            // On n'enregistre QUE si aucune règle n'a ajouté d'erreur
+            if ($form->isValid()) {
                 $affectation->setDateFin(null); // en cours
                 $affectation->setStatut('en_cours');
                 $entityManager->persist($affectation);
@@ -44,7 +63,7 @@ class AffectationController extends AbstractController
 
                 // On envoie l'admin sur la FICHE de l'enseignant concerné
                 return $this->redirectToRoute('app_enseignant_show', [
-                    'id' => $affectation->getEnseignant()->getId(),
+                    'id' => $enseignant->getId(),
                 ]);
             }
         }

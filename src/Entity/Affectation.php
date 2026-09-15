@@ -35,7 +35,7 @@ class Affectation
 
     #[ORM\ManyToOne(inversedBy: 'affectations')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?etablissement $etablissement = null;
+    private ?Etablissement $etablissement = null;
 
     public function getId(): ?int
     {

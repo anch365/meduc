@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Transférer {{ enseignant.utilisateur.prenom }} {{ enseignant.utilisateur.nom }}{% endblock %}
+
+{% block body %}
+<h1>Transférer {{ enseignant.utilisateur.prenom }} {{ enseignant.utilisateur.nom }}</h1>
+
+<p>
+    Affectation actuelle : <strong>{{ affectationActive.etablissement.nom }}</strong>
+    depuis le {{ affectationActive.dateDebut|date('d/m/Y') }}
+</p>
+
+{{ form_start(form) }}
+    {{ form_widget(form) }}
+    <button type="submit">Confirmer le transfert</button>
+{{ form_end(form) }}
+
+<a href="{{ path('app_enseignant_show', {id: enseignant.id}) }}">← Annuler</a>
+{% endblock %}

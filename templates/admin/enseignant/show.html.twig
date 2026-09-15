@@ -8,6 +8,10 @@
     <h2>Établissement actuel</h2>
 
     {% if affectationActive %}
+        <a href="{{ path('app_enseignant_transfert', {id: enseignant.id}) }}">Transférer vers un autre établissement</a>
+    {% endif %}
+    
+    {% if affectationActive %}
         <p>
             <strong>{{ affectationActive.etablissement.nom }}</strong>
             ({{ affectationActive.classe }} — {{ affectationActive.matiere }})

@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Affectations{% endblock %}
+
+{% block body %}
+<h1>Affectations</h1>
+
+<a href="{{ path('app_affectation_new') }}">+ Nouvelle affectation</a>
+
+<table>
+    <thead>
+        <tr>
+            <th>Enseignant</th>
+            <th>Établissement</th>
+            <th>Classe</th>
+            <th>Matière</th>
+            <th>Début</th>
+            <th>Fin</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for affectation in affectations %}
+        <tr>
+            <td>{{ affectation.enseignant.utilisateur.prenom }} {{ affectation.enseignant.utilisateur.nom }}</td>
+            <td>{{ affectation.etablissement.nom }}</td>
+            <td>{{ affectation.classe }}</td>
+            <td>{{ affectation.matiere }}</td>
+            <td>{{ affectation.dateDebut|date('d/m/Y') }}</td>
+            <td>
+                {% if affectation.dateFin %}
+                    {{ affectation.dateFin|date('d/m/Y') }}
+                {% else %}
+                    <strong>En cours</strong>
+                {% endif %}
+            </td>
+        </tr>
+    {% else %}
+        <tr><td colspan="6">Aucune affectation.</td></tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

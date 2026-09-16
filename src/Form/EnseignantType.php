@@ -24,6 +24,7 @@ class EnseignantType extends AbstractType
             ])
             ->add('dateNaissance', DateType::class, [
                 'label' => 'Date de naissance',
+                
                 'widget' => 'single_text',
             ])
             ->add('lieuNaissance', TextType::class, [

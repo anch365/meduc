@@ -5,7 +5,7 @@
 {% block body %}
 <h1>Créer un enseignant</h1>
 
-{{ form_start(form) }}
+{{ form_start(form, {attr: {novalidate: true}}) }}
     {{ form_widget(form) }}
     <button type="submit">Créer l'enseignant</button>
 {{ form_end(form) }}

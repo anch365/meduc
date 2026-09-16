@@ -19,15 +19,11 @@ class UtilisateurType extends AbstractType
         $builder
             ->add('nom', TextType::class, [
                 'label' => 'Nom',
-                'constraints' => [
-                    new NotBlank(message: 'Nom obligatoire'),
-                ],
+                'constraints' => [],
             ])
             ->add('prenom', TextType::class, [
                 'label' => 'Prénom',
-                'constraints' => [
-                    new NotBlank(message: 'Prénom obligatoire'),
-                ],
+                'constraints' => [],
             ])
             ->add('telephone', TextType::class, [
                 'label' => 'Téléphone',
@@ -35,8 +31,8 @@ class UtilisateurType extends AbstractType
             ])
             ->add('email', EmailType::class, [
                 'label' => 'Email',
+                'required' => false,
                 'constraints' => [
-                    new NotBlank(message: 'Email obligatoire'),
                     new Email(message: 'Email invalide'),
                 ],
             ])
@@ -50,7 +46,7 @@ class UtilisateurType extends AbstractType
                 'label' => 'Mot de passe',
                 'mapped' => false,
                 'required' => false,
-                'help' => 'Laisser vide pour conserver le mot de passe actuel',
+                'help' => 'Si vous modifiez un enseignant, laisser vide pour conserver le mot de passe actuel',
             ]);
     }
 

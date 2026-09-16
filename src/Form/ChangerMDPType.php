@@ -9,7 +9,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Length;
 
-class ChangerMotDePasseType extends AbstractType
+class ChangerMDPType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {

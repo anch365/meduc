@@ -19,9 +19,12 @@ class Enseignant
     private ?int $id = null;
 
     #[ORM\Column(length: 10)]
+    #[Assert\Choice(choices: ['M', 'F'], message: 'Le genre doit être M ou F.')]
     private ?string $genre = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[Assert\NotBlank(message: 'La date de naissance est obligatoire.')]
+    #[Assert\LessThanOrEqual(value: 'today', message: 'La date de naissance ne peut pas être dans le futur.')]
     private ?\DateTime $dateNaissance = null;
 
     #[ORM\Column(length: 100, nullable: true)]
@@ -84,7 +87,7 @@ class Enseignant
         return $this->dateNaissance;
     }
 
-    public function setDateNaissance(\DateTime $dateNaissance): static
+    public function setDateNaissance(?\DateTime $dateNaissance): static
     {
         $this->dateNaissance = $dateNaissance;
 

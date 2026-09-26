@@ -1,46 +1,94 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Se connecter!
-{% endblock %}
+{% block title %}Connexion — MEDUC{% endblock %}
 
 {% block body %}
-	<form method="post">
-		{% if error %}
-			<div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-		{% endif %}
+	<main class="flex-1">
+		<div class="flex flex-col lg:flex-row lg:h-screen">
 
-		{# {% if app.user %}
-			<div class="mb-3">
-				You are logged in as
-				{{ app.user.userIdentifier }},
-				<a href="{{ logout_path() }}">Logout</a>
-			</div>
-		{% endif %} #}
+			{# ── Colonne gauche : image + voile + texte ── #}
+			<section class="relative hidden flex-col items-center justify-center text-white overflow-hidden -mt-24 lg:min-h-[calc(100vh-4rem)] lg:flex lg:flex-1">
+				<img
+					src="{{ asset('imgs/comoressoprano.webp') }}"
+					alt=""
+					class="absolute inset-0 top-0 h-full w-full object-cover"
+				>
+				<div class="absolute inset-0 bg-black/60" aria-hidden="true"></div>
+				<div class="relative z-10 p-12 text-center">
+					<h1 class="font-display text-3xl font-bold">
+						La gestion des enseignants,<br>simplifiée et centralisée
+					</h1>
+					<p class="text-white/80 mt-4 max-w-md mx-auto">
+						La plateforme officielle du Ministère de l'Éducation
+						de l'Union des Comores.
+					</p>
+				</div>
+			</section>
 
-		<h1 class="h3 mb-3 font-weight-normal">Veuillez vous connectez</h1>
-		<label for="username">Email ou matricule</label>
-		<input type="text" value="{{ last_username }}" name="_username" id="username" class="form-control" autocomplete="username" required autofocus>
-		<label for="password">Mot de passe</label>
-		<input type="password" name="_password" id="password" class="form-control" autocomplete="current-password" required>
-		<input
-			type="hidden"
-			name="_csrf_token"
-			data-controller="csrf-protection"
-			value="{{ csrf_token('authenticate') }}"
-		>
+			{# ── Colonne droite : le formulaire, centré ── #}
+			<section class="flex flex-1 items-center justify-center p-6">
+				<div class="w-full max-w-md bg-white rounded-lg shadow-md p-8">
 
-		{#
-				            Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
-				            See https://symfony.com/doc/current/security/remember_me.html
-				
-				            <div class="checkbox mb-3">
-				                <input type="checkbox" name="_remember_me" id="_remember_me">
-				                <label for="_remember_me">Remember me</label>
-				            </div>
-				        #}
+					<h1 class="font-display text-2xl font-bold text-vert-fonce text-center lg:hidden mb-4">MEDUC</h1>
 
-		<button class="btn btn-lg btn-primary')" type="submit">
-			Connexion
-		</button>
-	</form>
+					<h2 class="font-display text-xl font-bold text-vert-fonce">Connexion</h2>
+					<p class="text-slate-600 text-sm mt-1 mb-6">Accédez à votre espace sécurisé.</p>
+
+					{% if error %}
+						<div class="bg-red-100 text-red-700 rounded p-3 text-sm mb-4" role="alert">
+							{{ error.messageKey|trans(error.messageData, 'security') }}
+						</div>
+					{% endif %}
+
+					{# ⭐ Formulaire MANUEL : les noms sont les défauts de form_login #}
+					<form method="post">
+						<div class="mb-4">
+							<label for="inputUsername" class="block text-sm font-semibold text-vert-fonce mb-1">
+								Email ou matricule
+							</label>
+							<input
+								type="text"
+								value="{{ last_username }}"
+								name="_username"
+								id="inputUsername"
+								class="w-full rounded border-2 border-bleu/40 bg-white px-4 py-2 text-slate-800 placeholder-slate-400 outline-none transition focus:border-bleu focus:ring-2 focus:ring-bleu/30"
+								autocomplete="username"
+								required
+								autofocus
+							>
+						</div>
+
+						<div class="mb-4">
+							<label for="inputPassword" class="block text-sm font-semibold text-vert-fonce mb-1">
+								Mot de passe
+							</label>
+							<input
+								type="password"
+								name="_password"
+								id="inputPassword"
+								class="w-full rounded border-2 border-bleu/40 bg-white px-4 py-2 text-slate-800 placeholder-slate-400 outline-none transition focus:border-bleu focus:ring-2 focus:ring-bleu/30"
+								autocomplete="current-password"
+								required
+							>
+						</div>
+
+						<label class="flex items-center gap-2 mt-3 text-sm text-slate-700 cursor-pointer">
+							<input
+								type="checkbox"
+								name="_remember_me"
+								class="h-5 w-5 rounded border-2 border-bleu/40 text-vert-fonce focus:ring-bleu focus:ring-2 outline-none"
+							>
+							Se souvenir de moi
+						</label>
+
+						{# ⭐ Jeton CSRF : obligatoire (enable_csrf: true dans ton security.yaml) #}
+						<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+						<button type="submit" class="btn-adm w-full mt-6">Se connecter</button>
+					</form>
+				</div>
+			</section>
+
+		</div>
+	</main>
 {% endblock %}

@@ -1,39 +1,96 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Enseignants archivés{% endblock %}
+{% block title %}Enseignants archivés — MEDUC{% endblock %}
 
 {% block body %}
-<h1>Enseignants archivés</h1>
+    <main class="container mx-auto px-4 py-8">
 
-<a href="{{ path('app_enseignant_index') }}">← Retour à la liste active</a>
+        {# ══════════ EN-TÊTE ══════════ #}
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+            <div>
+                <a href="{{ path('app_enseignant_index') }}" class="text-sm text-vert hover:underline">
+                    ← Retour à la liste des enseignants
+                </a>
+                <h1 class="font-display text-2xl font-bold text-vert-fonce mt-2">
+                    Enseignants archivés
+                </h1>
+                <p class="text-slate-600 text-sm mt-1">
+                    {{ enseignants|length }} compte(s) désactivé(s) — désarchivez pour réactiver l'accès.
+                </p>
+            </div>
+        </div>
 
-<table>
-    <thead>
-        <tr>
-            <th>Nom</th>
-            <th>Prénom</th>
-            <th>Matricule</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-    {% for enseignant in enseignants %}
-        <tr>
-            <td>{{ enseignant.utilisateur.nom }}</td>
-            <td>{{ enseignant.utilisateur.prenom }}</td>
-            <td>{{ enseignant.utilisateur.matricule }}</td>
-            <td>
-                <form method="post" action="{{ path('app_enseignant_desarchiver', {id: enseignant.id}) }}"
-                      onsubmit="return confirm('Voulez-vous réactiver cet enseignant ?');"
-                      style="display:inline;">
-                    <input type="hidden" name="_token" value="{{ csrf_token('desarchiver' ~ enseignant.id) }}">
-                    <button type="submit">Réactiver</button>
-                </form>
-            </td>
-        </tr>
-    {% else %}
-        <tr><td colspan="4">Aucun enseignant archivé.</td></tr>
-    {% endfor %}
-    </tbody>
-</table>
+        {# ══════════ BANDEAU D'INFORMATION ══════════ #}
+        <div class="bg-bleu/10 border border-bleu/40 text-slate-700 rounded p-3 text-sm mb-6">
+            💡 Un enseignant archivé ne peut plus se connecter : le compte est bloqué à la connexion.
+        </div>
+
+        {# ══════════ TABLEAU (même pattern que la liste active) ══════════ #}
+        <div class="bg-white rounded-lg shadow-md p-6 border-t-4 border-vert-fonce">
+            <div class="overflow-x-auto">
+                <table class="min-w-150 w-full text-left">
+                    <thead>
+                        <tr class="border-b-2 border-vert-fonce">
+                            <th class="px-4 py-3">Matricule</th>
+                            <th class="px-4 py-3">Nom</th>
+                            <th class="px-4 py-3">Prénom</th>
+                            <th class="px-4 py-3">Email</th>
+                            <th class="px-4 py-3">Statut</th>
+                            <th class="px-4 py-3">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-bleu/40">
+                        {% for enseignant in enseignants %}
+                            <tr class="hover:bg-menthe transition">
+                                <td class="px-4 py-3">{{ enseignant.utilisateur.matricule }}</td>
+                                <td class="px-4 py-3">{{ enseignant.utilisateur.nom }}</td>
+                                <td class="px-4 py-3">{{ enseignant.utilisateur.prenom }}</td>
+                                <td class="px-4 py-3">{{ enseignant.utilisateur.email }}</td>
+                                <td class="px-4 py-3">
+                                    <span class="bg-red-100 text-red-700 font-semibold text-xs px-2 py-1 rounded-full">
+                                        Archivé
+                                    </span>
+                                    {% if enseignant.estRetraite %}
+                                        <span class="bg-bleu/20 text-vert-fonce border border-bleu font-semibold text-xs px-2 py-1 rounded-full">
+                                            Retraité
+                                        </span>
+                                    {% endif %}
+                                </td>
+                                <td class="px-4 py-3">
+                                    <div class="flex items-center gap-2">
+                                        <a href="{{ path('app_enseignant_show', {'id': enseignant.id}) }}" class="btn-header">Voir</a>
+                                        <a
+                                            href="{{ path('app_enseignant_edit', {'id': enseignant.id}) }}"
+                                            class="bg-bleu-fonce hover:bg-bleu text-white px-4 py-2 rounded transition"
+                                        >Modifier</a>
+
+                                        {# ⭐ L'action INVERSÉE : Désarchiver (POST + CSRF) #}
+                                        <form
+                                            method="post"
+                                            action="{{ path('app_enseignant_desarchiver', {'id': enseignant.id}) }}"
+                                            onsubmit="return confirm('Réactiver {{ enseignant.utilisateur.prenom }} {{ enseignant.utilisateur.nom }} ?');"
+                                        >
+                                            <input type="hidden" name="_token" value="{{ csrf_token('desarchiver' ~ enseignant.id) }}">
+                                            <button class="btn">Désarchiver</button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% else %}
+                            {# ══════════ ÉTAT VIDE : la page dit qu'il n'y a rien ══════════ #}
+                            <tr>
+                                <td colspan="6" class="px-4 py-12 text-center">
+                                    <p class="text-4xl mb-2">🎉</p>
+                                    <p class="text-slate-600 font-semibold">Aucun enseignant archivé</p>
+                                    <p class="text-slate-500 text-sm mt-1">Tous les comptes sont actifs.</p>
+                                    <a href="{{ path('app_enseignant_index') }}" class="btn mt-4">Retour à la liste</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </main>
 {% endblock %}

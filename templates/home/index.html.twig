@@ -3,20 +3,144 @@
 {% block title %}Accueil — MEDUC{% endblock %}
 
 {% block body %}
-    <main class="home">
-        <h1>MEDUC</h1>
-        <p>Plateforme de gestion des affectations des enseignants</p>
-        <p>Ministère de l'Éducation de l'Union des Comores</p>
+    <main class="flex-1">
 
-        {% if app.user %}
-        {% else %}
-            <a href="{{ path('app_login') }}">Se connecter</a>
-        {% endif %}
-        {# {% if is_granted('ROLE_ADMIN') %}
-            <a href="{{ path('app_admin_dashboard') }}">Accéder à l'espace admin</a>
-        {% else %}
-            <a href="{{ path('app_espace') }}">Accéder à mon espace</a>
-        {% endif %} #}
-   
+        {# ══════════ HERO : texte à gauche + IMAGE à droite ══════════ #}
+        <section class="container mx-auto px-4 py-12 grid gap-8 lg:grid-cols-2 items-center">
+
+            {# ── Colonne texte + CTA ── #}
+            <div>
+                <p class="text-sm font-semibold uppercase tracking-widest text-green-900">
+                    Ministère de l'Éducation — Union des Comores
+                </p>
+                <h1 class="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-vert-fonce mt-4">
+                    La gestion des enseignants, simplifiée et centralisée
+                </h1>
+                <p class="text-slate-800 text-lg mt-4">
+                    MEDUC centralise les fiches des enseignants, leurs affectations et leur
+                    historique complet sur les trois îles — pour une administration plus
+                    simple et plus transparente.
+                </p>
+
+                <div class="flex flex-col mt-8 gap-8 lg:gap-16 lg:flex-row">
+                    {% if app.user %}
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <a href="{{ path('app_admin_dashboard') }}" class="btn">Accéder à mon espace</a>
+                        {% else %}
+                            <a href="{{ path('app_espace') }}" class="btn">Accéder à mon espace</a>
+                        {% endif %}
+                    {% else %}
+                        <a href="{{ path('app_login') }}" class="btn">Se connecter</a>
+                    {% endif %}
+                    <a href="#fonctionnalites" class="btn">Découvrir</a>
+                </div>
+            </div>
+
+            {# ── Colonne image + CTA posé dessus ── #}
+            <div class="relative">
+                <img
+                    src="{{ asset('imgs/Accueil-CTA.webp') }}"
+                    alt="Une école de l'Union des Comores"
+                    class="w-full h-80 object-cover rounded-lg shadow-lg md:h-64 lg:h-96"
+                >
+
+                {# ── Carte CTA sur l'image (le bouton blanc ressort bien) ── #}
+                <div class="absolute bottom-4 left-4 right-4 bg-white/90 rounded-lg shadow-lg p-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+                    <p class="text-sm font-semibold">
+                        Enseignant ? Retrouvez votre affectation.
+                    </p>
+                    <a href="{{ path('app_login') }}" class="btn whitespace-nowrap">Mon espace</a>
+                </div>
+            </div>
+        </section>
+
+        {# ══════════ 4 CARTES (wireframe : 4 cartes identiques) ══════════ #}
+        <section id="fonctionnalites" class="bg-white py-12">
+            <div class="container mx-auto px-4">
+                <h2 class="font-display text-2xl sm:text-3xl font-bold text-black text-center">
+                    Une plateforme, quatre missions
+                </h2>
+
+                <div class="flex flex-col mt-8 gap-6 lg:flex-row">
+                    <article
+                        class="bg-green-600/70 border rounded-lg p-6 border-vert-fonce
+                transition duration-300 ease-in-out hover:-translate-y-1 hover:shadow-lg hover:bg-green-600"
+                    >
+                        <div class="h-10 w-10 rounded bg-menthe items-center justify-center text-xl p-1.5">👩‍🏫</div>
+                        <h3 class="font-display font-bold text-black mt-4">Gestion des enseignants</h3>
+                        <p class="text-black text-sm mt-2">Fiches complètes, comptes archivables et statut de retraite calculé automatiquement.</p>
+                    </article>
+
+                    <article
+                        class="bg-green-600/70 border rounded-lg p-6 border-vert-fonce
+                transition duration-300 ease-in-out hover:-translate-y-1 hover:shadow-lg hover:bg-green-600"
+                    >
+                        <div class="h-10 w-10 rounded bg-menthe flex items-center justify-center text-xl p-1.5">🏫</div>
+                        <h3 class="font-display font-bold text-black mt-4">Affectations &amp; mutations</h3>
+                        <p class="text-sm mt-2 text-black">Affectez, transférez entre les îles et gérez le cycle de vie de chaque enseignant.</p>
+                    </article>
+
+                    <article
+                        class="bg-green-600/70 border rounded-lg p-6 border-vert-fonce
+                transition duration-300 ease-in-out hover:-translate-y-1 hover:shadow-lg hover:bg-green-600"
+                    >
+                        <div class="h-10 w-10 rounded bg-menthe items-center justify-center text-xl p-1.5">🗺️</div>
+                        <h3 class="font-display font-bold text-black mt-4">Établissements &amp; localités</h3>
+                        <p class="text-black text-sm mt-2">Les écoles de Grande-Comore, d'Anjouan et de Mohéli, centralisées en un lieu unique.</p>
+                    </article>
+
+                    <article
+                        class="bg-green-600/70 border rounded-lg p-6 border-vert-fonce
+                transition duration-300 ease-in-out hover:-translate-y-1 hover:shadow-lg hover:bg-green-600"
+                    >
+                        <div class="h-10 w-10 rounded bg-menthe items-center justify-center text-xl p-1.5">📜</div>
+                        <h3 class="font-display font-bold text-black mt-4">Historique &amp; archivage</h3>
+                        <p class="text-black text-sm mt-2">Chaque mutation est tracée, chaque compte archivé reste consultable et réactivable.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        {# ══════════ 3 COLONNES (wireframe : gris foncé) ══════════ #}
+        <section class="bg-menthe text-black py-12 bottom-0">
+            <div class="container mx-auto px-4 grid gap-8 md:grid-cols-3">
+                <div>
+                    <div class="h-10 w-10 rounded bg-white/10 flex items-center justify-center text-xl">🎯</div>
+                    <h2 class="font-display text-xl font-bold mt-4">Notre mission</h2>
+                    <p
+                        class="text-black
+                     text-sm mt-2"
+                    >
+                        Centraliser et fiabiliser la gestion des affectations des enseignants
+                        au service de l'éducation comorienne.
+                    </p>
+                </div>
+
+                <div>
+                    <div class="h-10 w-10 rounded bg-white/10 flex items-center justify-center text-xl">👥</div>
+                    <h2 class="font-display text-xl font-bold mt-4">Nos utilisateurs</h2>
+                    <p
+                        class="text-black
+                     text-sm mt-2"
+                    >
+                        Les administrateurs du ministère et les enseignants, avec un accès
+                        adapté à chaque rôle.
+                    </p>
+                </div>
+
+                <div>
+                    <div class="h-10 w-10 rounded bg-white/10 flex items-center justify-center text-xl">🤝</div>
+                    <h2 class="font-display text-xl font-bold mt-4">Notre engagement</h2>
+                    <p
+                        class="text-black
+                     text-sm mt-2"
+                    >
+                        Un historique complet et consultable, pour des décisions
+                        transparentes et traçables.
+                    </p>
+                </div>
+            </div>
+        </section>
+
     </main>
 {% endblock %}

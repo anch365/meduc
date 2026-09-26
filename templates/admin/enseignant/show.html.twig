@@ -1,83 +1,183 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Fiche de {{ enseignant.utilisateur.prenom }} {{ enseignant.utilisateur.nom }}{% endblock %}
+{% block title %}Fiche — {{ enseignant.utilisateur.prenom }} {{ enseignant.utilisateur.nom }}{% endblock %}
 
 {% block body %}
-    <h1>{{ enseignant.utilisateur.prenom }} {{ enseignant.utilisateur.nom }}</h1>
-    <p><em>Matricule : {{ enseignant.utilisateur.matricule }}</em></p>
-    <h2>Établissement actuel</h2>
+    <main class="container mx-auto px-4 py-8">
 
-    {% if affectationActive %}
-        <a href="{{ path('app_enseignant_transfert', {id: enseignant.id}) }}">Transférer vers un autre établissement</a>
-    {% endif %}
-    
-    {% if affectationActive %}
-        <p>
-            <strong>{{ affectationActive.etablissement.nom }}</strong>
-            ({{ affectationActive.classe }} — {{ affectationActive.matiere }})
-            depuis le {{ affectationActive.dateDebut|date('d/m/Y') }}
-        </p>
-    {% else %}
-        <p><em>Non affecté actuellement.</em></p>
-    {% endif %}
+        <div class="flex flex-col justify-between gap-4 mb-6 sm:flex-row sm:items-center">
+            <div>
+               
+                <h1 class="font-display text-3xl font-bold text-vert-fonce mt-2">
+                    {{ enseignant.utilisateur.prenom }} {{ enseignant.utilisateur.nom }}
+                </h1>
+                <p class="text-slate-600 text-sm">Matricule : {{ enseignant.utilisateur.matricule }}</p>
+            </div>
 
-    <table>
-        <tr><th>Nom</th><td>{{ enseignant.utilisateur.nom }}</td></tr>
-        <tr><th>Prénom</th><td>{{ enseignant.utilisateur.prenom }}</td></tr>
-        <tr><th>Date de naissance</th><td>{{ enseignant.dateNaissance|date('d/m/Y') }}</td></tr>
-        <tr><th>Âge</th><td>{{ enseignant.age }} ans</td></tr>
-        <tr><th>Genre</th><td>{{ enseignant.genre }}</td></tr>
-        <tr>
-            {# Si l'enseignant à 64 ans ou plus, ça doit afficher "Retraité" #}
-            <th>Statut</th>
-            <td>
-                {% if enseignant.estRetraite %}
-                    <strong>Retraité</strong>
+            {# ── Les badges : toute la situation en un coup d'œil ── #}
+            <div class="flex flex-wrap gap-2">
+                {% if enseignant.affectationActive %}
+                    <span class="bg-vert-fonce text-white font-semibold text-sm px-3 py-1 rounded-full">En poste</span>
                 {% else %}
-                    <strong>Actif</strong>
+                    <span class="bg-slate-200 text-slate-700 font-semibold text-sm px-3 py-1 rounded-full">Non affecté</span>
                 {% endif %}
-            </td>
-        </tr>    
-        <tr>
-            <th>Localité</th>
-            <td>{{ enseignant.localite ? enseignant.localite.nom : '—' }}</td>
-        </tr>
-    </table>
 
-    <h2>Historique des affectations</h2>
+                {% if enseignant.estRetraite %}
+                    <span class="bg-bleu/20 text-vert-fonce border border-bleu font-semibold text-sm px-3 py-1 rounded-full">Retraité</span>
+                {% endif %}
 
-    {% if historique is empty %}
-        <p><em>Aucune affectation passée ou en cours.</em></p>
-    {% else %}
-        <table>
-            <thead>
-                <tr>
-                    <th>Établissement</th>
-                    <th>Classe</th>
-                    <th>Matière</th>
-                    <th>Début</th>
-                    <th>Fin</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for affectation in historique %}
-                    <tr>
-                        <td>{{ affectation.etablissement.nom }}</td>
-                        <td>{{ affectation.classe }}</td>
-                        <td>{{ affectation.matiere }}</td>
-                        <td>{{ affectation.dateDebut|date('d/m/Y') }}</td>
-                        <td>
-                            {% if affectation.dateFin %}
-                                {{ affectation.dateFin|date('d/m/Y') }}
-                            {% else %}
-                                <strong>En cours</strong>
-                            {% endif %}
-                        </td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    {% endif %}
+                {% if not enseignant.utilisateur.actif %}
+                    <span class="bg-red-100 text-red-700 font-semibold text-sm px-3 py-1 rounded-full">Archivé</span>
+                {% endif %}
+            </div>
+        </div>
 
-    <a href="{{ path('app_enseignant_index') }}">← Retour à la liste</a>
+        {# ══════════ 2. INFOS PERSONNELLES + SITUATION ══════════ #}
+        <section class="grid gap-6 lg:grid-cols-3 mb-6">
+
+            {# Carte infos : 2/3 de la largeur #}
+            <div class="bg-white rounded-lg shadow-md p-6 border border-green-800 lg:col-span-2">
+                <h2 class="font-display text-xl font-bold text-vert-fonce">Informations personnelles</h2>
+
+                <dl class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                    <div class="flex flex-col gap-1">
+                        <dt class="text-sm text-slate-500">Genre</dt>
+                        <dd class="font-semibold">{{ enseignant.genre }}</dd>
+                    </div>
+                    <div class="flex flex-col gap-1">
+                        <dt class="text-sm text-slate-500">Date de naissance</dt>
+                        <dd class="font-semibold">{{ enseignant.dateNaissance ? enseignant.dateNaissance|date('d/m/Y') : '—' }}</dd>
+                    </div>
+                    <div class="flex flex-col gap-1">
+                        <dt class="text-sm text-slate-500">Âge</dt>
+                        <dd class="font-semibold">{{ enseignant.age }} ans</dd>
+                    </div>
+                    <div class="flex flex-col gap-1">
+                        <dt class="text-sm text-slate-500">Lieu de naissance</dt>
+                        <dd class="font-semibold">{{ enseignant.lieuNaissance ?? '—' }}</dd>
+                    </div>
+                    <div class="flex flex-col gap-1">
+                        <dt class="text-sm text-slate-500">Email</dt>
+                        <dd class="font-semibold">{{ enseignant.utilisateur.email }}</dd>
+                    </div>
+                    <div class="flex flex-col gap-1">
+                        <dt class="text-sm text-slate-500">Téléphone</dt>
+                        <dd class="font-semibold">{{ enseignant.utilisateur.telephone ?? '—' }}</dd>
+                    </div>
+                </dl>
+            </div>
+
+            {# Carte situation : 1/3 #}
+            <div class="bg-menthe rounded-lg shadow-md p-6">
+                <h2 class="font-display text-xl font-bold text-vert-fonce">Situation</h2>
+
+                <ul class="mt-4 space-y-3 text-sm">
+                    <li class="flex justify-between gap-4 border-b border-menthe pb-2">
+                        <span class="text-slate-500">Niveau d'enseignement</span>
+                        <span class="font-semibold text-right">{{ enseignant.niveauEnseignement ?? '—' }}</span>
+                    </li>
+                    <li class="flex justify-between gap-4 border-b border-menthe pb-2">
+                        <span class="text-slate-500">Statut professionnel</span>
+                        <span class="font-semibold text-right">{{ enseignant.statutProfessionnel ?? '—' }}</span>
+                    </li>
+                    <li class="flex justify-between gap-4">
+                        <span class="text-slate-500">Retraite</span>
+                        <span class="font-semibold text-right text-red-800">
+                            {{ enseignant.estRetraite ? 'Atteinte' : 'Pas encore' }}
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        {# ══════════ 3. AFFECTATION ACTUELLE ══════════ #}
+        <section class="bg-white rounded-lg shadow-md p-6 mb-6">
+            <h2 class="font-display text-xl font-bold text-vert-fonce">Affectation actuelle</h2>
+
+            {% if enseignant.affectationActive %}
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-4">
+                    <div class="bg-menthe rounded p-4">
+                        <p class="text-xs text-slate-500">Établissement</p>
+                        <p class="font-semibold mt-1">{{ enseignant.affectationActive.etablissement.nom }}</p>
+                    </div>
+                    <div class="bg-menthe rounded p-4">
+                        <p class="text-xs text-slate-500">Classe</p>
+                        <p class="font-semibold mt-1">{{ enseignant.affectationActive.classe }}</p>
+                    </div>
+                    <div class="bg-menthe rounded p-4">
+                        <p class="text-xs text-slate-500">Matière</p>
+                        <p class="font-semibold mt-1">{{ enseignant.affectationActive.matiere }}</p>
+                    </div>
+                    <div class="bg-menthe rounded p-4">
+                        <p class="text-xs text-slate-500">Depuis le</p>
+                        <p class="font-semibold mt-1">{{ enseignant.affectationActive.dateDebut|date('d/m/Y') }}</p>
+                    </div>
+                </div>
+            {% else %}
+                <p class="text-slate-500 mt-4 bg-menthe rounded p-4">
+                    Cet enseignant n'a pas d'affectation en cours.
+                </p>
+            {% endif %}
+        </section>
+
+        {# ══════════ 4. HISTORIQUE (tableau) ══════════ #}
+        <section class="bg-white rounded-lg shadow-md p-6 border border-green-800">
+            <h2 class="font-display text-xl font-bold text-vert-fonce">Historique des affectations</h2>
+
+            <div class="overflow-x-auto mt-4">
+                <table class="min-w-150 w-full text-left">
+                    <thead>
+                        <tr class="border-b-2 border-vert-fonce">
+                            <th class="px-4 py-3">Établissement</th>
+                            <th class="px-4 py-3">Classe</th>
+                            <th class="px-4 py-3">Matière</th>
+                            <th class="px-4 py-3">Début</th>
+                            <th class="px-4 py-3">Fin</th>
+                            <th class="px-4 py-3">Statut</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-bleu/40">
+                        {% for affectation in historique %}
+                            <tr class="hover:bg-blue-100 transition">
+                                <td class="px-4 py-3">{{ affectation.etablissement.nom }}</td>
+                                <td class="px-4 py-3">{{ affectation.classe }}</td>
+                                <td class="px-4 py-3">{{ affectation.matiere }}</td>
+                                <td class="px-4 py-3">{{ affectation.dateDebut|date('d/m/Y') }}</td>
+                                <td class="px-4 py-3">{{ affectation.dateFin ? affectation.dateFin|date('d/m/Y') : '—' }}</td>
+                                <td class="px-4 py-3">
+                                    {% if affectation.statut == 'en_cours' %}
+                                        <span class="bg-vert/15 text-vert-fonce font-semibold text-xs px-2 py-1 rounded-full">En cours</span>
+                                    {% elseif affectation.statut == 'terminee' %}
+                                        <span class="bg-slate-200 text-slate-700 font-semibold text-xs px-2 py-1 rounded-full">Terminée</span>
+                                    {% else %}
+                                        <span class="bg-red-100 text-red-700 font-semibold text-xs px-2 py-1 rounded-full">Annulée</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="6" class="px-4 py-8 text-center text-slate-500">
+                                    Aucune affectation enregistrée.
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        {# ══════════ 5. ACTIONS ══════════ #}
+        <div class="flex flex-wrap gap-4 mt-8">
+            <a href="{{ path('app_enseignant_index') }}" class="btn">
+                Retour à la liste
+            </a>
+            <a href="{{ path('app_enseignant_edit', {'id': enseignant.id}) }}" class="btn-adm">Modifier</a>
+            
+            {# Transférer : uniquement si en poste ET pas retraité (règles métier !) #}
+            {% if enseignant.affectationActive and not enseignant.estRetraite %}
+                <a href="{{ path('app_transfert', {'id': enseignant.id}) }}" class="btn-header">Transférer</a>
+            {% endif %}
+        </div>
+
+    </main>
 {% endblock %}

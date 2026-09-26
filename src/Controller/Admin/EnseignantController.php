@@ -116,6 +116,7 @@ class EnseignantController extends AbstractController
         Request $request,
         EntityManagerInterface $entityManager
     ): Response {
+        
         // Vérification CSRF : la requête doit venir du formulaire, pas d'un lien piégé
         if ($this->isCsrfTokenValid('archive' . $enseignant->getId(), $request->getPayload()->get('_token'))) {
             $enseignant->getUtilisateur()->setActif(false);
@@ -166,6 +167,7 @@ class EnseignantController extends AbstractController
         EntityManagerInterface $entityManager,
         AffectationRepository $affectationRepository
     ): Response {
+
         // 1. L'affectation actuelle (date_fin NULL) — elle doit exister pour transférer
         $affectationActive = $affectationRepository->findUneActive($enseignant);
 

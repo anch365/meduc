@@ -1,8 +1,91 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Tableau de bord admin{% endblock %}
+{% block title %}Profil — MEDUC{% endblock %}
 
 {% block body %}
-<h1>Espace administrateur</h1>
-<p>Bienvenue {{ app.user.prenom }} {{ app.user.nom }} !</p>
+    <main class="flex flex-col flex-1 w-full gap-8 container mx-auto px-4 py-8">
+
+        {# ══════════ 1. ACCUEIL ══════════ #}
+        <section class="mb-8">
+            <p class="text-sm uppercase tracking-widest text-green-800 font-semibold">Espace administrateur</p>
+            <h1 class="font-display text-3xl font-bold text-vert-fonce mt-2">
+                Bonjour, {{ app.user.prenom }}
+            </h1>
+            <p class="text-slate-900 mt-2">
+                Bienvenue sur votre espace de gestion. Retrouvez ici vos informations
+                et les actions rapides.
+            </p>
+        </section>
+
+        {# ══════════ 2. MES INFORMATIONS ══════════ #}
+        <section class="flex flex-col gap-4 bg-white rounded-lg shadow-md p-6 border border-vert-fonce mb-8">
+            <h2 class="font-display text-xl font-bold text-vert-fonce">Mes informations</h2>
+
+            <dl class="flex flex-col gap-4 mt-4 md:flex-row md:flex-wrap">
+                <div class="flex flex-col gap-4 md:flex-1">
+                    <div>
+                        <dt class="text-sm text-slate-700">Nom complet</dt>
+                        <dd class="font-semibold">{{ app.user.nom }} {{ app.user.prenom }}</dd>
+                    </div>
+                    <div>
+                        <dt class="text-sm text-slate-700">Matricule</dt>
+                        <dd class="font-semibold">{{ app.user.matricule }}</dd>
+                    </div>
+                </div>
+
+                <div class="flex flex-col gap-4 md:flex-1">
+                    <div>
+                        <dt class="text-sm text-slate-700">Email</dt>
+                        <dd class="font-semibold">{{ app.user.email }}</dd>
+                    </div>
+                    <div>
+                        <dt class="text-sm text-slate-700">Rôle</dt>
+                        <dd>
+                            <span class="bg-menthe text-green-900 font-semibold px-3 py-1 rounded">
+                                Administrateur
+                            </span>
+                        </dd>
+                    </div>
+                </div>
+            </dl>
+            <div class="md:basis-full">
+                    <dt class="text-sm text-slate-700">Dernière connexion</dt>
+                    <dd class="font-semibold">
+                        {{ app.user.dernierConnexion ? app.user.dernierConnexion|date('d/m/Y à H:i') : '—' }}
+                    </dd>
+                </div>
+        </section>
+
+        {# ══════════ 3. ACTIONS RAPIDES ══════════ #}
+        <section class="flex flex-col gap-4 md:flex-row">
+            <a href="{{ path('app_enseignant_new') }}" class="btn-adm text-center">+ Créer un enseignant</a>
+            <a href="{{ path('app_affectation_new') }}" class="btn-adm text-center">+ Nouvelle affectation</a>
+            <a href="{{ path('app_etablissement_new') }}" class="btn-adm text-center">+ Créer un établissement</a>
+            <a href="{{ path('app_localite_index') }}" class="btn-adm text-center">Localités</a>
+        </section>
+
+        {# ══════════ 4. STATISTIQUES ══════════ #}
+        <section class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <div class="bg-white rounded-lg shadow-md p-6 text-center border-t border-vert-fonce transition duration-300 hover:-translate-y-1 hover:shadow-lg">
+                <p class="font-display text-3xl font-bold text-vert-fonce">{{ nbEnseignants }}</p>
+                <p class="text-sm text-slate-600 mt-1">Enseignants</p>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-md p-6 text-center border-t border-vert-fonce transition duration-300 hover:-translate-y-1 hover:shadow-lg">
+                <p class="font-display text-3xl font-bold text-vert-fonce">{{ nbEtablissements }}</p>
+                <p class="text-sm text-slate-600 mt-1">Établissements</p>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-md p-6 text-center border-t border-vert-fonce transition duration-300 hover:-translate-y-1 hover:shadow-lg">
+                <p class="font-display text-3xl font-bold text-vert-fonce">{{ nbAffectationsEnCours }}</p>
+                <p class="text-sm text-slate-600 mt-1">Affectations en cours</p>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-md p-6 text-center border-t border-vert-fonce transition duration-300 hover:-translate-y-1 hover:shadow-lg">
+                <p class="font-display text-3xl font-bold text-vert-fonce">{{ nbLocalites }}</p>
+                <p class="text-sm text-slate-600 mt-1">Localités</p>
+            </div>
+        </section>
+
+    </main>
 {% endblock %}

@@ -1,0 +1,72 @@
+{# ══════════ THÈME DE FORMULAIRE MEDUC ══════════
+   Charte : bleu #00AAE8 = bordures + focus clavier
+   Appliqué automatiquement à TOUS les formulaires via twig.yaml #}
+
+{# ── La ligne complète d'un champ ── #}
+{% block form_row %}
+    <div class="mb-4">
+        {{ form_label(form) }}
+        {{ form_widget(form) }}
+        {{ form_errors(form) }}
+    </div>
+{% endblock %}
+
+{# ── Le label ── #}
+{% block form_label %}
+    {% if label is not same as(false) %}
+        <label for="{{ id }}" class="block text-sm font-semibold text-green-800 mb-1">
+            {{- label|default(name|humanize) -}}
+            {%- if required and not compound -%}
+                <span class="text-red-600"> *</span>
+            {%- endif -%}
+        </label>
+    {% endif %}
+{% endblock %}
+
+{# ── Les champs texte (text, email, password, date…) ── #}
+{% block form_widget_simple %}
+    {% set input_class = 'w-full rounded border border-gray/70 bg-white px-4 py-2 text-slate-800 placeholder-slate-400 outline-none transition focus:border-bleu focus:ring-2 focus:ring-bleu/30' %}
+    {% if not valid %}{% set input_class = input_class ~ ' border-red-500' %}{% endif %}
+    <input
+        type="{{ type|default('text') }}"
+        {{ block('widget_attributes') }}
+        {% if value is not empty %}value="{{ value }}"{% endif %}
+        class="{{ input_class }}"
+    >
+{% endblock %}
+
+{# ── Les zones de texte ── #}
+{% block textarea_widget %}
+    {% set area_class = 'w-full rounded border border-gray/70 bg-white px-4 py-2 text-slate-800 outline-none transition focus:border-bleu focus:ring-2 focus:ring-bleu/30' %}
+    {% if not valid %}{% set area_class = area_class ~ ' border-red-500' %}{% endif %}
+    <textarea {{ block('widget_attributes') }} rows="{{ rows|default(4) }}" class="{{ area_class }}">{{ value }}</textarea>
+{% endblock %}
+
+{# ── Les listes déroulantes (select) ── #}
+{% block select_widget %}
+    {% set select_class = 'w-full rounded border border-gray/70 bg-white px-4 py-2 text-slate-800 outline-none transition focus:border-bleu focus:ring-2 focus:ring-bleu/30' %}
+    {% if not valid %}{% set select_class = select_class ~ ' border-red-500' %}{% endif %}
+    <select {{ block('widget_attributes') }}{% if multiple %} multiple{% endif %} class="{{ select_class }}">
+        {% for choice in choices %}
+            <option value="{{ choice.value }}"{% if choice is selectedchoice(value) %} selected{% endif %}>
+                {{ choice.label }}
+            </option>
+        {% endfor %}
+    </select>
+{% endblock %}
+
+{# ── Les messages d'erreur ── #}
+{% block form_errors %}
+    {% if errors|length > 0 %}
+        <ul class="mt-1 text-sm text-red-600 space-y-1">
+            {% for error in errors %}
+                <li>⚠ {{ error.message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endblock %}
+
+{# ── Le bouton submit : devient un .btn de la charte ── #}
+{% block submit_widget %}
+    <button type="submit" {{ block('button_attributes') }} class="btn">{{ label }}</button>
+{% endblock %}

@@ -1,0 +1,63 @@
+<footer class="bg-green-800 text-white left-0 right-0 bottom-0 top-0">
+    <div class="container mx-auto px-4 py-10 grid gap-8 md:grid-cols-4 items-start">
+
+        {# ── Logo circulaire + identité ── #}
+        <div class="flex items-center gap-3">
+            <img
+                src="{{ asset('imgs/Logo-Meduc.webp') }}"
+                alt="Logo MEDUC"
+                class="h-14 w-14 rounded-full bg-white object-contain p-1"
+            >
+            <p class="text-sm text-menthe">
+                <span class="font-bold text-white block">MEDUC</span>
+                Ministère de l'Éducation<br>de l'Union des Comores
+            </p>
+        </div>
+
+        {# ── Colonne 1 : Navigation ── #}
+        <div>
+            <h2 class="font-bold mb-3">Navigation</h2>
+            {% if is_granted('ROLE_ADMIN') %}
+            
+                <ul class="space-y-2 text-sm text-menthe">
+                    <li><a href="{{ path('app_home') }}" class="hover:text-white">Accueil</a></li>
+                    <li><a href="{{ path('app_enseignant_index') }}" class="hover:text-white">Enseignants</a></li>
+                    <li><a href="{{ path('app_etablissement_index') }}" class="hover:text-white">Établissements</a></li>
+                    <li><a href="{{ path('app_affectation_index') }}" class="hover:text-white">Affectations</a></li>
+                </ul>
+            {% else %}
+                <ul class="space-y-2 text-sm text-menthe"> 
+                    <li><a href="{{ path('app_home') }}" class="hover:text-white">Accueil</a></li>
+
+                </ul>
+            {% endif %}
+        </div>
+
+        {# ── Colonne 2 : Le projet ── #}
+        <div>
+            <h2 class="font-bold mb-3">Le projet</h2>
+            <ul class="space-y-2 text-sm text-menthe">
+                <li><a href="{{ path('app_home') }}#fonctionnalites" class="hover:text-white">Nos missions</a></li>
+                <li><a href="{{ path('app_localite_index') }}" class="hover:text-white">Les localités</a></li>
+            </ul>
+        </div>
+
+        {# ── Colonne 3 : Contact ── #}
+        <div>
+            <h2 class="font-bold mb-3">Contact</h2>
+            <ul class="space-y-2 text-sm text-menthe">
+                <li>contact@education.km</li>
+                <li>+269 000 00 00</li>
+                <li>Moroni, Union des Comores</li>
+            </ul>
+        </div>
+    </div>
+
+    {# ── Ligne de séparation + barre du bas (comme la wireframe) ── #}
+    <div class="border-t border-white/20">
+        <div class="container mx-auto px-4 py-4 flex flex-col sm:flex-row justify-between text-xs text-menthe">
+            <p>© 2026 MEDUC — Ministère de l'Éducation de l'Union des Comores</p>
+            <p>Mentions légales · Confidentialité</p>
+        </div>
+    </div>
+</footer>

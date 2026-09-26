@@ -1,12 +1,64 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Nouvel enseignant{% endblock %}
+{% block title %}Créer un enseignant — MEDUC{% endblock %}
 
 {% block body %}
-<h1>Créer un enseignant</h1>
+<main class="container mx-auto px-4 py-8 max-w-3xl">
 
-{{ form_start(form, {attr: {novalidate: true}}) }}
-    {{ form_widget(form) }}
-    <button type="submit">Créer l'enseignant</button>
-{{ form_end(form) }}
+    {# ══════════ EN-TÊTE : bouton retour + titre ══════════ #}
+    <div class="mb-6">
+        <a href="{{ path('app_enseignant_index') }}" class="text-sm text-vert hover:underline">
+            ← Retour à la liste des enseignants
+        </a>
+        <h1 class="font-display text-2xl font-bold text-vert-fonce mt-2">Créer un enseignant</h1>
+        <p class="text-slate-600 text-sm mt-1">
+            Renseignez le compte de connexion et le profil administratif.
+        </p>
+    </div>
+
+    {# ⭐ novalidate : pour que TES erreurs Symfony s'affichent (leçon M12.1) #}
+    {{ form_start(form, {attr: {novalidate: true}}) }}
+
+    {# ══════════ CARTE 1 : COMPTE DE CONNEXION (UtilisateurType) ══════════ #}
+    <section class="bg-white rounded-lg shadow-md p-6 border-t-4 border-vert-fonce mb-6">
+        <h2 class="font-display text-xl font-bold text-vert-fonce">Compte de connexion</h2>
+        <p class="text-slate-500 text-sm mb-4">
+            L'enseignant s'identifiera avec son email ou son matricule.
+        </p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {{ form_row(form.utilisateur.matricule) }}
+            {{ form_row(form.utilisateur.email) }}
+            {{ form_row(form.utilisateur.nom) }}
+            {{ form_row(form.utilisateur.prenom) }}
+            {{ form_row(form.utilisateur.telephone) }}
+            {{ form_row(form.utilisateur.plainPassword) }}
+        </div>
+    </section>
+
+    {# ══════════ CARTE 2 : PROFIL ADMINISTRATIF (EnseignantType) ══════════ #}
+    <section class="bg-white rounded-lg shadow-md p-6 border-t-4 border-bleu mb-6">
+        <h2 class="font-display text-xl font-bold text-vert-fonce">Profil administratif</h2>
+        <p class="text-slate-500 text-sm mb-4">
+            Informations métier de l'enseignant.
+        </p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {{ form_row(form.genre) }}
+            {{ form_row(form.dateNaissance) }}
+            {{ form_row(form.lieuNaissance) }}
+            {{ form_row(form.niveauEnseignement) }}
+            {{ form_row(form.statutProfessionnel) }}
+            {{ form_row(form.localite) }}
+        </div>
+    </section>
+
+    {# ══════════ BOUTONS ══════════ #}
+    <div class="flex flex-col sm:flex-row gap-4">
+        <button type="submit" class="btn">Créer l'enseignant</button>
+        <a href="{{ path('app_enseignant_index') }}" class="btn-header text-center">Annuler</a>
+    </div>
+
+    {{ form_end(form) }}
+</main>
 {% endblock %}

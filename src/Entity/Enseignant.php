@@ -254,4 +254,15 @@ class Enseignant
         // 3. Retraité si aujourd'hui est arrivé (au moins) à cette date
         return $aujourdhui >= $dateRetraite;
     }
+
+    public function getAffectationActive(): ?Affectation
+    {
+        foreach ($this->affectations as $affectation) {
+            if ($affectation->getDateFin() === null) {
+                return $affectation;
+            }
+        }
+
+        return null;
+    }
 }

@@ -1,5 +1,44 @@
 @import "tailwindcss";
 
-body {
-    background-color: rgb(135, 235, 188);
+@theme {
+    /* ── POLICES (Montserrat = titres, Source Sans 3 = texte) ── */
+    --font-sans: "Source Sans 3", ui-sans-serif, system-ui, sans-serif;
+    --font-display: "Montserrat", ui-sans-serif, system-ui, sans-serif;
+
+    /* ── COULEURS (charte MEDUC) ── */
+    --color-menthe: #eaf7f3;
+    --color-vert: #00ad3f;
+    --color-vert-fonce: #00792d;
+    --color-bleu: #0037c0;
+}
+
+@layer components {
+    .btn {
+        @apply bg-vert-fonce hover:bg-vert text-white px-4 py-2 rounded transition;
+    }
+
+    .btn-adm {
+        @apply bg-bleu/85 text-white px-4 py-2 rounded transition hover:bg-bleu;
+    }
+
+    .btn-header {
+        @apply hover:text-vert-fonce;
+    }
+
+    .btn-header.active {
+        @apply text-vert-fonce font-bold underline;
+    }
+
+    .btn-danger {
+        @apply bg-white p-1 border-2 border-red-700 rounded-full
+    }
+}
+
+/* Tous les titres prennent Montserrat automatiquement (DRY) */
+@layer base {
+    h1,
+    h2,
+    h3 {
+        font-family: var(--font-display);
+    }
 }

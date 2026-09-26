@@ -1,13 +1,41 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Modifier un etablissement{% endblock %}
+{% block title %}Modifier — {{ etablissement.nom }}{% endblock %}
 
 {% block body %}
-    <h1>Modifier un etablissement</h1>
+<main class="container mx-auto px-4 py-8 max-w-3xl">
 
-    {{ include('etablissement/_form.html.twig', {'button_label': 'Update'}) }}
+    {# ══════════ EN-TÊTE : contexte + retour ══════════ #}
+    <div class="mb-6">
+        <a href="{{ path('app_etablissement_show', {'id': etablissement.id}) }}" class="text-sm text-green-800 hover:underline">
+            ← Retour à la fiche
+        </a>
+        <h1 class="font-display text-2xl font-bold text-green-900 mt-2">Modifier l'établissement</h1>
+        <p class="text-slate-600 text-sm mt-1">
+            {{ etablissement.nom }} — {{ etablissement.localite.nom }} ({{ etablissement.localite.ile }})
+        </p>
+    </div>
 
-    <a href="{{ path('app_etablissement_index') }}">Retour à la liste</a>
+    {# ⭐ novalidate : tes erreurs Symfony s'affichent #}
+    {{ form_start(form, {attr: {novalidate: true}}) }}
 
-    {{ include('etablissement/_delete_form.html.twig') }}
+    {# ══════════ CARTE UNIQUE : les 3 champs ══════════ #}
+    <section class="bg-white rounded-lg shadow-md p-6 border-t-2 border-green-800 mb-6">
+        <h2 class="font-display text-xl font-bold text-vert-fonce">Informations générales</h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+            {{ form_row(form.nom) }}
+            {{ form_row(form.type) }}
+            {{ form_row(form.localite) }}
+        </div>
+    </section>
+
+    {# ══════════ ACTIONS ══════════ #}
+    <div class="flex flex-col sm:flex-row gap-4">
+        <button type="submit" class="btn-adm">Enregistrer les modifications</button>
+        <a href="{{ path('app_etablissement_show', {'id': etablissement.id}) }}" class="px-4 py-2 rounded-xl bg-red-700 hover:bg-red-500 text-white text-center">Annuler</a>
+    </div>
+
+    {{ form_end(form) }}
+</main>
 {% endblock %}

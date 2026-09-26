@@ -70,3 +70,12 @@
 {% block submit_widget %}
     <button type="submit" {{ block('button_attributes') }} class="btn">{{ label }}</button>
 {% endblock %}
+
+{# ── Les cases à cocher (checkbox) : label à DROITE, comme il se doit ── #}
+{% block checkbox_widget %}
+    <label class="flex items-center gap-3 mt-2 cursor-pointer">
+        <input type="checkbox" {{ block('widget_attributes') }}{% if value is defined and value %} checked="checked"{% endif %}
+               class="h-5 w-5 rounded border-2 border-bleu/70 text-vert-fonce outline-none transition focus:ring-2 focus:ring-bleu/30">
+        <span class="text-sm font-medium text-slate-700">{{ label|default(name|humanize) }}</span>
+    </label>
+{% endblock %}

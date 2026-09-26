@@ -10,6 +10,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 
 class EtablissementType extends AbstractType
 {
@@ -30,6 +31,11 @@ class EtablissementType extends AbstractType
                 'class' => Localite::class,
                 'choice_label' => 'nom',
                 'placeholder' => 'Choisir une localité',
+            ])
+
+            ->add('actif', CheckboxType::class, [
+                'label' => 'Établissement actif',
+                'required' => false,   // une case à cocher n'est jamais "requise" pour un booléen
             ]);
     }
 

@@ -26,7 +26,7 @@ class Etablissement
     private ?Localite $localite = null;
 
     #[ORM\Column]
-    private ?bool $actif = null;
+    private ?bool $actif = true;
 
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;

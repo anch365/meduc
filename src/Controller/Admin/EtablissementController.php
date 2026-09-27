@@ -18,10 +18,24 @@ use App\Repository\AffectationRepository;
 final class EtablissementController extends AbstractController
 {
     #[Route(name: 'app_etablissement_index', methods: ['GET'])]
-    public function index(EtablissementRepository $etablissementRepository): Response
+    public function index(Request $request, EtablissementRepository $etablissementRepository): Response
     {
+        $search = trim($request->query->get('q', ''));
+        $sort   = $request->query->get('sort', 'nom');
+        $order  = $request->query->get('order', 'ASC');
+        $page   = max(1, $request->query->getInt('page', 1));
+        $limit  = 10;
+
+        $result = $etablissementRepository->findPaginated($search, $sort, $order, $page, $limit);
+
         return $this->render('etablissement/index.html.twig', [
-            'etablissements' => $etablissementRepository->findAll(),
+            'etablissements' => $result['items'],
+            'total'          => $result['total'],
+            'totalPages'     => max(1, (int) ceil($result['total'] / $limit)),
+            'page'           => $page,
+            'search'         => $search,
+            'sort'           => $sort,
+            'order'          => $order,
         ]);
     }
 

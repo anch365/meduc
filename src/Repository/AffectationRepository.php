@@ -67,4 +67,55 @@ class AffectationRepository extends ServiceEntityRepository
             ->getQuery()
             ->getSingleScalarResult();
     }
+
+    public function findPaginated(?string $search, string $sort, string $order, int $page, int $limit): array
+    {
+        $qb = $this->createQueryBuilder('a')
+            ->innerJoin('a.enseignant', 'e')
+            ->innerJoin('e.utilisateur', 'u')
+            ->innerJoin('a.etablissement', 'et')
+            ->addSelect('e', 'u', 'et');
+
+        // RECHERCHE : WHERE + LIKE (requête préparée via setParameter !)
+        if ($search) {
+            $qb->andWhere('u.nom LIKE :search OR u.prenom LIKE :search OR a.classe LIKE :search OR a.matiere LIKE :search')
+                ->setParameter('search', '%' . $search . '%');
+        }
+
+        // TRI : WHITELIST obligatoire (jamais la valeur brute de l'utilisateur dans ORDER BY !)
+        $orderBy = match ($sort) {
+            'etablissement' => 'et.nom',
+            'classe'        => 'a.classe',
+            'matiere'       => 'a.matiere',
+            'debut'         => 'a.dateDebut',
+            default         => 'a.dateDebut',
+        };
+        $direction = strtoupper($order) === 'DESC' ? 'DESC' : 'ASC';
+        $qb->orderBy($orderBy, $direction);
+
+        // 📄 COMPTAGE : on clone la requête et on remplace le SELECT par un COUNT
+        $total = (clone $qb)->select('COUNT(a.id)')->getQuery()->getSingleScalarResult();
+
+        // 📄 PAGINATION : LIMIT + OFFSET
+        $qb->setFirstResult(($page - 1) * $limit)
+            ->setMaxResults($limit);
+
+        return [
+            'items' => $qb->getQuery()->getResult(),
+            'total' => (int) $total,
+        ];
+    }
+
+    public function findActiveByEnseignantIds(array $ids): array
+    {
+        return $this->createQueryBuilder('a')
+            ->innerJoin('a.enseignant', 'e')
+            ->innerJoin('a.etablissement', 'et')
+            ->addSelect('e', 'et')
+            ->where('a.dateFin IS NULL')
+            ->andWhere('e.id IN (:ids)')
+            ->setParameter('ids', $ids)
+            ->getQuery()
+            ->getResult();
+    }
 }

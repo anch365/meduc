@@ -3,10 +3,11 @@
 {% block title %}Liste des enseignants — MEDUC{% endblock %}
 
 {% block body %}
+    {% import 'macros.html.twig' as m %}
     <main class="container mx-auto px-4 py-8 overflow-x-auto">
 
         {# ══════════ 1. EN-TÊTE : titre + compteur + action ══════════ #}
-        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
+        <div class="flex flex-col gap-4 mb-6 md:flex-row md:items-center md:justify-between">
             <div>
                 <h1 class="font-display text-2xl md:text-3xl font-bold text-vert-fonce">
                     Liste des enseignants
@@ -16,10 +17,29 @@
                 </p>
             </div>
 
-            <a href="{{ path('app_enseignant_new') }}" class="btn text-center whitespace-nowrap">
+            <a href="{{ path('app_enseignant_new') }}" class="btn-adm text-center whitespace-nowrap">
                 + Créer un enseignant
             </a>
         </div>
+
+        <form method="get" action="{{ path('app_enseignant_index') }}" class="flex flex-col gap-2 mb-6 sm:flex-row">
+            <input
+                type="search"
+                name="q"
+                value="{{ search }}"
+                placeholder="Recherche par nom, prénom, matricule…"
+                class="flex-1 rounded border-2 bg-white px-4 py-2 text-slate-800 placeholder-slate-400 outline-none transition"
+            >
+            {# On conserve le tri courant pendant la recherche (sinon il se perd) #}
+            <input type="hidden" name="sort" value="{{ sort }}">
+            <input type="hidden" name="order" value="{{ order }}">
+            <button type="submit">
+                <img src="{{ asset('Icônes/chercher.png') }}" alt="Un bouton en icône de recherche" class="w-8">
+            </button>
+            {% if search %}
+                <a href="{{ path('app_affectation_index') }}" class="btn-header text-center">Effacer</a>
+            {% endif %}
+        </form>
 
         {# ══════════ 2. LA CARTE (contient le tableau) ══════════ #}
         <div class="bg-white rounded-lg shadow-md overflow-hidden">
@@ -28,15 +48,14 @@
             <div class="overflow-x-auto">
                 <table class="min-w-175 w-full text-center">
                     <thead>
-                        <tr class="bg-vert-fonce text-white">
-                            <th class="px-4 py-3 font-semibold text-sm md:px-16">Matricule</th>
-                            <th class="px-4 py-3 font-semibold text-sm">Nom complet</th>
-                            <th class="px-4 py-3 font-semibold text-sm">École actuelle</th>
-                            <th class="px-4 py-3 font-semibold text-sm">Statut</th>
-                            <th class="px-4 py-3 font-semibold text-sm ">Actions</th>
+                        <tr class="border-b-2 border-vert-fonce">
+                            <th class="px-4 py-3">{{ m.sortable('Matricule', 'matricule', 'app_enseignant_index', sort, order, search) }}</th>
+                            <th class="px-4 py-3">{{ m.sortable('Nom', 'nom', 'app_enseignant_index', sort, order, search) }}</th>
+                            <th class="px-4 py-3">École actuelle</th>
+                            <th class="px-4 py-3">Statut</th>
+                            <th class="px-4 py-3">Actions</th>
                         </tr>
                     </thead>
-
                     <tbody class="divide-y divide-bleu/30">
                         {% for enseignant in enseignants %}
                         
@@ -81,7 +100,7 @@
                                                 onsubmit="return confirm('Archiver {{ enseignant.utilisateur.prenom }} {{ enseignant.utilisateur.nom }} ?');"
                                             >
                                                 <input type="hidden" name="_token" value="{{ csrf_token('archive' ~ enseignant.id) }}">
-                                                <button class="btn-danger"><img src="{{ asset('/Icônes/archiver.png')}}" alt="Icône pour archiver un enseignant" class="w-6"></button>
+                                                <button class="btn-danger"><img src="{{ asset('/Icônes/archiver.png') }}" alt="Icône pour archiver un enseignant" class="w-6"></button>
                                             </form>
                                         {% else %}
                                             <form
@@ -106,8 +125,8 @@
                         {% endfor %}
                     </tbody>
                 </table>
+                {{ m.pagination('app_enseignant_index', page, totalPages, search, sort, order) }}
             </div>
-
         </div>
 
     </main>

@@ -175,7 +175,7 @@
             
             {# Transférer : uniquement si en poste ET pas retraité (règles métier !) #}
             {% if enseignant.affectationActive and not enseignant.estRetraite %}
-                <a href="{{ path('app_transfert', {'id': enseignant.id}) }}" class="btn-header">Transférer</a>
+                <a href="{{ path('app_affectation_transfert') }}">Transférer</a>
             {% endif %}
         </div>
 

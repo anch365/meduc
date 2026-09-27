@@ -13,21 +13,41 @@ use Symfony\Component\Routing\Attribute\Route;
 use App\Repository\EnseignantRepository;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use App\Repository\AffectationRepository;
-use App\Entity\Affectation;
-use App\Form\TransfertType;
 
 #[Route('/admin/enseignant')]
 #[IsGranted('ROLE_ADMIN')]
 class EnseignantController extends AbstractController
 {
     #[Route('/', name: 'app_enseignant_index', methods: ['GET'])]
-    public function index(EnseignantRepository $enseignantRepository): Response
+    public function index(Request $request, EnseignantRepository $enseignantRepository, AffectationRepository $affectationRepository): Response
     {
+        $search = trim($request->query->get('q', ''));
+        $sort   = $request->query->get('sort', 'nom');
+        $order  = $request->query->get('order', 'ASC');
+        $page   = max(1, $request->query->getInt('page', 1));
+        $limit  = 10;
+
+        $result = $enseignantRepository->findActifsPaginated($search, $sort, $order, $page, $limit);
+
+        // Les affectations ACTIVES des enseignants de la page → tableau clé = id enseignant
+        $ids = array_map(fn(Enseignant $e) => $e->getId(), $result['items']);
+        $actives = [];
+        foreach ($affectationRepository->findActiveByEnseignantIds($ids) as $a) {
+            $actives[$a->getEnseignant()->getId()] = $a;
+        }
+
         return $this->render('admin/enseignant/index.html.twig', [
-            'enseignants' => $enseignantRepository->findActifs(),
+            'enseignants' => $result['items'],
+            'actives'     => $actives,
+            'total'       => $result['total'],
+            'totalPages'  => max(1, (int) ceil($result['total'] / $limit)),
+            'page'        => $page,
+            'search'      => $search,
+            'sort'        => $sort,
+            'order'       => $order,
         ]);
     }
-
+    
     #[Route('/new', name: 'app_enseignant_new', methods: ['GET', 'POST'])]
     public function new(
         Request $request,
@@ -116,7 +136,7 @@ class EnseignantController extends AbstractController
         Request $request,
         EntityManagerInterface $entityManager
     ): Response {
-        
+
         // Vérification CSRF : la requête doit venir du formulaire, pas d'un lien piégé
         if ($this->isCsrfTokenValid('archive' . $enseignant->getId(), $request->getPayload()->get('_token'))) {
             $enseignant->getUtilisateur()->setActif(false);
@@ -157,73 +177,6 @@ class EnseignantController extends AbstractController
             'enseignant' => $enseignant,
             'affectationActive' => $affectationActive,
             'historique' => $historique,
-        ]);
-    }
-
-        #[Route('/{id}/transfert', name: 'app_enseignant_transfert', methods: ['GET', 'POST'])]
-    public function transfert(
-        Enseignant $enseignant,
-        Request $request,
-        EntityManagerInterface $entityManager,
-        AffectationRepository $affectationRepository
-    ): Response {
-
-        // 1. L'affectation actuelle (date_fin NULL) — elle doit exister pour transférer
-        $affectationActive = $affectationRepository->findUneActive($enseignant);
-
-        if (!$affectationActive) {
-            $this->addFlash('danger', 'Cet enseignant n\'a pas d\'affectation en cours à transférer.');
-            return $this->redirectToRoute('app_enseignant_show', ['id' => $enseignant->getId()]);
-        }
-
-        // 2. Un retraité ne peut pas être transféré (cohérent avec M8.1 !)
-        if ($enseignant->estRetraite()) {
-            $this->addFlash('danger', 'Impossible de transférer un enseignant retraité.');
-            return $this->redirectToRoute('app_enseignant_show', ['id' => $enseignant->getId()]);
-        }
-
-        // 3. Le formulaire de collecte (établissement + date)
-        $form = $this->createForm(TransfertType::class);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $nouvelEtablissement = $form->get('etablissement')->getData();
-            $dateTransfert = $form->get('dateTransfert')->getData();
-
-            // ⭐ TRANSACTION : tout ou rien
-            $entityManager->beginTransaction();
-            try {
-                // 1. FERMER l'ancienne affectation
-                $affectationActive->setDateFin($dateTransfert);
-                $affectationActive->setStatut('terminee');
-
-                // 2. OUVRIR la nouvelle affectation
-                $nouvelle = new Affectation();
-                $nouvelle->setEnseignant($enseignant);
-                $nouvelle->setEtablissement($nouvelEtablissement);
-                $nouvelle->setDateDebut($dateTransfert);
-                $nouvelle->setDateFin(null);              // en cours !
-                $nouvelle->setStatut('en_cours');
-                $nouvelle->setClasse($affectationActive->getClasse());
-                $nouvelle->setMatiere($affectationActive->getMatiere());
-                $entityManager->persist($nouvelle);
-
-                $entityManager->flush();
-                $entityManager->commit();   // ✅ tout est validé
-
-                $this->addFlash('success', 'Enseignant transféré avec succès !');
-            } catch (\Exception $e) {
-                $entityManager->rollBack(); // ❌ annule tout
-                $this->addFlash('danger', 'Le transfert a échoué, aucune modification.');
-            }
-
-            return $this->redirectToRoute('app_enseignant_show', ['id' => $enseignant->getId()]);
-        }
-
-        return $this->render('admin/enseignant/transfert.html.twig', [
-            'enseignant' => $enseignant,
-            'affectationActive' => $affectationActive,
-            'form' => $form,
         ]);
     }
 }

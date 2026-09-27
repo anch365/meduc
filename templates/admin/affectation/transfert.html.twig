@@ -1,0 +1,86 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Transférer — {{ enseignant.utilisateur.prenom }} {{ enseignant.utilisateur.nom }}{% endblock %}
+
+{% block body %}
+    <main class="container mx-auto px-4 py-8 max-w-3xl">
+
+        {# ══════════ EN-TÊTE ══════════ #}
+        <div class="mb-6">
+            <a href="{{ path('app_affectation_index', {'id': enseignant.id}) }}" class="text-sm text-vert hover:underline">
+                ← Retour à la fiche
+            </a>
+            <h1 class="font-display text-2xl font-bold text-vert-fonce mt-2">Transférer l'enseignant</h1>
+            <p class="text-slate-600 text-sm mt-1">
+                {{ enseignant.utilisateur.prenom }} {{ enseignant.utilisateur.nom }}
+                — Matricule : {{ enseignant.utilisateur.matricule }}
+            </p>
+        </div>
+
+        {# ══════════ RÈGLES MÉTIER AFFICHÉES AVANT TOUT ══════════ #}
+        {% if enseignant.estRetraite %}
+            <div class="bg-red-100 text-red-700 rounded p-3 text-sm mb-6">
+                Ce transfert est impossible : cet enseignant est retraité (âge ≥ 64 ans).
+            </div>
+        {% elseif not enseignant.affectationActive %}
+            <div class="bg-red-100 text-red-700 rounded p-3 text-sm mb-6">
+                Ce transfert est impossible : cet enseignant n'a pas d'affectation en cours.
+            </div>
+        {% else %}
+            <div class="bg-bleu/10 border border-bleu/40 text-slate-700 rounded p-3 text-sm mb-6">
+                💡 Au moment du transfert, l'affectation actuelle sera <strong>fermée</strong>
+                (date de fin = date du transfert) et une nouvelle affectation sera créée
+                — le tout dans une seule transaction.
+            </div>
+        {% endif %}
+
+        {# ══════════ LE FORMULAIRE : seulement si le transfert est POSSIBLE ══════════ #}
+        {% if enseignant.affectationActive and not enseignant.estRetraite %}
+
+            {{ form_start(form, {attr: {novalidate: true}}) }}
+
+            {# ── CARTE 1 : SITUATION ACTUELLE (lecture seule, le contexte) ── #}
+            <section class="bg-white rounded-lg shadow-md p-6 border-t-4 border-bleu mb-6">
+                <h2 class="font-display text-xl font-bold text-vert-fonce">Situation actuelle</h2>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                    <div class="bg-menthe rounded p-4">
+                        <p class="text-xs text-slate-500">Établissement</p>
+                        <p class="font-semibold mt-1">{{ enseignant.affectationActive.etablissement.nom }}</p>
+                    </div>
+                    <div class="bg-menthe rounded p-4">
+                        <p class="text-xs text-slate-500">Classe</p>
+                        <p class="font-semibold mt-1">{{ enseignant.affectationActive.classe }}</p>
+                    </div>
+                    <div class="bg-menthe rounded p-4">
+                        <p class="text-xs text-slate-500">Matière</p>
+                        <p class="font-semibold mt-1">{{ enseignant.affectationActive.matiere }}</p>
+                    </div>
+                    <div class="bg-menthe rounded p-4">
+                        <p class="text-xs text-slate-500">Depuis le</p>
+                        <p class="font-semibold mt-1">{{ enseignant.affectationActive.dateDebut|date('d/m/Y') }}</p>
+                    </div>
+                </div>
+            </section>
+
+            {# ── CARTE 2 : NOUVELLE AFFECTATION (le formulaire) ── #}
+            <section class="bg-white rounded-lg shadow-md p-6 border-t-4 border-vert-fonce mb-6">
+                <h2 class="font-display text-xl font-bold text-vert-fonce">Nouvelle affectation</h2>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                    {{ form_row(form.etablissement) }}
+                    {{ form_row(form.dateTransfert) }}
+                </div>
+            </section>
+
+            {# ── ACTIONS ── #}
+            <div class="flex flex-col sm:flex-row gap-4">
+                <button type="submit" class="btn">Confirmer le transfert</button>
+                <a href="{{ path('app_affectation_index', {'id': enseignant.id}) }}" class="btn-header text-center">Annuler</a>
+            </div>
+
+            {{ form_end(form) }}
+        {% endif %}
+
+    </main>
+{% endblock %}

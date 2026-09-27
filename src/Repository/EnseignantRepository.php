@@ -32,6 +32,33 @@ class EnseignantRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function findActifsPaginated(?string $search, string $sort, string $order, int $page, int $limit): array
+    {
+        $qb = $this->createQueryBuilder('e')
+            ->innerJoin('e.utilisateur', 'u')
+            ->addSelect('u')
+            ->where('u.actif = true');
+
+        if ($search) {
+            $qb->andWhere('u.nom LIKE :search OR u.prenom LIKE :search OR u.matricule LIKE :search OR u.email LIKE :search')
+                ->setParameter('search', '%' . $search . '%');
+        }
+
+        $orderBy = match ($sort) {
+            'matricule' => 'u.matricule',
+            'prenom'    => 'u.prenom',
+            'nom'       => 'u.nom',
+            default     => 'u.nom',
+        };
+        $direction = strtoupper($order) === 'DESC' ? 'DESC' : 'ASC';
+        $qb->orderBy($orderBy, $direction);
+
+        $total = (clone $qb)->select('COUNT(e.id)')->getQuery()->getSingleScalarResult();
+        $qb->setFirstResult(($page - 1) * $limit)->setMaxResults($limit);
+
+        return ['items' => $qb->getQuery()->getResult(), 'total' => (int) $total];
+    }
+    
     /**
      * Les enseignants dont le compte est INACTIF (archivés).
      */

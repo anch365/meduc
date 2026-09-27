@@ -16,6 +16,30 @@ class EtablissementRepository extends ServiceEntityRepository
         parent::__construct($registry, Etablissement::class);
     }
 
+    public function findPaginated(?string $search, string $sort, string $order, int $page, int $limit): array
+    {
+        $qb = $this->createQueryBuilder('et')
+            ->leftJoin('et.localite', 'l')
+            ->addSelect('l');
+
+        if ($search) {
+            $qb->andWhere('et.nom LIKE :search OR l.nom LIKE :search')
+                ->setParameter('search', '%' . $search . '%');
+        }
+
+        $orderBy = match ($sort) {
+            'localite' => 'l.nom',
+            'nom'      => 'et.nom',
+            default    => 'et.nom',
+        };
+        $direction = strtoupper($order) === 'DESC' ? 'DESC' : 'ASC';
+        $qb->orderBy($orderBy, $direction);
+
+        $total = (clone $qb)->select('COUNT(et.id)')->getQuery()->getSingleScalarResult();
+        $qb->setFirstResult(($page - 1) * $limit)->setMaxResults($limit);
+
+        return ['items' => $qb->getQuery()->getResult(), 'total' => (int) $total];
+    }
     //    /**
     //     * @return Etablissement[] Returns an array of Etablissement objects
     //     */

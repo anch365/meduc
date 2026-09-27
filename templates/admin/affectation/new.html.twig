@@ -1,12 +1,54 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Nouvelle affectation{% endblock %}
+{% block title %}Nouvelle affectation — MEDUC{% endblock %}
 
 {% block body %}
-<h1>Nouvelle affectation</h1>
+    <main class="container mx-auto px-4 py-8 max-w-3xl">
 
-{{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button type="submit">Affecter l'enseignant</button>
-{{ form_end(form) }}
+        {# ══════════ EN-TÊTE ══════════ #}
+        <div class="mb-6">
+            <a href="{{ path('app_affectation_index') }}" class="text-sm text-vert hover:underline">
+                ← Retour aux affectations
+            </a>
+            <h1 class="font-display text-2xl font-bold text-vert-fonce mt-2">Nouvelle affectation</h1>
+            <p class="text-slate-600 text-sm mt-1">
+                Affectez un enseignant à un établissement, avec sa classe et sa matière.
+            </p>
+        </div>
+
+        {# ⭐ novalidate : tes erreurs Symfony s'affichent #}
+        {{ form_start(form, {attr: {novalidate: true}}) }}
+
+        {# ══════════ BANDEAU : LES RÈGLES MÉTIER, AVANT D'AGIR ══════════ #}
+        <div class="bg-bleu/10 border border-bleu/40 text-slate-700 rounded p-3 text-sm mb-6">
+            💡 Règles métier :
+            <ul class="list-disc list-inside mt-1">
+                <li>Un enseignant ne peut avoir qu'<strong>une seule affectation en cours</strong>
+                    — s'il en a déjà une, la création sera refusée.</li>
+                <li>Un enseignant <strong>retraité</strong> (64 ans et plus) ne peut pas être affecté.</li>
+                <li>Laissez la date de fin <strong>vide</strong> pour une affectation en cours.</li>
+            </ul>
+        </div>
+
+        {# ══════════ CARTE : LES 6 CHAMPS ══════════ #}
+        <section class="bg-white rounded-lg shadow-md p-6 border-t-4 border-vert-fonce mb-6">
+            <h2 class="font-display text-xl font-bold text-vert-fonce">Affectation</h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                {{ form_row(form.enseignant) }}
+                {{ form_row(form.etablissement) }}
+                {{ form_row(form.classe) }}
+                {{ form_row(form.matiere) }}
+                {{ form_row(form.dateDebut) }}
+            </div>
+        </section>
+
+        {# ══════════ ACTIONS ══════════ #}
+        <div class="flex flex-col gap-4 sm:flex-row">
+            <button type="submit" class="btn-adm">Créer l'affectation</button>
+            <a href="{{ path('app_affectation_index') }}" class="btn-header text-center">Annuler</a>
+        </div>
+
+        {{ form_end(form) }}
+    </main>
 {% endblock %}

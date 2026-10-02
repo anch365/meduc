@@ -81,7 +81,7 @@
 							Se souvenir de moi
 						</label>
 
-						{# ⭐ Jeton CSRF : obligatoire (enable_csrf: true dans ton security.yaml) #}
+						{# Jeton CSRF : obligatoire (enable_csrf: true dans ton security.yaml) #}
 						<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
 						<button type="submit" class="btn-adm w-full mt-6">Se connecter</button>

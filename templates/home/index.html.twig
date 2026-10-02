@@ -3,13 +3,12 @@
 {% block title %}Accueil — MEDUC{% endblock %}
 
 {% block body %}
-    <main class="flex-1">
-
+    <main>
         {# ══════════ HERO : texte à gauche + IMAGE à droite ══════════ #}
         <section class="container mx-auto px-4 py-12 grid gap-8 lg:grid-cols-2 items-center">
 
             {# ── Colonne texte + CTA ── #}
-            <div>
+            <div class="flex flex-col gap-4">
                 <p class="text-sm font-semibold uppercase tracking-widest text-green-900">
                     Ministère de l'Éducation — Union des Comores
                 </p>
@@ -22,17 +21,17 @@
                     simple et plus transparente.
                 </p>
 
-                <div class="flex flex-col mt-8 gap-8 lg:gap-16 lg:flex-row">
+                <div class="flex gap-8 flex-row lg:gap-16 lg:flex-row">
                     {% if app.user %}
                         {% if is_granted('ROLE_ADMIN') %}
-                            <a href="{{ path('app_admin_dashboard') }}" class="btn">Accéder à mon espace</a>
+                            <a href="{{ path('app_admin_dashboard') }}" class="btn-adm items-center">Accéder à mon espace</a>
                         {% else %}
-                            <a href="{{ path('app_espace') }}" class="btn">Accéder à mon espace</a>
+                            <a href="{{ path('app_espace') }}" class="btn-adm items-center">Accéder à mon espace</a>
                         {% endif %}
                     {% else %}
-                        <a href="{{ path('app_login') }}" class="btn">Se connecter</a>
+                        <a href="{{ path('app_login') }}" class="btn-adm items-center">Se connecter</a>
                     {% endif %}
-                    <a href="#fonctionnalites" class="btn">Découvrir</a>
+                    <a href="#fonctionnalites" class="btn-adm items-center">Découvrir</a>
                 </div>
             </div>
 
@@ -49,7 +48,7 @@
                     <p class="text-sm font-semibold">
                         Enseignant ? Retrouvez votre affectation.
                     </p>
-                    <a href="{{ path('app_login') }}" class="btn whitespace-nowrap">Mon espace</a>
+                    <a href="{{ path('app_login') }}" class="btn-adm whitespace-nowrap">Mon espace</a>
                 </div>
             </div>
         </section>
@@ -61,7 +60,7 @@
                     Une plateforme, quatre missions
                 </h2>
 
-                <div class="flex flex-col mt-8 gap-6 lg:flex-row">
+                <div class="flex flex-col mt-8 gap-6 sm:flex-row">
                     <article
                         class="bg-green-600/70 border rounded-lg p-6 border-vert-fonce
                 transition duration-300 ease-in-out hover:-translate-y-1 hover:shadow-lg hover:bg-green-600"
@@ -101,7 +100,7 @@
             </div>
         </section>
 
-        {# ══════════ 3 COLONNES (wireframe : gris foncé) ══════════ #}
+        {# ══════════ 3 COLONNES  ══════════ #}
         <section class="bg-menthe text-black py-12 bottom-0">
             <div class="container mx-auto px-4 grid gap-8 md:grid-cols-3">
                 <div>
@@ -141,6 +140,7 @@
                 </div>
             </div>
         </section>
-
     </main>
+    
+    {% include '_partials/_footer.html.twig' %}   
 {% endblock %}

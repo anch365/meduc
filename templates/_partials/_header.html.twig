@@ -1,7 +1,7 @@
-<header class="text-vert-fonce font-semibold pb-2 fixed top-0 left-0 right-0 px-4 border-b border-vert-fonce bg-gray-50 z-30 font-sans">
+<header class="text-vert-fonce font-semibold pb-2 fixed top-0 left-0 right-0 px-4 border-b border-vert-fonce bg-gray-50 z-30 font-sans md:px-8">
     {% set route = app.current_route %}
 
-    <nav class="flex flex-row justify-between items-center px-4">
+    <nav class="flex flex-row justify-between items-center">
 
         {# ── LOGO : premier enfant de la nav → aligné en ligne, visible sur toutes les tailles ── #}
         <a href="{{ path('app_home') }}" class="flex items-center gap-3">
@@ -23,7 +23,7 @@
         </a>
 
         {# ── Liens DESKTOP : visibles à partir de 1024px (lg), cachés sur mobile ── #}
-        <div class="hidden gap-16 text-black lg:flex">
+        <div class="hidden text-black items-center lg:flex xl:gap-4">
             <a href="{{ path('app_home') }}" class="btn-header {{ route == 'app_home' ? 'active' : '' }}">Accueil</a>
 
             {% if app.user %}
@@ -89,25 +89,25 @@
     </div>
 
     <nav class="flex flex-col">
-        <a href="{{ path('app_home') }}" class="hover:bg-menthe mt-4 ml-4">Accueil</a>
+        <a href="{{ path('app_home') }}" class="btn-header mt-4 ml-4 {{ route == 'app_home' ? 'active' : '' }}">Accueil</a>
 
         {% if app.user %}
             {% if is_granted('ROLE_ADMIN') %}
-                <a href="{{ path('app_admin_dashboard') }}" class="px-4 py-3 hover:bg-menthe">Profil</a>
-                <a href="{{ path('app_enseignant_index') }}" class="px-4 py-3 hover:bg-menthe">Liste des enseignants</a>
-                <a href="{{ path('app_enseignant_new') }}" class="px-4 py-3 hover:bg-menthe">Créer un enseignant</a>
-                <a href="{{ path('app_enseignant_archives') }}" class="px-4 py-3 hover:bg-menthe">Enseignants archivés</a>
-                <a href="{{ path('app_etablissement_index') }}" class="px-4 py-3 hover:bg-menthe">Liste des établissements</a>
-                <a href="{{ path('app_etablissement_new') }}" class="px-4 py-3 hover:bg-menthe">Créer un établissement</a>
-                <a href="{{ path('app_affectation_index') }}" class="px-4 py-3 hover:bg-menthe">Liste des affectations</a>
-                <a href="{{ path('app_affectation_new') }}" class="px-4 py-3 hover:bg-menthe">+ Nouvelle affectation</a>
-                <a href="{{ path('app_localite_index') }}" class="px-4 py-3 hover:bg-menthe">Localités</a>
+                <a href="{{ path('app_admin_dashboard') }}" class="px-4 py-3 btn-header {{ route == 'app_admin_dashboard' ? 'active' : '' }}">Profil</a>
+                <a href="{{ path('app_enseignant_index') }}" class="px-4 py-3 btn-header {{ route == 'app_enseignant_index' ? 'active' : '' }}">Liste des enseignants</a>
+                <a href="{{ path('app_enseignant_new') }}" class="px-4 py-3 btn-header {{ route == 'app_enseignant_new' ? 'active' : '' }}">Créer un enseignant</a>
+                <a href="{{ path('app_enseignant_archives') }}" class="px-4 py-3 btn-header {{ route == 'app_enseignant_archives' ? 'active' : '' }}">Enseignants archivés</a>
+                <a href="{{ path('app_etablissement_index') }}" class="px-4 py-3 btn-header {{ route == 'app_etablissement_index' ? 'active' : '' }}">Liste des établissements</a>
+                <a href="{{ path('app_etablissement_new') }}" class="px-4 py-3 btn-header {{ route == 'app_etablissement_new' ? 'active' : '' }}">Créer un établissement</a>
+                <a href="{{ path('app_affectation_index') }}" class="px-4 py-3 btn-header {{ route == 'app_affectation_index' ? 'active' : '' }}">Liste des affectations</a>
+                <a href="{{ path('app_affectation_new') }}" class="px-4 py-3 btn-header {{ route == 'app_affectation_new' ? 'active' : '' }}">+ Nouvelle affectation</a>
+                <a href="{{ path('app_localite_index') }}" class="px-4 py-3 btn-header {{ route == 'app_localite_index' ? 'active' : '' }}">Localités</a>
             {% else %}
-                <a href="{{ path('app_espace') }}" class="px-4 py-3 hover:bg-menthe">Mon espace</a>
+                <a href="{{ path('app_espace') }}" class="px-4 py-3 btn-header {{ route == 'app_espace' ? 'active' : '' }}">Mon espace</a>
             {% endif %}
-            <a href="{{ path('app_logout') }}" class="px-4 py-3 hover:bg-menthe text-red-700">Déconnexion</a>
+            <a href="{{ path('app_logout') }}" class="px-4 py-3 btn-header {{ route == 'app_logout' ? 'active' : '' }} text-red-700">Déconnexion</a>
         {% else %}
-            <a href="{{ path('app_login') }}" class="px-4 py-3 hover:bg-menthe">Se connecter</a>
+            <a href="{{ path('app_login') }}" class="px-4 py-3 btn-header {{ route == 'app_login' ? 'active' : '' }}">Se connecter</a>
         {% endif %}
     </nav>
 </div>

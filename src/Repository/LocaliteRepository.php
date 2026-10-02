@@ -16,6 +16,28 @@ class LocaliteRepository extends ServiceEntityRepository
         parent::__construct($registry, Localite::class);
     }
 
+    public function findPaginated(?string $search, string $sort, string $order, int $page, int $limit): array
+    {
+        $qb = $this->createQueryBuilder('l');
+
+        if ($search) {
+            $qb->andWhere('l.nom LIKE :search OR l.ile LIKE :search')
+                ->setParameter('search', '%' . $search . '%');
+        }
+
+        $orderBy = match ($sort) {
+            'ile'  => 'l.ile',
+            'nom'  => 'l.nom',
+            default => 'l.nom',
+        };
+        $direction = strtoupper($order) === 'DESC' ? 'DESC' : 'ASC';
+        $qb->orderBy($orderBy, $direction);
+
+        $total = (clone $qb)->select('COUNT(l.id)')->getQuery()->getSingleScalarResult();
+        $qb->setFirstResult(($page - 1) * $limit)->setMaxResults($limit);
+
+        return ['items' => $qb->getQuery()->getResult(), 'total' => (int) $total];
+    }
     //    /**
     //     * @return Localite[] Returns an array of Localite objects
     //     */

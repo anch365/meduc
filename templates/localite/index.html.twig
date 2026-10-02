@@ -1,38 +1,95 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Localite index{% endblock %}
+{% block title %}Localités — MEDUC{% endblock %}
 
 {% block body %}
-    <section class="flex-1">
-        <h1 class="text-2xl font-bold text-vert-fonce mb-6">Localités (villes &amp; villages des Comores)</h1>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Id</th>
-                    <th>Nom</th>
-                    <th>Ile</th>
-                    <th>actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for localite in localites %}
-                    <tr>
-                        <td>{{ localite.id }}</td>
-                        <td>{{ localite.nom }}</td>
-                        <td>{{ localite.ile }}</td>
-                        <td>
-                            <a href="{{ path('app_localite_show', {'id': localite.id}) }}">Voir</a>
-                            <a href="{{ path('app_localite_edit', {'id': localite.id}) }}">Modifier</a>
-                        </td>
-                    </tr>
-                {% else %}
-                    <tr>
-                        <td colspan="4">Aucun enregistrement trouvé</td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+    {% import 'macros.html.twig' as m %}
+    <main class="container mx-auto px-4 py-8">
 
-        <a href="{{ path('app_localite_new') }}">Créer un nouveau</a>
-    </section>
+        {# ══════════ EN-TÊTE ══════════ #}
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+            <div>
+                <h1 class="font-display text-2xl font-bold text-vert-fonce">Localités</h1>
+                <p class="text-slate-600 text-sm mt-1">{{ total }} localité(s) — villes & villages des Comores.</p>
+            </div>
+            <a href="{{ path('app_localite_new') }}" class="btn-adm">+ Créer une localité</a>
+        </div>
+
+        {# ══════════ RECHERCHE ══════════ #}
+        <form method="get" action="{{ path('app_localite_index') }}" class="flex flex-col sm:flex-row gap-2 mb-6">
+            <input
+                type="search"
+                name="q"
+                value="{{ search }}"
+                placeholder="Rechercher une ville ou une île…"
+                class="flex-1 rounded border-2 bg-white px-4 py-2 text-slate-800 placeholder-slate-400 outline-none transition"
+            >
+            <input type="hidden" name="sort" value="{{ sort }}">
+            <input type="hidden" name="order" value="{{ order }}">
+            <button type="submit">
+                <img src="{{ asset('Icônes/chercher.png') }}" alt="Un bouton en icône de recherche" class="w-8">
+            </button>
+            
+            {% if search %}
+                <a href="{{ path('app_localite_index') }}" class="btn-header text-center">Effacer</a>
+            {% endif %}
+        </form>
+
+        {# ══════════ TABLEAU ══════════ #}
+        <div class="bg-white rounded-lg shadow-md p-6 border-t-4 border-vert-fonce">
+            <div class="overflow-x-auto">
+                <table class="min-w-125 w-full text-left">
+                    <thead>
+                        <tr class="border-b-2 border-vert-fonce">
+                            <th class="px-4 py-3">{{ m.sortable('Nom', 'nom', 'app_localite_index', sort, order, search) }}</th>
+                            <th class="px-4 py-3">{{ m.sortable('Île', 'ile', 'app_localite_index', sort, order, search) }}</th>
+                            <th class="px-4 py-3">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-bleu/40">
+                        {% for localite in localites %}
+                            <tr class="hover:bg-menthe transition">
+                                <td class="px-4 py-3 font-semibold">{{ localite.nom }}</td>
+                                <td class="px-4 py-3">
+                                    {% if localite.ile == 'Grande Comore' %}
+                                        <span class="bg-vert/15 text-vert-fonce font-semibold text-xs px-2 py-1 rounded-full">Grande Comore</span>
+                                    {% elseif localite.ile == 'Anjouan' %}
+                                        <span class="bg-bleu/20 text-vert-fonce border border-bleu font-semibold text-xs px-2 py-1 rounded-full">Anjouan</span>
+                                    {% else %}
+                                        <span class="bg-slate-200 text-slate-700 font-semibold text-xs px-2 py-1 rounded-full">Mohéli</span>
+                                    {% endif %}
+                                </td>
+                                <td class="px-4 py-3">
+                                    <div class="flex items-center gap-8">
+                                        <a href="{{ path('app_localite_show', {'id': localite.id}) }}" class="w-6"><img src="{{ asset('Icônes/voir.png') }}" alt=""></a>
+                                        <a
+                                            href="{{ path('app_localite_edit', {'id': localite.id}) }}"
+                                            class="w-6"
+                                        ><img src="{{ asset('Icônes/editer.png') }}" alt="Une icône de modifiaction"></a>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="3" class="px-4 py-12 text-center">
+                                    <p class="text-4xl mb-2">🗺️</p>
+                                    <p class="text-slate-600 font-semibold">
+                                        {{ search ? 'Aucun résultat pour « ' ~ search ~ ' »' : 'Aucune localité' }}
+                                    </p>
+                                    {% if search %}
+                                        <a href="{{ path('app_localite_index') }}" class="btn mt-4">Effacer la recherche</a>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            {# ══════════ PAGINATION (macro partagée !) ══════════ #}
+            {{ m.pagination('app_localite_index', page, totalPages, search, sort, order) }}
+        </div>
+    </main>
+    {% include '_partials/_footer.html.twig' %}   
+
 {% endblock %}

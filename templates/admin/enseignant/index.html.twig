@@ -86,10 +86,10 @@
                                 <td class="px-4 py-3">
                                     <div class="flex flex-row gap-8 justify-end ">
                                         <a href="{{ path('app_enseignant_show', {'id': enseignant.id}) }}" class="btn-voir">
-                                            <img src="{{ asset('/Icônes/voir.png') }}" alt="Icône oeil pour pouvoir voir le document" class="w-8">
+                                            <img src="{{ asset('/Icônes/voir.png') }}" alt="Icône oeil pour pouvoir voir le document" class="w-6">
                                         </a>
                                         <a href="{{ path('app_enseignant_edit', {'id': enseignant.id}) }}">
-                                            <img src="{{ asset('Icônes/modifier-le-document.png') }}" alt="Icône pour pouvoir modifier les informations de l'enseignant" class="w-8">
+                                            <img src="{{ asset('Icônes/editer.png') }}" alt="Icône pour pouvoir modifier les informations de l'enseignant" class="w-6">
                                         </a>
 
                                         {# ── Archiver / Désarchiver : POST + jeton CSRF (pattern n°8 de ta fiche jury !) ── #}
@@ -100,7 +100,7 @@
                                                 onsubmit="return confirm('Archiver {{ enseignant.utilisateur.prenom }} {{ enseignant.utilisateur.nom }} ?');"
                                             >
                                                 <input type="hidden" name="_token" value="{{ csrf_token('archive' ~ enseignant.id) }}">
-                                                <button class="btn-danger"><img src="{{ asset('/Icônes/archiver.png') }}" alt="Icône pour archiver un enseignant" class="w-6"></button>
+                                                <button><img src="{{ asset('/Icônes/archiver.svg') }}" alt="Icône pour archiver un enseignant" class="w-6"></button>
                                             </form>
                                         {% else %}
                                             <form
@@ -128,6 +128,8 @@
                 {{ m.pagination('app_enseignant_index', page, totalPages, search, sort, order) }}
             </div>
         </div>
-
     </main>
+    
+    {% include '_partials/_footer.html.twig' %}   
+
 {% endblock %}

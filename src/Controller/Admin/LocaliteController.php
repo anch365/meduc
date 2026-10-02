@@ -17,13 +17,27 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 final class LocaliteController extends AbstractController
 {
     #[Route(name: 'app_localite_index', methods: ['GET'])]
-    public function index(LocaliteRepository $localiteRepository): Response
+    public function index(Request $request, LocaliteRepository $localiteRepository): Response
     {
+        $search = trim($request->query->get('q', ''));
+        $sort   = $request->query->get('sort', 'nom');
+        $order  = $request->query->get('order', 'ASC');
+        $page   = max(1, $request->query->getInt('page', 1));
+        $limit  = 10;
+
+        $result = $localiteRepository->findPaginated($search, $sort, $order, $page, $limit);
+
         return $this->render('localite/index.html.twig', [
-            'localites' => $localiteRepository->findAll(),
+            'localites'  => $result['items'],
+            'total'      => $result['total'],
+            'totalPages' => max(1, (int) ceil($result['total'] / $limit)),
+            'page'       => $page,
+            'search'     => $search,
+            'sort'       => $sort,
+            'order'      => $order,
         ]);
     }
-
+    
     #[Route('/new', name: 'app_localite_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {

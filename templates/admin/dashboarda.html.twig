@@ -3,89 +3,178 @@
 {% block title %}Profil — MEDUC{% endblock %}
 
 {% block body %}
-    <main class="flex flex-col flex-1 w-full gap-8 container mx-auto px-4 py-8">
+    <main class="container mx-auto px-4 py-8 flex flex-col gap-4 sm:gap-8 lg:px-40">
 
         {# ══════════ 1. ACCUEIL ══════════ #}
-        <section class="mb-8">
+        <section class="flex flex-col gap-4">
             <p class="text-sm uppercase tracking-widest text-green-800 font-semibold">Espace administrateur</p>
-            <h1 class="font-display text-3xl font-bold text-vert-fonce mt-2">
+            <h1 class="font-display text-3xl font-bold text-vert-fonce">
                 Bonjour, {{ app.user.prenom }}
             </h1>
-            <p class="text-slate-900 mt-2">
+            <p class="text-slate-900">
                 Bienvenue sur votre espace de gestion. Retrouvez ici vos informations
                 et les actions rapides.
             </p>
         </section>
 
-        {# ══════════ 2. MES INFORMATIONS ══════════ #}
-        <section class="flex flex-col gap-4 bg-white rounded-lg shadow-md p-6 border border-vert-fonce mb-8">
+        {# ══════════ 2. MES INFORMATIONS + ACTIONS RAPIDES ══════════ #}
+
+        <section class="flex flex-col gap-6 rounded-lg shadow-md border bg-white border-vert-fonce px-4 py-2 overflow-x-clip md:px-16 md:py-8">
+
             <h2 class="font-display text-xl font-bold text-vert-fonce">Mes informations</h2>
+         
+            <div class="flex flex-col sm:flex-row sm:justify-between lg:px-8">
+                <div class="flex flex-col gap-6 mt-4 sm:items-center sm:justify-between sm:flex-row">
+            
+                    <div class="flex flex-col gap-8">
 
-            <dl class="flex flex-col gap-4 mt-4 md:flex-row md:flex-wrap">
-                <div class="flex flex-col gap-4 md:flex-1">
-                    <div>
-                        <dt class="text-sm text-slate-700">Nom complet</dt>
-                        <dd class="font-semibold">{{ app.user.nom }} {{ app.user.prenom }}</dd>
+                        <div class="flex flex-row flex-wrap gap-16 lg:justify-between">
+                            <div>
+                                <dt class="text-sm text-slate-700">Nom complet</dt>
+                                <dd class="font-semibold">{{ app.user.nom }} {{ app.user.prenom }}</dd>
+                            </div>
+                            <div>
+                                <dt class="text-sm text-slate-700">Matricule</dt>
+                                <dd class="font-semibold">{{ app.user.matricule }}</dd>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-row flex-wrap gap-8 lg:gap-16">
+                            <div>
+                                <dt class="flex text-sm text-slate-700">Email</dt>
+                                <dd class="font-semibold">{{ app.user.email }}</dd>
+                            </div>
+                            <div>
+                                <dt class="text-sm text-slate-700">Rôle</dt>
+                                <dd>
+                                    <span class="bg-menthe text-green-900 font-semibold px-3 py-1 rounded">
+                                        Administrateur
+                                    </span>
+                                </dd>
+                            </div>
+                        </div>
+
                     </div>
-                    <div>
-                        <dt class="text-sm text-slate-700">Matricule</dt>
-                        <dd class="font-semibold">{{ app.user.matricule }}</dd>
-                    </div>
+                   
                 </div>
 
-                <div class="flex flex-col gap-4 md:flex-1">
-                    <div>
-                        <dt class="text-sm text-slate-700">Email</dt>
-                        <dd class="font-semibold">{{ app.user.email }}</dd>
-                    </div>
-                    <div>
-                        <dt class="text-sm text-slate-700">Rôle</dt>
-                        <dd>
-                            <span class="bg-menthe text-green-900 font-semibold px-3 py-1 rounded">
-                                Administrateur
+                <div class=" hidden border border-black sm:flex "></div>
+
+                {# ══════════ ACTIONS RAPIDES ══════════ #}
+                <div
+                    class="flex flex-row flex-wrap gap-8 justify-center sm:flex-col sm:gap-6 sm:items-center pt-6 sm:pt-0"
+                    role="group"
+                    aria-labelledby="actions-titre">
+                    <p id="actions-titre" class="font-display text-sm font-bold text-vert-fonce w-full sm:w-auto text-center">Les actions rapides</p>
+                    
+                    <div class="flex gap-8 md:gap-16">
+                        <a
+                            href="{{ path('app_enseignant_new') }}"
+                            aria-label="Créer un enseignant"
+                            aria-describedby="tip-creer-enseignant"
+                            class="bg-blue-700 hover:bg-blue-600/85 p-3 text-white rounded group relative inline-flex items-center justify-center sm:p-6"
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 md:w-7 md:h-7" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zM4.5 19.235c-.148-.49.088-1.003.579-1.134.695-.188 1.435-.32 2.197-.369.472-.03.943.065 1.354.282.72.378 1.51.581 2.37.581s1.65-.203 2.37-.581c.411-.217.882-.313 1.354-.282.762.05 1.502.18 2.197.368.491.132.727.645.579 1.135-.87 2.877-3.64 5.01-7.5 5.01s-6.63-2.133-7.5-5.011z"/>
+                            </svg>
+                            <span
+                                id="tip-creer-enseignant"
+                                role="tooltip"
+                                class="pointer-events-none absolute -top-11 left-1/2 -translate-x-1/2 whitespace-nowrap bg-slate-800 text-white text-xs px-3 py-1.5 rounded shadow-md opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition duration-200 z-20"
+                            >
+                                Créer un nouvel enseignant avec son compte de connexion
                             </span>
-                        </dd>
+                        </a>
+
+                        <a
+                            href="{{ path('app_affectation_new') }}"
+                            aria-label="Nouvelle affectation"
+                            aria-describedby="tip-affectation"
+                            class="bg-blue-700 hover:bg-blue-600/85 p-3 text-white rounded group relative inline-flex items-center justify-center sm:p-6"
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 md:w-7 md:h-7" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 21L3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5"/>
+                            </svg>
+                            <span
+                                id="tip-affectation"
+                                role="tooltip"
+                                class="pointer-events-none absolute -top-11 left-1/2 -translate-x-1/2 whitespace-nowrap bg-slate-800 text-white text-xs px-3 py-1.5 rounded shadow-md opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition duration-200 z-20"
+                            >
+                                Affecter un enseignant à un établissement
+                            </span>
+                        </a>
+                    </div>
+
+                    <div class="flex gap-8 md:gap-16">
+                        <a
+                            href="{{ path('app_etablissement_new') }}"
+                            aria-label="Créer un établissement"
+                            aria-describedby="tip-etablissement"
+                            class="bg-blue-700 hover:bg-blue-600/85 p-3 text-white rounded group relative inline-flex items-center justify-center sm:p-6"
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 md:w-7 md:h-7" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.332A48.36 48.36 0 0012 9.75c-2.551 0-5.056.2-7.5.582V21M3 21h18M12 6.75h.008v.008H12V6.75z"/>
+                            </svg>
+                            <span
+                                id="tip-etablissement"
+                                role="tooltip"
+                                class="pointer-events-none absolute -top-11 left-1/2 -translate-x-1/2 whitespace-nowrap bg-slate-800 text-white text-xs px-3 py-1.5 rounded shadow-md opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition duration-200 z-20"
+                            >
+                                Ajouter une école et la rattacher à une localité
+                            </span>
+                        </a>
+
+                        <a
+                            href="{{ path('app_localite_index') }}"
+                            aria-label="Localités"
+                            aria-describedby="tip-localites"
+                            class="bg-blue-700 hover:bg-blue-600/85 p-3 text-white rounded group relative inline-flex items-center justify-center sm:p-6"
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 md:w-7 md:h-7" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"/>
+                            </svg>
+                            <span
+                                id="tip-localites"
+                                role="tooltip"
+                                class="pointer-events-none absolute -top-11 left-1/2 -translate-x-1/2 whitespace-nowrap bg-slate-800 text-white text-xs px-3 py-1.5 rounded shadow-md opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition duration-200 z-20"
+                            >
+                                Gérer les villes et villages des trois îles
+                            </span>
+                        </a>
                     </div>
                 </div>
+             
+            </div>
+            
+            <dl class="flex flex-col gap-2 mt-4 sm:mt-0">
+                <dt class="text-sm text-slate-700">Dernière connexion</dt>
+                <dd class="font-semibold">
+                    {{ app.user.dernierConnexion ? app.user.dernierConnexion|date('d/m/Y à H:i') : '—' }}
+                </dd>
             </dl>
-            <div class="md:basis-full">
-                    <dt class="text-sm text-slate-700">Dernière connexion</dt>
-                    <dd class="font-semibold">
-                        {{ app.user.dernierConnexion ? app.user.dernierConnexion|date('d/m/Y à H:i') : '—' }}
-                    </dd>
-                </div>
         </section>
 
-        {# ══════════ 3. ACTIONS RAPIDES ══════════ #}
-        <section class="flex flex-col gap-4 md:flex-row">
-            <a href="{{ path('app_enseignant_new') }}" class="btn-adm text-center">+ Créer un enseignant</a>
-            <a href="{{ path('app_affectation_new') }}" class="btn-adm text-center">+ Nouvelle affectation</a>
-            <a href="{{ path('app_etablissement_new') }}" class="btn-adm text-center">+ Créer un établissement</a>
-            <a href="{{ path('app_localite_index') }}" class="btn-adm text-center">Localités</a>
-        </section>
-
-        {# ══════════ 4. STATISTIQUES ══════════ #}
+        {# ══════════ 3. STATISTIQUES (inchangées) ══════════ #}
         <section class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             <div class="bg-white rounded-lg shadow-md p-6 text-center border-t border-vert-fonce transition duration-300 hover:-translate-y-1 hover:shadow-lg">
                 <p class="font-display text-3xl font-bold text-vert-fonce">{{ nbEnseignants }}</p>
                 <p class="text-sm text-slate-600 mt-1">Enseignants</p>
             </div>
-
             <div class="bg-white rounded-lg shadow-md p-6 text-center border-t border-vert-fonce transition duration-300 hover:-translate-y-1 hover:shadow-lg">
                 <p class="font-display text-3xl font-bold text-vert-fonce">{{ nbEtablissements }}</p>
                 <p class="text-sm text-slate-600 mt-1">Établissements</p>
             </div>
-
             <div class="bg-white rounded-lg shadow-md p-6 text-center border-t border-vert-fonce transition duration-300 hover:-translate-y-1 hover:shadow-lg">
                 <p class="font-display text-3xl font-bold text-vert-fonce">{{ nbAffectationsEnCours }}</p>
                 <p class="text-sm text-slate-600 mt-1">Affectations en cours</p>
             </div>
-
             <div class="bg-white rounded-lg shadow-md p-6 text-center border-t border-vert-fonce transition duration-300 hover:-translate-y-1 hover:shadow-lg">
                 <p class="font-display text-3xl font-bold text-vert-fonce">{{ nbLocalites }}</p>
                 <p class="text-sm text-slate-600 mt-1">Localités</p>
             </div>
         </section>
-
     </main>
+    {% include '_partials/_footer.html.twig' %}   
+
 {% endblock %}

@@ -3,73 +3,76 @@
 {% block title %}Modifier — {{ enseignant.utilisateur.prenom }} {{ enseignant.utilisateur.nom }}{% endblock %}
 
 {% block body %}
-<main class="container mx-auto px-4 py-8 max-w-3xl">
+    <main class="container mx-auto px-4 py-8 max-w-3xl">
 
-    {# ══════════ EN-TÊTE : contexte + retour ══════════ #}
-    <div class="mb-6 flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
-        <div>
-            <a href="{{ path('app_enseignant_show', {'id': enseignant.id}) }}" class="text-sm text-vert hover:underline">
-                ← Retour à la fiche
-            </a>
-            <h1 class="font-display text-2xl font-bold text-vert-fonce mt-2">
-                Modifier l'enseignant
-            </h1>
-            <p class="text-slate-600 text-sm mt-1">
-                {{ enseignant.utilisateur.prenom }} {{ enseignant.utilisateur.nom }}
-                — Matricule : {{ enseignant.utilisateur.matricule }}
-            </p>
+        {# ══════════ EN-TÊTE : contexte + retour ══════════ #}
+        <div class="mb-6 flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
+            <div>
+                <a href="{{ path('app_enseignant_show', {'id': enseignant.id}) }}" class="text-sm text-vert hover:underline">
+                    ← Retour à la fiche
+                </a>
+                <h1 class="font-display text-2xl font-bold text-vert-fonce mt-2">
+                    Modifier l'enseignant
+                </h1>
+                <p class="text-slate-600 text-sm mt-1">
+                    {{ enseignant.utilisateur.prenom }} {{ enseignant.utilisateur.nom }}
+                    — Matricule : {{ enseignant.utilisateur.matricule }}
+                </p>
+            </div>
+
+            {# Badge si l'enseignant est archivé : on le voit avant de modifier #}
+            {% if not enseignant.utilisateur.actif %}
+                <span class="bg-red-100 text-red-700 font-semibold text-sm px-3 py-1 rounded-full self-start">
+                    Archivé
+                </span>
+            {% endif %}
         </div>
 
-        {# Badge si l'enseignant est archivé : on le voit avant de modifier #}
-        {% if not enseignant.utilisateur.actif %}
-            <span class="bg-red-100 text-red-700 font-semibold text-sm px-3 py-1 rounded-full self-start">
-                Archivé
-            </span>
-        {% endif %}
-    </div>
+        {# ⭐ novalidate : tes erreurs Symfony s'affichent #}
+        {{ form_start(form, {attr: {novalidate: true}}) }}
 
-    {# ⭐ novalidate : tes erreurs Symfony s'affichent #}
-    {{ form_start(form, {attr: {novalidate: true}}) }}
-
-    {# ══════════ BANDEAU MOT DE PASSE : l'info qui évite les catastrophes ══════════ #}
-    <div class="bg-bleu/10 border border-bleu/40 text-slate-700 rounded p-3 text-sm mb-6">
-        💡 Laissez le champ mot de passe vide pour conserver le mot de passe actuel.
-    </div>
-
-    {# ══════════ CARTE 1 : COMPTE DE CONNEXION (pré-rempli) ══════════ #}
-    <section class="bg-white rounded-lg shadow-md p-6 border border-green-800 mb-6">
-        <h2 class="font-display text-xl font-bold text-vert-fonce">Compte de connexion</h2>
-
-        <div class="grid grid-cols-1 gap-4 mt-4 md:grid-cols-2">
-            {{ form_row(form.utilisateur.matricule) }}
-            {{ form_row(form.utilisateur.email) }}
-            {{ form_row(form.utilisateur.nom) }}
-            {{ form_row(form.utilisateur.prenom) }}
-            {{ form_row(form.utilisateur.telephone) }}
-            {{ form_row(form.utilisateur.plainPassword) }}
+        {# ══════════ BANDEAU MOT DE PASSE : l'info qui évite les catastrophes ══════════ #}
+        <div class="bg-bleu/10 border border-bleu/40 text-slate-700 rounded p-3 text-sm mb-6">
+            💡 Laissez le champ mot de passe vide pour conserver le mot de passe actuel.
         </div>
-    </section>
 
-    {# ══════════ CARTE 2 : PROFIL ADMINISTRATIF ══════════ #}
-    <section class="bg-white rounded-lg shadow-md p-6 border border-green-800 mb-6">
-        <h2 class="font-display text-xl font-bold text-vert-fonce">Profil administratif</h2>
+        {# ══════════ CARTE 1 : COMPTE DE CONNEXION (pré-rempli) ══════════ #}
+        <section class="bg-white rounded-lg shadow-md p-6 border border-green-800 mb-6">
+            <h2 class="font-display text-xl font-bold text-vert-fonce">Compte de connexion</h2>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-            {{ form_row(form.genre) }}
-            {{ form_row(form.dateNaissance) }}
-            {{ form_row(form.lieuNaissance) }}
-            {{ form_row(form.niveauEnseignement) }}
-            {{ form_row(form.statutProfessionnel) }}
-            {{ form_row(form.localite) }}
+            <div class="grid grid-cols-1 gap-4 mt-4 md:grid-cols-2">
+                {{ form_row(form.utilisateur.matricule) }}
+                {{ form_row(form.utilisateur.email) }}
+                {{ form_row(form.utilisateur.nom) }}
+                {{ form_row(form.utilisateur.prenom) }}
+                {{ form_row(form.utilisateur.telephone) }}
+                {{ form_row(form.utilisateur.plainPassword) }}
+            </div>
+        </section>
+
+        {# ══════════ CARTE 2 : PROFIL ADMINISTRATIF ══════════ #}
+        <section class="bg-white rounded-lg shadow-md p-6 border border-green-800 mb-6">
+            <h2 class="font-display text-xl font-bold text-vert-fonce">Profil administratif</h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                {{ form_row(form.genre) }}
+                {{ form_row(form.dateNaissance) }}
+                {{ form_row(form.lieuNaissance) }}
+                {{ form_row(form.niveauEnseignement) }}
+                {{ form_row(form.statutProfessionnel) }}
+                {{ form_row(form.localite) }}
+            </div>
+        </section>
+
+        {# ══════════ ACTIONS ══════════ #}
+        <div class="flex flex-col gap-4 sm:flex-row">
+            <button type="submit" class="btn">Enregistrer les modifications</button>
+            <a href="{{ path('app_enseignant_index', {'id': enseignant.id}) }}" class="btn-header text-center">Annuler</a>
         </div>
-    </section>
 
-    {# ══════════ ACTIONS ══════════ #}
-    <div class="flex flex-col gap-4 sm:flex-row">
-        <button type="submit" class="btn">Enregistrer les modifications</button>
-        <a href="{{ path('app_enseignant_index', {'id': enseignant.id}) }}" class="btn-header text-center">Annuler</a>
-    </div>
+        {{ form_end(form) }}
+    </main>
 
-    {{ form_end(form) }}
-</main>
+    {% include '_partials/_footer.html.twig' %}   
+
 {% endblock %}

@@ -5,25 +5,27 @@
 {% block body %}
     {# ── Macro : un en-tête triable réutilisable (DRY) ── #}
     {% import _self as m %}
-{% macro sortable(label, field, sort, order, search) %}
-    {% set active = sort == field %}
-    {% set nextOrder = active and order == 'ASC' ? 'DESC' : 'ASC' %}
-    <a href="{{ path('app_affectation_index', {sort: field, order: nextOrder, q: search, page: 1}) }}"
-       class="group inline-flex items-center gap-2 hover:text-vert transition"
-       aria-label="Trier par {{ label }}{% if active %}, actuellement {{ order == 'ASC' ? 'croissant' : 'décroissant' }}{% endif %}">
+    {% macro sortable(label, field, sort, order, search) %}
+        {% set active = sort == field %}
+        {% set nextOrder = active and order == 'ASC' ? 'DESC' : 'ASC' %}
+        <a
+            href="{{ path('app_affectation_index', {sort: field, order: nextOrder, q: search, page: 1}) }}"
+            class="group inline-flex items-center gap-2 hover:text-vert transition"
+            aria-label="Trier par {{ label }}{% if active %}, actuellement {{ order == 'ASC' ? 'croissant' : 'décroissant' }}{% endif %}"
+        >
 
-        {# ── Le libellé : actif = vert foncé + gras, sinon gris (vert au survol) ── #}
-        <span class="{{ active ? 'text-vert-fonce font-semibold' : 'text-slate-700 group-hover:text-vert' }}">
-            {{ label }}
-        </span>
+            {# ── Le libellé : actif = vert foncé + gras, sinon gris (vert au survol) ── #}
+            <span class="{{ active ? 'text-vert-fonce font-semibold' : 'text-slate-700 group-hover:text-vert' }}">
+                {{ label }}
+            </span>
 
-        {# ── Le double chevron : les 2 triangles, seul l'actif est vert ── #}
-        <span class="flex flex-col text-[9px] leading-none" aria-hidden="true">
-            <span class="{{ active and order == 'ASC' ? 'text-vert' : 'text-slate-300' }}">▲</span>
-            <span class="{{ active and order == 'DESC' ? 'text-vert' : 'text-slate-300' }}">▼</span>
-        </span>
-    </a>
-{% endmacro %}
+            {# ── Le double chevron : les 2 triangles, seul l'actif est vert ── #}
+            <span class="flex flex-col text-[9px] leading-none" aria-hidden="true">
+                <span class="{{ active and order == 'ASC' ? 'text-vert' : 'text-slate-300' }}">▲</span>
+                <span class="{{ active and order == 'DESC' ? 'text-vert' : 'text-slate-300' }}">▼</span>
+            </span>
+        </a>
+    {% endmacro %}
     <main class="container mx-auto px-4 py-8">
 
         {# ══════════ EN-TÊTE ══════════ #}
@@ -126,10 +128,13 @@
                         href="{{ path('app_affectation_index', {page: page + 1, q: search, sort: sort, order: order}) }}"
                         class="w-6 {{ page >= totalPages ? 'pointer-events-none' : '' }}"
                     >
-                    <img src="{{ asset('Icônes/right-arrow.png')}}" alt="Flêche directioon de droite pour paginer à droite dans la liste">
+                        <img src="{{ asset('Icônes/right-arrow.png') }}" alt="Flêche directioon de droite pour paginer à droite dans la liste">
                     </a>
                 </nav>
             {% endif %}
         </div>
     </main>
+
+    {% include '_partials/_footer.html.twig' %}  
+     
 {% endblock %}

@@ -70,13 +70,13 @@
                                 </td>
 
                                 <td class="px-4 py-3">
-                                    <div class="flex items-center gap-6">
+                                    <div class="flex items-center gap-6 md:gap-8">
                                         <a href="{{ path('app_etablissement_show', {'id': etablissement.id}) }}">
                                             <img src="{{ asset('/Icônes/voir.png') }}" alt="Bouton en icône de voir le document" class="w-8">
                                         </a>
 
                                         <a href="{{ path('app_etablissement_edit', {'id': etablissement.id}) }}">
-                                            <img src="{{ asset('/Icônes/modifier-le-document.png') }}" alt="Bouton en icône de modification" class="w-8">
+                                            <img src="{{ asset('/Icônes/editer.png') }}" alt="Bouton en icône de modification" class="w-7">
                                         </a>
 
                                         {# ── SUPPRESSION : définitive → POST + CSRF + confirmation explicite ── #}
@@ -86,7 +86,7 @@
                                             onsubmit="return confirm('⚠️ Supprimer définitivement {{ etablissement.nom }} ? Cette action est irréversible.');"
                                         >
                                             <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ etablissement.id) }}">
-                                            <button><img src="{{ asset('/Icônes/supprimer.png') }}" alt="Bouton en icône de suppression" class="w-8 mt-2 cursor-pointer"></button>
+                                            <button><img src="{{ asset('/Icônes/effacer.png') }}" alt="Bouton en icône de suppression" class="w-7 mt-2 cursor-pointer"></button>
                                         </form>
                                     </div>
                                 </td>
@@ -104,9 +104,11 @@
                         {% endfor %}
                     </tbody>
                 </table>
-             {{ m.pagination('app_etablissement_index', page, totalPages, search, sort, order) }}
+                {{ m.pagination('app_etablissement_index', page, totalPages, search, sort, order) }}
             </div>
         </div>
 
     </main>
+    {% include '_partials/_footer.html.twig' %}   
+
 {% endblock %}

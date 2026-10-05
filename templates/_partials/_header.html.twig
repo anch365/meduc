@@ -23,7 +23,7 @@
         </a>
 
         {# ── Liens DESKTOP : visibles à partir de 1024px (lg), cachés sur mobile ── #}
-        <div class="hidden text-black items-center lg:flex xl:gap-4">
+        <div class="hidden text-black items-center lg:flex lg:gap-4 xl:gap-8 2xl:gap-16">
             <a href="{{ path('app_home') }}" class="btn-header {{ route == 'app_home' ? 'active' : '' }}">Accueil</a>
 
             {% if app.user %}
@@ -63,7 +63,7 @@
                 {% else %}
                     <a href="{{ path('app_espace') }}" class="btn-header block {{ route == 'app_espace' ? 'active' : '' }}">Mon espace</a>
                 {% endif %}
-                <a href="{{ path('app_logout') }}" class=" rounded-xs px-2 text-red-600 hover:text-white hover:bg-red-600">Déconnexion</a>
+                <a href="{{ path('app_logout') }}" class="rounded-xs px-2 py-2 text-red-600 hover:text-white hover:bg-red-600">Déconnexion</a>
             {% else %}
                 <a href="{{ path('app_login') }}" class="btn-header {{ route == 'app_login' ? 'active' : '' }}">Se connecter</a>
             {% endif %}

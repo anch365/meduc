@@ -4,7 +4,7 @@
 
 {% block body %}
     {% import 'macros.html.twig' as m %}
-    <main class="container mx-auto px-4 py-8 overflow-x-auto">
+    <main class="px-4 py-8 md:px-8 lg:px-16">
 
         {# ══════════ 1. EN-TÊTE : titre + compteur + action ══════════ #}
         <div class="flex flex-col gap-4 mb-6 md:flex-row md:items-center md:justify-between">
@@ -22,30 +22,41 @@
             </a>
         </div>
 
-        <form method="get" action="{{ path('app_enseignant_index') }}" class="flex flex-col gap-2 mb-6 sm:flex-row">
-            <input
-                type="search"
-                name="q"
-                value="{{ search }}"
-                placeholder="Recherche par nom, prénom, matricule…"
-                class="flex-1 rounded border-2 bg-white px-4 py-2 text-slate-800 placeholder-slate-400 outline-none transition"
-            >
+        <form method="get" action="{{ path('app_enseignant_index') }}" class="mb-6">
+
             {# On conserve le tri courant pendant la recherche (sinon il se perd) #}
             <input type="hidden" name="sort" value="{{ sort }}">
             <input type="hidden" name="order" value="{{ order }}">
-            <button type="submit">
-                <img src="{{ asset('Icônes/chercher.png') }}" alt="Un bouton en icône de recherche" class="w-8">
-            </button>
+
+            {# ── BARRE "PILULE" (identique aux établissements : cohérence !) ── #}
+            <div class="flex items-center gap-2 border-2 border-bleu/70 bg-white pl-4 h-11.5 rounded-full overflow-hidden max-w-md w-full transition focus-within:border-bleu focus-within:ring focus-within:ring-bleu/10">
+
+                <button type="submit" aria-label="Lancer la recherche" class="shrink-0">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 30 30" fill="#6B7280" aria-hidden="true">
+                        <path d="M13 3C7.489 3 3 7.489 3 13s4.489 10 10 10a9.95 9.95 0 0 0 6.322-2.264l5.971 5.971a1 1 0 1 0 1.414-1.414l-5.97-5.97A9.95 9.95 0 0 0 23 13c0-5.511-4.489-10-10-10m0 2c4.43 0 8 3.57 8 8s-3.57 8-8 8-8-3.57-8-8 3.57-8 8-8"/>
+                    </svg>
+                </button>
+
+                <input
+                    type="search"
+                    name="q"
+                    value="{{ search }}"
+                    placeholder="Rechercher par nom, prénom, matricule…"
+                    class="w-full h-full outline-none text-slate-800 placeholder-slate-400 bg-transparent text-sm"
+                >
+            </div>
+
             {% if search %}
-                <a href="{{ path('app_affectation_index') }}" class="btn-header text-center">Effacer</a>
+                <a href="{{ path('app_enseignant_index') }}" class="btn-header text-center mt-3 inline-block">
+                    Effacer la recherche
+                </a>
             {% endif %}
         </form>
-
         {# ══════════ 2. LA CARTE (contient le tableau) ══════════ #}
         <div class="bg-white rounded-lg shadow-md overflow-hidden">
 
             {# ══════════ 3. TABLEAU (scrollable sur mobile) ══════════ #}
-            <div class="overflow-x-auto">
+            <div class="overflow-x-auto mb-8">
                 <table class="min-w-175 w-full text-center">
                     <thead>
                         <tr class="border-b-2 border-vert-fonce">
@@ -60,12 +71,12 @@
                         {% for enseignant in enseignants %}
                         
                             <tr class="hover:bg-menthe transition">
-                                <td class="px-4 py-3 font-mono text-sm">{{ enseignant.utilisateur.matricule }}</td>
+                                <td class="px-2 py-3 font-mono text-sm">{{ enseignant.utilisateur.matricule }}</td>
                                 <td class="px-4 py-3 font-semibold">
                                     {{ enseignant.utilisateur.prenom }} {{ enseignant.utilisateur.nom }}
                                 </td>
 
-                                <td class="px-4 py-3">
+                                <td class=" py-3">
                                     {% if enseignant.affectationActive %}
                                         {{ enseignant.affectationActive.etablissement.nom }}
                                     {% else %}
@@ -73,7 +84,7 @@
                                     {% endif %}
                                 </td>          
 
-                                <td class="px-8 py-3">
+                                <td class="px-4 py-3">
                                     {% if enseignant.estRetraite %}
                                         <span class="inline-block text-red-700 text-sm font-semibold px-4 py-2 rounded">Retraité</span>
                                     {% elseif enseignant.affectationActive %}
@@ -84,12 +95,12 @@
                                 </td>
 
                                 <td class="px-4 py-3">
-                                    <div class="flex flex-row gap-8 justify-end ">
+                                    <div class="flex items-center gap-6 ">
                                         <a href="{{ path('app_enseignant_show', {'id': enseignant.id}) }}" class="btn-voir">
-                                            <img src="{{ asset('/Icônes/voir.png') }}" alt="Icône oeil pour pouvoir voir le document" class="w-6">
+                                            <img src="{{ asset('/Icônes/voir.png') }}" alt="Icône oeil pour voir les informations de l'enseignant" class="w-8 md:w-6">
                                         </a>
                                         <a href="{{ path('app_enseignant_edit', {'id': enseignant.id}) }}">
-                                            <img src="{{ asset('Icônes/editer.png') }}" alt="Icône pour pouvoir modifier les informations de l'enseignant" class="w-6">
+                                            <img src="{{ asset('Icônes/editer.png') }}" alt="Icône pour modifier les informations de l'enseignant" class="w-8 md:w-6">
                                         </a>
 
                                         {# ── Archiver / Désarchiver : POST + jeton CSRF (pattern n°8 de ta fiche jury !) ── #}
@@ -100,7 +111,7 @@
                                                 onsubmit="return confirm('Archiver {{ enseignant.utilisateur.prenom }} {{ enseignant.utilisateur.nom }} ?');"
                                             >
                                                 <input type="hidden" name="_token" value="{{ csrf_token('archive' ~ enseignant.id) }}">
-                                                <button><img src="{{ asset('/Icônes/archiver.svg') }}" alt="Icône pour archiver un enseignant" class="w-6"></button>
+                                                <button><img src="{{ asset('/Icônes/archiver.svg') }}" alt="Icône pour archiver un enseignant" class="w-8 md:w-6"></button>
                                             </form>
                                         {% else %}
                                             <form

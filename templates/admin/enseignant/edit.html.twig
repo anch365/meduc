@@ -8,8 +8,8 @@
         {# ══════════ EN-TÊTE : contexte + retour ══════════ #}
         <div class="mb-6 flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
             <div>
-                <a href="{{ path('app_enseignant_show', {'id': enseignant.id}) }}" class="text-sm text-vert hover:underline">
-                    ← Retour à la fiche
+                <a href="{{ path('app_enseignant_index', {'id': enseignant.id}) }}" class="text-sm text-vert hover:underline">
+                    <img src="{{ asset('/Icônes/retour.svg') }}" alt="Bouton en icone de reotur à la lsite des enseignants" class="w-8 md:w-16">
                 </a>
                 <h1 class="font-display text-2xl font-bold text-vert-fonce mt-2">
                     Modifier l'enseignant

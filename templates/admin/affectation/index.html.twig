@@ -1,10 +1,10 @@
 {% extends 'base.html.twig' %}
+{% import 'macros.html.twig' as m %}
 
 {% block title %}Affectations — MEDUC{% endblock %}
 
 {% block body %}
     {# ── Macro : un en-tête triable réutilisable (DRY) ── #}
-    {% import _self as m %}
     {% macro sortable(label, field, sort, order, search) %}
         {% set active = sort == field %}
         {% set nextOrder = active and order == 'ASC' ? 'DESC' : 'ASC' %}
@@ -26,7 +26,7 @@
             </span>
         </a>
     {% endmacro %}
-    <main class="container mx-auto px-4 py-8">
+    <main class="px-4 py-8 md:px-8 lg:px-16">
 
         {# ══════════ EN-TÊTE ══════════ #}
         <div class="flex flex-col justify-between gap-4 mb-6 sm:flex-row sm:items-center">
@@ -37,37 +37,48 @@
         </div>
 
         {# ══════════ BARRE DE RECHERCHE ══════════ #}
-        <form method="get" action="{{ path('app_affectation_index') }}" class="flex flex-col gap-2 mb-6 sm:flex-row">
-            <input
-                type="search"
-                name="q"
-                value="{{ search }}"
-                placeholder="Rechercher un enseignant, une classe, une matière…"
-                class="flex-1 rounded border-2 bg-white px-4 py-2 text-slate-800 placeholder-slate-400 outline-none transition"
-            >
+        <form method="get" action="{{ path('app_affectation_index') }}" class="mb-6">
+
             {# On conserve le tri courant pendant la recherche (sinon il se perd) #}
             <input type="hidden" name="sort" value="{{ sort }}">
             <input type="hidden" name="order" value="{{ order }}">
-            <button type="submit">
-                <img src="{{ asset('Icônes/chercher.png') }}" alt="Un bouton en icône de recherche" class="w-8">
-            </button>
+
+            {# ── BARRE "PILULE" (identique aux autres listes : cohérence !) ── #}
+            <div class="flex items-center gap-2 border-2 border-bleu/70 bg-white pl-4 h-11.5 rounded-full overflow-hidden max-w-md w-full transition focus-within:border-bleu focus-within:ring focus-within:ring-bleu/10">
+
+                {# L'icône = le bouton de recherche (SVG, plus de PNG) #}
+                <button type="submit" aria-label="Lancer la recherche" class="shrink-0">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 30 30" fill="#6B7280" aria-hidden="true">
+                        <path d="M13 3C7.489 3 3 7.489 3 13s4.489 10 10 10a9.95 9.95 0 0 0 6.322-2.264l5.971 5.971a1 1 0 1 0 1.414-1.414l-5.97-5.97A9.95 9.95 0 0 0 23 13c0-5.511-4.489-10-10-10m0 2c4.43 0 8 3.57 8 8s-3.57 8-8 8-8-3.57-8-8 3.57-8 8-8"/>
+                    </svg>
+                </button>
+
+                <input
+                    type="search"
+                    name="q"
+                    value="{{ search }}"
+                    placeholder="Rechercher un enseignant, une classe, une matière…"
+                    class="w-full h-full outline-none text-slate-800 placeholder-slate-400 bg-transparent text-sm"
+                >
+            </div>
+
             {% if search %}
-                <a href="{{ path('app_affectation_index') }}" class="btn-header text-center">Effacer</a>
+                <a href="{{ path('app_affectation_index') }}" class="btn-header text-center mt-3 inline-block">
+                    Effacer la recherche
+                </a>
             {% endif %}
         </form>
-
         {# ══════════ TABLEAU ══════════ #}
-        <div class="bg-white rounded-lg shadow-md p-6 border-t border-vert-fonce">
+        <div class="bg-white rounded-lg shadow-md px-2 py-6 border-t border-vert-fonce">
             <div class="overflow-x-auto">
                 <table class="min-w-175 w-full text-left">
                     <thead>
                         <tr class="border-b-2 border-vert-fonce">
                             <th class="px-4 py-3">Enseignant</th>
-                            <th class="px-4 py-3">{{ m.sortable('Établissement', 'etablissement', sort, order, search) }}</th>
-                            <th class="px-4 py-3">{{ m.sortable('Classe', 'classe', sort, order, search) }}</th>
-                            <th class="px-4 py-3">{{ m.sortable('Matière', 'matiere', sort, order, search) }}</th>
-                            <th class="px-4 py-3">{{ m.sortable('Début', 'debut', sort, order, search) }}</th>
-                            <th class="px-4 py-3">Fin</th>
+                            <th class="px-4 py-3">{{ m.sortable('Établissement', 'etablissement', 'app_affectation_index', sort, order, search) }}</th>
+                            <th class="px-4 py-3">{{ m.sortable('Classe', 'classe', 'app_affectation_index', sort, order, search) }}</th>
+                            <th class="px-4 py-3">{{ m.sortable('Matière', 'matiere', 'app_affectation_index', sort, order, search) }}</th>
+                            <th class="px-4 py-3">{{ m.sortable('Début', 'debut', 'app_affectation_index', sort, order, search) }}</th>                            <th class="px-4 py-3">Fin</th>
                             <th class="px-4 py-3">Statut</th>
                             <th class="px-4 py-3">Actions</th>
                         </tr>
@@ -85,15 +96,33 @@
                                 <td class="px-4 py-3">{{ affectation.dateFin ? affectation.dateFin|date('d/m/Y') : '—' }}</td>
                                 <td class="px-4 py-3">
                                     {% if affectation.statut == 'en_cours' %}
-                                        <span class="bg-vert/15 text-vert-fonce font-semibold text-xs px-2 py-1 rounded-full">En cours</span>
+                                        <span class="bg-vert/15 text-vert-fonce font-semibold text-xs sm:px-2 py-1 rounded-full">En cours</span>
                                     {% elseif affectation.statut == 'terminee' %}
-                                        <span class="bg-slate-200 text-slate-700 font-semibold text-xs px-2 py-1 rounded-full">Terminée</span>
+                                        <span class="bg-slate-200 text-slate-700 font-semibold text-xs sm:px-2 py-1 rounded-full">Terminée</span>
                                     {% else %}
-                                        <span class="bg-red-100 text-red-700 font-semibold text-xs px-2 py-1 rounded-full">Annulée</span>
+                                        <span class="bg-red-100 text-red-700 font-semibold text-xs sm:px-2 py-1 rounded-full">Annulée</span>
                                     {% endif %}
                                 </td>
                                 <td class="px-4 py-3">
-                                    <a href="{{ path('app_affectation_transfert', {'id': affectation.id}) }}" class="btn-header">Transférer</a>                                </td>
+                                    <a href="{{ path('app_affectation_transfert', {'id': affectation.id}) }}" class="">
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                            stroke-width="1.5"
+                                            stroke="currentColor"
+                                            class="w-5 h-5"
+                                            aria-hidden="true"
+                                        >
+                                            <path
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                d="M7.5 21L3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5"
+                                            />
+                                        </svg>
+                                            
+                                    </a>                                
+                                </td>
                             </tr>
                         {% else %}
                             <tr>
@@ -112,27 +141,8 @@
                 </table>
             </div>
 
-            {# ══════════ PAGINATION ══════════ #}
-            {% if totalPages > 1 %}
-                <nav class="flex flex-row gap-8 justify-center items-center mt-6 md:gap-16" aria-label="Pagination">
-                    <a
-                        href="{{ path('app_affectation_index', {page: page - 1, q: search, sort: sort, order: order}) }}"
-                        class="w-6 {{ page <= 1 ? 'pointer-events-none' : '' }}"
-                    >
-                        <img src="{{ asset('/Icônes/left-arrow.png') }}" alt="Flêche direction de gauche pour paginer à gauche dans la liste">
-                    </a>
-
-                    <p class="text-sm md:text-xl">Page {{ page }} / {{ totalPages }}</p>
-
-                    <a
-                        href="{{ path('app_affectation_index', {page: page + 1, q: search, sort: sort, order: order}) }}"
-                        class="w-6 {{ page >= totalPages ? 'pointer-events-none' : '' }}"
-                    >
-                        <img src="{{ asset('Icônes/right-arrow.png') }}" alt="Flêche directioon de droite pour paginer à droite dans la liste">
-                    </a>
-                </nav>
-            {% endif %}
-        </div>
+            {# ══════════ PAGINATION (macro partagée) ══════════ #}
+            {{ m.pagination('app_affectation_index', page, totalPages, search, sort, order) }}        </div>
     </main>
 
     {% include '_partials/_footer.html.twig' %}  

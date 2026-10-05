@@ -9,7 +9,7 @@
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
             <div>
                 <a href="{{ path('app_enseignant_index') }}" class="text-sm text-vert hover:underline">
-                    ← Retour à la liste des enseignants
+                    <img src="{{ asset('/Icônes/retour.svg') }}" alt="Bouton en icone de reotur à la lsite des enseignants" class="w-8 md:w-16">
                 </a>
                 <h1 class="font-display text-2xl font-bold text-vert-fonce mt-2">
                     Enseignants archivés
@@ -83,7 +83,7 @@
                                     <p class="text-4xl mb-2">🎉</p>
                                     <p class="text-slate-600 font-semibold">Aucun enseignant archivé</p>
                                     <p class="text-slate-500 text-sm mt-1">Tous les comptes sont actifs.</p>
-                                    <a href="{{ path('app_enseignant_index') }}" class="btn mt-4">Retour à la liste</a>
+                                    <a href="{{ path('app_enseignant_index') }}" class="btn mt-4" aria-label="Bouton de retour à la liste des enseignants">Retour à la liste</a>
                                 </td>
                             </tr>
                         {% endfor %}

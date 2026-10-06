@@ -1,16 +1,41 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit Localite{% endblock %}
+{% block title %}Modifier — {{ localite.nom }}{% endblock %}
 
 {% block body %}
-    <h1>Edit Localite</h1>
+    <main class="container mx-auto px-4 py-8 max-w-3xl">
 
-    {{ include('localite/_form.html.twig', {'button_label': 'Update'}) }}
+        {# ══════════ EN-TÊTE : contexte + retour ══════════ #}
+        <div class="mb-6">
+            <a href="{{ path('app_localite_show', {'id': localite.id}) }}" class="text-sm text-vert hover:underline">
+                <img src="{{ asset('/Icônes/retour.svg') }}" alt="Bouton en icône de reotur à la lsite des enseignants" class="w-8 md:w-16">
+        
+            </a>
+            <h1 class="font-display text-2xl font-bold text-vert-fonce mt-2">Modifier la localité</h1>
+            <p class="text-slate-600 text-sm mt-1">
+                {{ localite.nom }} — {{ localite.ile }}
+            </p>
+        </div>
 
-    <a href="{{ path('app_localite_index') }}">Retour à la liste</a>
+        {# ⭐ novalidate : tes erreurs Symfony s'affichent #}
+        {{ form_start(form, {attr: {novalidate: true}}) }}
 
-    {{ include('localite/_delete_form.html.twig') }}
+        {# ══════════ CARTE UNIQUE ══════════ #}
+        <section class="bg-white rounded-lg shadow-md p-6 border-t border-green-900 mb-6">
+            <h2 class="font-display text-xl font-bold text-vert-fonce">Informations</h2>
 
-    {% include '_partials/_footer.html.twig' %}   
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                {{ form_row(form.nom) }}
+                {{ form_row(form.ile) }}
+            </div>
+        </section>
 
+        {# ══════════ ACTIONS ══════════ #}
+        <div class="flex flex-col sm:flex-row gap-4">
+            <button type="submit" class="btn-adm">Enregistrer</button>
+            <a href="{{ path('app_localite_show', {'id': localite.id}) }}" class="border-2 border-red-600 py-2 px-4 items-center justify-center rounded hover:text-white hover:bg-red-600 text-center">Annuler</a>
+        </div>
+
+        {{ form_end(form) }}
+    </main>
 {% endblock %}

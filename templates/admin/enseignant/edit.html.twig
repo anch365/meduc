@@ -9,7 +9,7 @@
         <div class="mb-6 flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
             <div>
                 <a href="{{ path('app_enseignant_index', {'id': enseignant.id}) }}" class="text-sm text-vert hover:underline">
-                    <img src="{{ asset('/Icônes/retour.svg') }}" alt="Bouton en icone de reotur à la lsite des enseignants" class="w-8 md:w-16">
+                    <img src="{{ asset('/Icônes/retour.svg') }}" alt="Bouton en icone de retour à la lsite des enseignants" class="w-8 md:w-16">
                 </a>
                 <h1 class="font-display text-2xl font-bold text-vert-fonce mt-2">
                     Modifier l'enseignant
@@ -66,8 +66,8 @@
 
         {# ══════════ ACTIONS ══════════ #}
         <div class="flex flex-col gap-4 sm:flex-row">
-            <button type="submit" class="btn">Enregistrer les modifications</button>
-            <a href="{{ path('app_enseignant_index', {'id': enseignant.id}) }}" class="btn-header text-center">Annuler</a>
+            <button type="submit" class="btn-adm">Enregistrer</button>
+            <a href="{{ path('app_enseignant_index', {'id': enseignant.id}) }}" class="px-4 py-2 rounded-xl bg-red-600 hover:bg-red-500 text-white text-center">Annuler</a>
         </div>
 
         {{ form_end(form) }}

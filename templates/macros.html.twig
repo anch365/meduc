@@ -30,7 +30,7 @@
             </a>
 
             {# ── Les NUMÉROS DE PAGE : générés dynamiquement ! ── #}
-            <div class="flex flex-wrap justify-center gap-2 text-sm md:text-base text-vert-fonce">
+            <div class="flex flex-wrap justify-center gap-2 text-sm text-vert-fonce md:text-base">
                 {% for p in 1..totalPages %}
                     <a href="{{ path(route, {page: p, q: search, sort: sort, order: order}) }}"
                        {% if p == page %}aria-current="page"{% endif %}

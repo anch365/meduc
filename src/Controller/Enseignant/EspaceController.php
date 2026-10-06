@@ -2,16 +2,16 @@
 
 namespace App\Controller\Enseignant;
 
+use App\Entity\Utilisateur;
+use App\Form\ChangerMDPType;
 use App\Repository\AffectationRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-use App\Entity\Utilisateur;
-use App\Form\ChangerMotDePasseType;
-use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 #[Route('/espace')]
 #[IsGranted('ROLE_ENSEIGNANT')]
@@ -31,16 +31,32 @@ class EspaceController extends AbstractController
         // On traverse la relation 1-1 : compte → SON profil enseignant
         $enseignant = $utilisateur->getEnseignant();
 
-        // Son affectation actuelle (méthode déjà créée !)
+        // Son affectation actuelle (règle métier : date_fin IS NULL)
         $affectationActive = $affectationRepository->findUneActive($enseignant);
 
-        // ⭐ NOUVEAU : SON historique complet (méthode déjà créée en M9.3 !)
+        // Son historique complet (pour le compteur du bouton)
         $historique = $affectationRepository->findHistorique($enseignant);
 
         return $this->render('espace/dashboarde.html.twig', [
-            'enseignant' => $enseignant,
+            'enseignant'        => $enseignant,
             'affectationActive' => $affectationActive,
-            'historique' => $historique,
+            'historique'        => $historique,
+        ]);
+    }
+
+    #[Route('/historique', name: 'app_espace_historique')]
+    public function historique(AffectationRepository $affectationRepository): Response
+    {
+        $utilisateur = $this->getUser();
+        if (!$utilisateur instanceof Utilisateur) {
+            throw $this->createAccessDeniedException();
+        }
+
+        $enseignant = $utilisateur->getEnseignant();
+
+        return $this->render('espace/historique.html.twig', [
+            'enseignant' => $enseignant,
+            'historique' => $affectationRepository->findHistorique($enseignant),
         ]);
     }
 
@@ -57,11 +73,11 @@ class EspaceController extends AbstractController
             throw $this->createAccessDeniedException();
         }
 
-        $form = $this->createForm(ChangerMotDePasseType::class);
+        $form = $this->createForm(ChangerMDPType::class);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $ancien = $form->get('ancienMotDePasse')->getData();
+            $ancien  = $form->get('ancienMotDePasse')->getData();
             $nouveau = $form->get('nouveauMotDePasse')->getData();
 
             // Vérification n°1 : l'ancien mot de passe est-il correct ?

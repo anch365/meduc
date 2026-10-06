@@ -1,33 +1,111 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Localite{% endblock %}
+{% block title %}{{ localite.nom }} — MEDUC{% endblock %}
 
 {% block body %}
-    <h1>Localite</h1>
+    <main class="px-4 py-8 md:px-8 lg:px-16">
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ localite.id }}</td>
-            </tr>
-            <tr>
-                <th>Nom</th>
-                <td>{{ localite.nom }}</td>
-            </tr>
-            <tr>
-                <th>Ile</th>
-                <td>{{ localite.ile }}</td>
-            </tr>
-        </tbody>
-    </table>
+        {# ══════════ EN-TÊTE ══════════ #}
+        <div class="flex flex-col justify-between gap-4 mb-6 sm:flex-row sm:items-center">
+            <div>
+                <a href="{{ path('app_localite_index') }}" class="text-sm text-vert hover:underline">      
+                    <img src="{{ asset('/Icônes/retour.svg') }}" alt="Bouton en icône de reotur à la lsite des localités" class="w-8 md:w-16">
+                </a>
+                
+                <h1 class="font-display text-3xl font-bold text-vert-fonce mt-2">{{ localite.nom }}</h1>
+                <p class="text-slate-600 text-sm mt-1">{{ localite.ile }}</p>
+            </div>
 
-    <a href="{{ path('app_localite_index') }}">Retour à la liste</a>
+            {# ── Badge île (même système que la liste) ── #}
+            {% if localite.ile == 'Grande Comore' %}
+                <span class="bg-vert/15 text-vert-fonce font-semibold text-sm px-3 py-1 rounded-full self-start">Grande Comore</span>
+            {% elseif localite.ile == 'Anjouan' %}
+                <span class="bg-bleu/20 text-vert-fonce border border-bleu font-semibold text-sm px-3 py-1 rounded-full self-start">Anjouan</span>
+            {% else %}
+                <span class="bg-slate-200 text-slate-700 font-semibold text-sm px-3 py-1 rounded-full self-start">Mohéli</span>
+            {% endif %}
+        </div>
 
-    <a href="{{ path('app_localite_edit', {'id': localite.id}) }}">Modifier</a>
+        {# ══════════ INFOS + EN BREF ══════════ #}
+        <section class="flex flex-col gap-4 mb-6 sm:flex-row sm:justify-between sm:gap-2 md:gap-8 lg:px-16">
 
-    {{ include('localite/_delete_form.html.twig') }}
+            <div class="flex flex-col gap-4 bg-white rounded-lg shadow-md px-4 py-6 border border-vert-fonce sm:px-8 sm:w-full xl:px-16">
 
+                <h2 class="font-display text-xl font-bold text-vert-fonce">Informations</h2>
+
+                <dl class="flex flex-row gap-4 justify-between">
+                    <div class="flex flex-col gap-1">
+                        <dt class="text-sm text-slate-500">Nom</dt>
+                        <dd class="font-semibold">{{ localite.nom }}</dd>
+                    </div>
+                    <div class="flex flex-col gap-1">
+                        <dt class="text-sm text-slate-500">Île</dt>
+                        <dd class="font-semibold">{{ localite.ile }}</dd>
+                    </div>
+                </dl>
+
+                <div class="flex flex-col gap-2">
+                    <h2 class="font-display text-xl font-bold text-vert-fonce">En bref</h2>
+                    <p class="font-display text-4xl font-bold text-vert-fonce mt-4">{{ localite.etablissements|length }}</p>
+                    <p class="text-slate-600 text-sm">établissement(s)</p>
+                    <a href="{{ path('app_etablissement_new') }}" class="btn-adm mt-auto">+ Créer un établissement</a>
+                </div>
+            </div>
+        
+
+            {# ══════════ LES ÉTABLISSEMENTS DE LA LOCALITÉ ══════════ #}
+            <section class="bg-white rounded-lg shadow-md p-6 border border-vert-fonce sm:w-full">
+                <h2 class="font-display text-xl font-bold text-vert-fonce">Établissements de {{ localite.nom }}</h2>
+
+                <div class="overflow-x-auto mt-4">
+                    <table class="min-w-125 w-full text-left">
+                        <thead>
+                            <tr class="border-b-2 border-vert-fonce">
+                                <th class="px-4 py-3">Nom</th>
+                                <th class="px-4 py-3">Type</th>
+                                <th class="px-4 py-3">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-bleu/40">
+                            {% for etablissement in localite.etablissements %}
+                                <tr class="hover:bg-menthe transition">
+                                    <td class="px-4 py-3 font-semibold">{{ etablissement.nom }}</td>
+                                    <td class="px-4 py-3">
+                                        {% if etablissement.type == 'lycee' %}
+                                            <span class="bg-vert/15 text-vert-fonce font-semibold text-xs px-2 py-1 rounded-full">Lycée</span>
+                                        {% elseif etablissement.type == 'college' %}
+                                            <span class="bg-bleu/20 text-vert-fonce border border-bleu font-semibold text-xs px-2 py-1 rounded-full">Collège</span>
+                                        {% else %}
+                                            <span class="bg-slate-200 text-slate-700 font-semibold text-xs px-2 py-1 rounded-full">Primaire</span>
+                                        {% endif %}
+                                    </td>
+                                    <td class="px-4 py-3">
+                                        <a href="{{ path('app_etablissement_show', {'id': etablissement.id}) }}">                                            
+                                            <img src="{{ asset('/Icônes/voir.png') }}" alt="Icône oeil pour voir les informations d'un établissement d'une localité" class="w-8 md:w-6">
+                                        </a>
+                                    </td>
+                                </tr>
+                            {% else %}
+                                <tr>
+                                    <td colspan="3" class="px-4 py-12 text-center">
+                                        <p class="text-4xl mb-2">🏫</p>
+                                        <p class="text-slate-600 font-semibold">Aucun établissement dans cette localité</p>
+                                        <a href="{{ path('app_etablissement_new') }}" class="btn mt-4">+ Créer un établissement</a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </section>
+
+        {# ══════════ ACTIONS ══════════ #}
+        <div class="flex flex-wrap gap-4 mt-8">
+            <a href="{{ path('app_localite_edit', {'id': localite.id}) }}" class="btn">Modifier</a>
+        </div>
+
+    </main>
     {% include '_partials/_footer.html.twig' %}   
 
 {% endblock %}

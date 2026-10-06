@@ -14,6 +14,7 @@ use App\Repository\EnseignantRepository;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use App\Repository\AffectationRepository;
 
+
 #[Route('/admin/enseignant')]
 #[IsGranted('ROLE_ADMIN')]
 class EnseignantController extends AbstractController
@@ -47,7 +48,7 @@ class EnseignantController extends AbstractController
             'order'       => $order,
         ]);
     }
-    
+
     #[Route('/new', name: 'app_enseignant_new', methods: ['GET', 'POST'])]
     public function new(
         Request $request,
@@ -179,4 +180,5 @@ class EnseignantController extends AbstractController
             'historique' => $historique,
         ]);
     }
+
 }

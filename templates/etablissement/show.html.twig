@@ -3,8 +3,7 @@
 {% block title %}{{ etablissement.nom }} — MEDUC{% endblock %}
 
 {% block body %}
-    <main class="container mx-auto px-4 py-8 md:px-8 lg:px-16">
-
+    <section class="pb-16">
         {# ══════════ EN-TÊTE ══════════ #}
         <div class="flex flex-col justify-between gap-4 mb-6 sm:flex-row sm:items-center">
             <div>
@@ -68,7 +67,7 @@
         </section>
 
         {# ══════════ TABLEAU : LES ENSEIGNANTS EN POSTE (M6.9) ══════════ #}
-        <section class="bg-white rounded-lg shadow-md p-6 border-t-2 border-green-800">
+        <section class="bg-white rounded-lg shadow-md p-6 border-t border-green-800">
             <h2 class="font-display text-xl font-bold text-vert-fonce">Enseignants en poste</h2>
 
             <div class="overflow-x-auto mt-4">
@@ -112,7 +111,7 @@
 
         {# ══════════ ACTIONS ══════════ #}
         <div class="flex flex-wrap gap-4 mt-8">
-            <a href="{{ path('app_etablissement_edit', {'id': etablissement.id}) }}" class="btn">Modifier</a>
+            <a href="{{ path('app_etablissement_edit', {'id': etablissement.id}) }}" class="btn-adm">Modifier</a>
 
             <form
                 method="post"
@@ -120,11 +119,8 @@
                 onsubmit="return confirm('⚠️ Supprimer définitivement {{ etablissement.nom }} ? Cette action est irréversible.');"
             >
                 <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ etablissement.id) }}">
-                <button class="text-red-700 hover:text-white hover:bg-red-700 rounded-xl p-2 border-2 border-red-700 font-semibold">Supprimer</button>
+                <button class="text-red-700 hover:text-white hover:bg-red-700 rounded p-2 border-2 border-red-700 font-semibold">Supprimer</button>
             </form>
         </div>
-    </main>
-
-    {% include '_partials/_footer.html.twig' %}   
-
+    </section>
 {% endblock %}

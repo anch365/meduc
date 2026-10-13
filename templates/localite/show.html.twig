@@ -3,7 +3,7 @@
 {% block title %}{{ localite.nom }} — MEDUC{% endblock %}
 
 {% block body %}
-    <main class="px-4 py-8 md:px-8 lg:px-16">
+    <section class="pb-16">
 
         {# ══════════ EN-TÊTE ══════════ #}
         <div class="flex flex-col justify-between gap-4 mb-6 sm:flex-row sm:items-center">
@@ -102,10 +102,8 @@
 
         {# ══════════ ACTIONS ══════════ #}
         <div class="flex flex-wrap gap-4 mt-8">
-            <a href="{{ path('app_localite_edit', {'id': localite.id}) }}" class="btn">Modifier</a>
+            <a href="{{ path('app_localite_edit', {'id': localite.id}) }}" class="btn-adm">Modifier</a>
         </div>
 
-    </main>
-    {% include '_partials/_footer.html.twig' %}   
-
+    </section>
 {% endblock %}

@@ -3,8 +3,7 @@
 {% block title %}Transférer — {{ enseignant.utilisateur.prenom }} {{ enseignant.utilisateur.nom }}{% endblock %}
 
 {% block body %}
-    <main class="container mx-auto px-4 py-8 max-w-3xl">
-
+    <section class="pb-16 md:px-16">
         {# ══════════ EN-TÊTE ══════════ #}
         <div class="mb-6">
             <a href="{{ path('app_affectation_index', {'id': enseignant.id}) }}" class="text-sm text-vert hover:underline">
@@ -40,49 +39,48 @@
             {{ form_start(form, {attr: {novalidate: true}}) }}
 
             {# ── CARTE 1 : SITUATION ACTUELLE (lecture seule, le contexte) ── #}
-            <section class="bg-white rounded-lg shadow-md p-6 border-t-4 border-bleu mb-6">
-                <h2 class="font-display text-xl font-bold text-vert-fonce">Situation actuelle</h2>
+            <section class="flex flex-col gap-8 md:flex-row md:justify-between">
+                <section class="bg-white rounded-lg shadow-md p-6 border-t border-green-800 mb-6 lg:px-16">
+                    <h2 class="font-display text-xl font-bold text-vert-fonce">Situation actuelle</h2>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-                    <div class="bg-menthe rounded p-4">
-                        <p class="text-xs text-slate-500">Établissement</p>
-                        <p class="font-semibold mt-1">{{ enseignant.affectationActive.etablissement.nom }}</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                        <div class="bg-menthe rounded p-4">
+                            <p class="text-xs text-slate-500">Établissement</p>
+                            <p class="font-semibold mt-1">{{ enseignant.affectationActive.etablissement.nom }}</p>
+                        </div>
+                        <div class="bg-menthe rounded p-4">
+                            <p class="text-xs text-slate-500">Classe</p>
+                            <p class="font-semibold mt-1">{{ enseignant.affectationActive.classe }}</p>
+                        </div>
+                        <div class="bg-menthe rounded p-4">
+                            <p class="text-xs text-slate-500">Matière</p>
+                            <p class="font-semibold mt-1">{{ enseignant.affectationActive.matiere }}</p>
+                        </div>
+                        <div class="bg-menthe rounded p-4">
+                            <p class="text-xs text-slate-500">Depuis le</p>
+                            <p class="font-semibold mt-1">{{ enseignant.affectationActive.dateDebut|date('d/m/Y') }}</p>
+                        </div>
                     </div>
-                    <div class="bg-menthe rounded p-4">
-                        <p class="text-xs text-slate-500">Classe</p>
-                        <p class="font-semibold mt-1">{{ enseignant.affectationActive.classe }}</p>
-                    </div>
-                    <div class="bg-menthe rounded p-4">
-                        <p class="text-xs text-slate-500">Matière</p>
-                        <p class="font-semibold mt-1">{{ enseignant.affectationActive.matiere }}</p>
-                    </div>
-                    <div class="bg-menthe rounded p-4">
-                        <p class="text-xs text-slate-500">Depuis le</p>
-                        <p class="font-semibold mt-1">{{ enseignant.affectationActive.dateDebut|date('d/m/Y') }}</p>
-                    </div>
-                </div>
-            </section>
+                </section>
 
-            {# ── CARTE 2 : NOUVELLE AFFECTATION (le formulaire) ── #}
-            <section class="bg-white rounded-lg shadow-md p-6 border-t-4 border-vert-fonce mb-6">
-                <h2 class="font-display text-xl font-bold text-vert-fonce">Nouvelle affectation</h2>
+                {# ── CARTE 2 : NOUVELLE AFFECTATION (le formulaire) ── #}
+                <section class="bg-white rounded-lg shadow-md p-6 border-t border-green-800 mb-6 lg:px-16">
+                    <h2 class="font-display text-xl font-bold text-vert-fonce">Nouvelle affectation</h2>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-                    {{ form_row(form.etablissement) }}
-                    {{ form_row(form.dateTransfert) }}
-                </div>
+                    <div class="flex flex-col gap-4 mt-4 lg:">
+                        {{ form_row(form.etablissement) }}
+                        {{ form_row(form.dateTransfert) }}
+                    </div>
+                </section>
             </section>
 
             {# ── ACTIONS ── #}
-            <div class="flex flex-col sm:flex-row gap-4">
-                <button type="submit" class="btn">Confirmer le transfert</button>
-                <a href="{{ path('app_affectation_index', {'id': enseignant.id}) }}" class="btn-header text-center">Annuler</a>
+            <div class="flex flex-col gap-4 sm:flex-row">
+                <button type="submit" class="btn-adm">Confirmer</button>
+                <a href="{{ path('app_affectation_index', {'id': enseignant.id}) }}" class="px-4 py-2 rounded bg-red-600 hover:bg-red-500 text-white text-center">Annuler</a>
             </div>
 
             {{ form_end(form) }}
         {% endif %}
-    </main>
-
-    {% include '_partials/_footer.html.twig' %}   
-
+    </section>
 {% endblock %}

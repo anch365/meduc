@@ -3,10 +3,9 @@
 {% block title %}Enseignants archivés — MEDUC{% endblock %}
 
 {% block body %}
-    <main class="px-4 py-8 md:px-8 lg:px-16">
-
+    <section class="pb-16">
         {# ══════════ EN-TÊTE ══════════ #}
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6">
             <div>
                 <a href="{{ path('app_enseignant_index') }}" class="text-sm text-vert hover:underline">
                     <img src="{{ asset('/Icônes/retour.svg') }}" alt="Bouton en icone de reotur à la lsite des enseignants" class="w-8 md:w-16">
@@ -91,9 +90,5 @@
                 </table>
             </div>
         </div>
-
-    </main>
-
-    {% include '_partials/_footer.html.twig' %}   
-
+    </section>       
 {% endblock %}

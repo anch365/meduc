@@ -4,7 +4,7 @@
 
 {% block body %}
     {% import 'macros.html.twig' as m %}
-    <main class="px-4 py-8 md:px-8 lg:px-16">
+    <section class="pb-16">
 
         {# ══════════ EN-TÊTE ══════════ #}
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
@@ -102,7 +102,6 @@
             {# ══════════ PAGINATION (macro partagée !) ══════════ #}
             {{ m.pagination('app_localite_index', page, totalPages, search, sort, order) }}
         </div>
-    </main>
-    {% include '_partials/_footer.html.twig' %}   
+    </section>
 
 {% endblock %}

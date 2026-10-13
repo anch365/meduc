@@ -26,8 +26,7 @@
             </span>
         </a>
     {% endmacro %}
-    <main class="px-4 py-8 md:px-8 lg:px-16">
-
+    <section class="pb-16">
         {# ══════════ EN-TÊTE ══════════ #}
         <div class="flex flex-col justify-between gap-4 mb-6 sm:flex-row sm:items-center">
             <div>
@@ -142,9 +141,7 @@
             </div>
 
             {# ══════════ PAGINATION (macro partagée) ══════════ #}
-            {{ m.pagination('app_affectation_index', page, totalPages, search, sort, order) }}        </div>
-    </main>
-
-    {% include '_partials/_footer.html.twig' %}  
-     
+            {{ m.pagination('app_affectation_index', page, totalPages, search, sort, order) }}        
+        </div>
+    </section>
 {% endblock %}

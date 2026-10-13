@@ -3,11 +3,11 @@
 {% block title %}Connexion — MEDUC{% endblock %}
 
 {% block body %}
-	<main class="flex-1">
-		<div class="flex flex-col lg:flex-row lg:h-screen">
+	
+		<div class="w-[calc(100%+2rem)] flex flex-col h-screen lg:justify-center lg:flex-row lg:gap-32 lg:-mx-16">
 
 			{# ── Colonne gauche : image + voile + texte ── #}
-			<section class="relative hidden flex-col items-center justify-center text-white overflow-hidden -mt-24 lg:min-h-[calc(100vh-4rem)] lg:flex lg:flex-1">
+			<section class="relative hidden flex-col items-center justify-center text-white overflow-hidden -mt-32 lg:min-h-[calc(100vh-4rem)] lg:flex lg:flex-1">
 				<img
 					src="{{ asset('imgs/comoressoprano.webp') }}"
 					alt=""
@@ -26,7 +26,7 @@
 			</section>
 
 			{# ── Colonne droite : le formulaire, centré ── #}
-			<section class="flex flex-1 items-center justify-center p-6">
+			<section class="flex flex-1 items-center justify-center px-6">
 				<div class="w-full max-w-md bg-white rounded-lg shadow-md p-8">
 
 					<h1 class="font-display text-2xl font-bold text-vert-fonce text-center lg:hidden mb-4">MEDUC</h1>
@@ -88,7 +88,6 @@
 					</form>
 				</div>
 			</section>
-
 		</div>
-	</main>
+	{% block footer %}{% endblock %}
 {% endblock %}

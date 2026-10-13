@@ -4,8 +4,7 @@
 
 {% block body %}
     {% import 'macros.html.twig' as m %}
-    <main class="px-4 py-8 md:px-8 lg:px-16">
-
+    <section class="pb-12">
         {# ══════════ 1. EN-TÊTE : titre + compteur + action ══════════ #}
         <div class="flex flex-col gap-4 mb-6 md:flex-row md:items-center md:justify-between">
             <div>
@@ -53,10 +52,10 @@
             {% endif %}
         </form>
         {# ══════════ 2. LA CARTE (contient le tableau) ══════════ #}
-        <div class="bg-white rounded-lg shadow-md overflow-hidden">
+        <div class="bg-white rounded-lg shadow-md overflow-hidden pb-8">
 
             {# ══════════ 3. TABLEAU (scrollable sur mobile) ══════════ #}
-            <div class="overflow-x-auto mb-8">
+            <div class="overflow-x-auto pb-8">
                 <table class="min-w-175 w-full text-center">
                     <thead>
                         <tr class="border-b-2 border-vert-fonce">
@@ -136,11 +135,9 @@
                         {% endfor %}
                     </tbody>
                 </table>
-                {{ m.pagination('app_enseignant_index', page, totalPages, search, sort, order) }}
             </div>
-        </div>
-    </main>
-    
-    {% include '_partials/_footer.html.twig' %}   
+            {{ m.pagination('app_enseignant_index', page, totalPages, search, sort, order) }}
 
+        </div>
+    </section>
 {% endblock %}

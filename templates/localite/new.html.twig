@@ -3,7 +3,7 @@
 {% block title %}Créer une localité — MEDUC{% endblock %}
 
 {% block body %}
-    <main class="container mx-auto px-4 py-8 max-w-3xl">
+    <section class="pb-16 lg:px-40">
 
         {# ══════════ EN-TÊTE : retour vers la liste ══════════ #}
         <div class="mb-6">
@@ -20,23 +20,23 @@
         {{ form_start(form, {attr: {novalidate: true}}) }}
 
         {# ══════════ CARTE UNIQUE ══════════ #}
-        <section class="bg-white rounded-lg shadow-md p-6 border border-green-900 mb-6">
+        <section class="flex flex-col gap-8 bg-white rounded-lg shadow-md p-6 border border-green-900 mb-6 md:px-16">
             <h2 class="font-display text-xl font-bold text-vert-fonce">Informations</h2>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
                 {{ form_row(form.nom) }}
                 {{ form_row(form.ile) }}
             </div>
-        </section>
-
-        {# ══════════ ACTIONS ══════════ #}
-        <div class="flex flex-col sm:flex-row gap-4">
+                    <div class="flex flex-col sm:flex-row gap-4">
             <button type="submit" class="btn-adm">Créer la localité</button>
             <a href="{{ path('app_localite_index') }}" class="text-center border-2 border-red-600 py-2 px-4 items-center justify-center rounded hover:text-white hover:bg-red-600">Annuler</a>
         </div>
 
+
+        </section>
+
+        {# ══════════ ACTIONS ══════════ #}
         {{ form_end(form) }}
     </main>
-    {% include '_partials/_footer.html.twig' %}   
 
 {% endblock %}

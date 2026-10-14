@@ -3,7 +3,7 @@
 {% block title %}Modifier — {{ localite.nom }}{% endblock %}
 
 {% block body %}
-    <section class="pb-16 lg:px-40">
+    <section class="pb-16 lg:px-40 2xl:px-48">
 
         {# ══════════ EN-TÊTE : contexte + retour ══════════ #}
         <div class="mb-6">
@@ -21,19 +21,19 @@
         {{ form_start(form, {attr: {novalidate: true}}) }}
 
         {# ══════════ CARTE UNIQUE ══════════ #}
-        <section class="flex flex-col gap-8 bg-white rounded-lg shadow-md p-6 border border-green-900 mb-6 md:px-16">
+        <section class="flex flex-col gap-8 bg-white rounded-lg shadow-md p-6 border border-green-900 mb-6 md:px-16  2xl:px-40">
             <h2 class="font-display text-xl font-bold text-vert-fonce">Informations</h2>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
                 {{ form_row(form.nom) }}
                 {{ form_row(form.ile) }}
             </div>
-                    <div class="flex flex-col sm:flex-row gap-4">
-            <button type="submit" class="btn-adm">Créer la localité</button>
-            <a href="{{ path('app_localite_index') }}" class="text-center border-2 border-red-600 py-2 px-4 items-center justify-center rounded hover:text-white hover:bg-red-600">Annuler</a>
-        </div>
+            <div class="flex flex-col sm:flex-row gap-4">
+                <button type="submit" class="btn-adm">Créer la localité</button>
+                <a href="{{ path('app_localite_index') }}" class="text-center border-2 border-red-600 py-2 px-4 items-center justify-center rounded hover:text-white hover:bg-red-600">Annuler</a>
+            </div>
         </section>
 
         {{ form_end(form) }}
-    </main>
+        </main>
 {% endblock %}

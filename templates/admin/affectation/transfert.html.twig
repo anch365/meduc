@@ -3,7 +3,7 @@
 {% block title %}Transférer — {{ enseignant.utilisateur.prenom }} {{ enseignant.utilisateur.nom }}{% endblock %}
 
 {% block body %}
-    <section class="pb-16 md:px-16">
+    <section class="pb-16 md:px-16 lg:px-24 2xl:px-56">
         {# ══════════ EN-TÊTE ══════════ #}
         <div class="mb-6">
             <a href="{{ path('app_affectation_index', {'id': enseignant.id}) }}" class="text-sm text-vert hover:underline">
@@ -67,7 +67,7 @@
                 <section class="bg-white rounded-lg shadow-md p-6 border-t border-green-800 mb-6 lg:px-16">
                     <h2 class="font-display text-xl font-bold text-vert-fonce">Nouvelle affectation</h2>
 
-                    <div class="flex flex-col gap-4 mt-4 lg:">
+                    <div class="flex flex-col gap-4 mt-4 2xl:flex-row 2xl:gap-16">
                         {{ form_row(form.etablissement) }}
                         {{ form_row(form.dateTransfert) }}
                     </div>

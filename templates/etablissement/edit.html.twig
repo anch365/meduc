@@ -20,25 +20,27 @@
         {{ form_start(form, {attr: {novalidate: true}}) }}
 
         {# ══════════ CARTE UNIQUE : les 3 champs ══════════ #}
-        <section class="flex flex-col gap-8 bg-white rounded-lg shadow-md p-6 border-t-2 border-green-800 mb-6 sm:px-16 md:px-16 md:mx-8 lg:px-16 lg:mx-40">
+        <section class="flex flex-col gap-4 bg-white rounded-lg shadow-md p-6 border-t border-green-800 mb-6 md:gap-8 md:px-16">
             <h2 class="font-display text-xl font-bold text-vert-fonce">Informations générales</h2>
 
             <div class="flex flex-col gap-4 mt-4">
-                <div class="flex flex-col gap-4 sm:flex-row sm:justify-between">
+                <div class="sm:flex sm:flex-row sm:justify-between">
                     {{ form_row(form.nom) }}
                     {{ form_row(form.type) }}
+                    {{ form_row(form.localite) }}
                 </div>
-
-                {{ form_row(form.localite) }}
+                <div>
+                    {{ form_widget(form.actif) }}
+                </div>
             </div>
 
-            {# ══════════ ACTIONS ══════════ #}
-            <div class="flex flex-col gap-4 sm:flex-row sm:gap-8">
-                <button type="submit" class="btn-adm">Enregistrer</button>
-                <a href="{{ path('app_etablissement_show', {'id': etablissement.id}) }}" class="px-4 py-2 rounded bg-red-600 hover:bg-red-500 text-white text-center">Annuler</a>
+            <div class="flex flex-col gap-4 sm:flex-row">
+                <button type="submit" class="btn-adm">Créer l'établissement</button>
+                <a href="{{ path('app_etablissement_index') }}" class="px-4 py-2 rounded bg-red-700 hover:bg-red-500 text-white text-center">Annuler</a>
             </div>
 
         </section>
+
     </section>
 
 {% endblock %}

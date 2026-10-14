@@ -41,11 +41,17 @@
 
         {# ── Colonne image + CTA posé dessus ── #}
         <div class="relative w-full">
+          
             <img
-                src="{{ asset('imgs/Accueil-CTA.webp') }}"
-                alt="Une école de l'Union des Comores"
+                src="{{ asset('imgs/tof-CTA.webp') }}"
+                alt="Présentation du projet MEDUC"
                 class="w-full h-80 object-cover rounded-lg shadow-lg md:h-64 lg:h-96"
+                fetchpriority="high"
+                decoding="async"
+                width="595"
+                height="548"
             >
+
 
             {# ── Carte CTA sur l'image (le bouton blanc ressort bien) ── #}
             <div class="absolute bottom-4 left-4 right-4 bg-white/90 rounded-lg shadow-lg p-4 flex flex-col sm:flex-row items-center justify-between gap-3">
@@ -59,12 +65,12 @@
 
     {# ══════════ 4 CARTES (wireframe : 4 cartes identiques) ══════════ #}
     <section id="fonctionnalites" class="bg-white py-12 ">
-        <div class="container mx-auto px-4">
+        <div class=" px-4">
             <h2 class="font-display text-2xl sm:text-3xl font-bold text-black text-center">
                 Une plateforme, quatre missions
             </h2>
 
-            <div class="flex flex-col mt-8 gap-6 sm:flex-row">
+            <div class="flex flex-col mt-8 gap-6 md:flex-row">
                 <article
                     class="bg-green-600/70 border rounded-lg p-6 border-vert-fonce
                 transition duration-300 ease-in-out hover:-translate-y-1 hover:shadow-lg hover:bg-green-600"
@@ -105,7 +111,7 @@
     </section>
 
     {# ══════════ 3 COLONNES  ══════════ #}
-    <section class="relative left-1/2 w-screen -translate-x-1/2 bg-menthe px-4 text-black py-12 md:px-16">
+    <section class="relative left-1/2 w-screen -translate-x-1/2 bg-menthe px-4 text-black py-12 md:px-16 lg:px-32">
         <div class="flex flex-col px-4 gap-8 md:flex-row">
             <div>
                 <div class="h-10 w-10 rounded bg-white/10 flex items-center justify-center text-xl">🎯</div>

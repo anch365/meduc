@@ -40,8 +40,9 @@ class EnseignantRepository extends ServiceEntityRepository
             ->where('u.actif = true');
 
         if ($search) {
-            $qb->andWhere('u.nom LIKE :search OR u.prenom LIKE :search OR u.matricule LIKE :search OR u.email LIKE :search')
-                ->setParameter('search', '%' . $search . '%');
+            $qb->andWhere('u.nom LIKE :search OR u.prenom LIKE :search OR u.matricule LIKE :search OR 
+            u.email LIKE :search')
+            ->setParameter('search', '%' . $search . '%');
         }
 
         $orderBy = match ($sort) {
@@ -58,7 +59,7 @@ class EnseignantRepository extends ServiceEntityRepository
 
         return ['items' => $qb->getQuery()->getResult(), 'total' => (int) $total];
     }
-    
+
     /**
      * Les enseignants dont le compte est INACTIF (archivés).
      */

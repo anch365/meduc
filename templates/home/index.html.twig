@@ -25,7 +25,7 @@
                 simple et plus transparente.
             </p>
 
-            <div class="flex gap-8 flex-row lg:gap-16 lg:flex-row">
+            <div class="flex gap-8 flex-col sm:flex-row lg:gap-16 ">
                 {% if app.user %}
                     {% if is_granted('ROLE_ADMIN') %}
                         <a href="{{ path('app_admin_dashboard') }}" class="btn-adm items-center">Accéder à mon espace</a>

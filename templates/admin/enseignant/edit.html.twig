@@ -7,9 +7,31 @@
         {# ══════════ EN-TÊTE : contexte + retour ══════════ #}
         <div class="mb-6 flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
             <div>
-                <a href="{{ path('app_enseignant_index', {'id': enseignant.id}) }}" class="text-sm text-vert hover:underline">
-                    <img src="{{ asset('/Icônes/retour.svg') }}" alt="Bouton en icone de retour à la lsite des enseignants" class="w-8 md:w-16">
-                </a>
+            <a
+                href="{{ path('app_enseignant_index') }}"
+                class="inline-flex items-center gap-2 rounded-lg border border-blue-200
+               bg-white px-4 py-2.5 text-sm font-semibold text-blue-700
+                transition-colors hover:bg-blue-50 
+                focus-visible:outline-none focus-visible:ring-2
+                focus-visible:ring-blue-600 focus-visible:ring-offset-2">
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                >
+                    <path d="M19 12H5"/>
+                    <path d="m12 19-7-7 7-7"/>
+                </svg>
+
+                <span>Retour</span>
+            </a>            
                 <h1 class="font-display text-2xl font-bold text-vert-fonce mt-2">
                     Modifier l'enseignant
                 </h1>
@@ -78,7 +100,7 @@
         {# ══════════ ACTIONS ══════════ #}
         <div class="flex flex-col gap-4 sm:flex-row">
             <button type="submit" class="btn-adm">Enregistrer</button>
-            <a href="{{ path('app_enseignant_index', {'id': enseignant.id}) }}" class="px-4 py-2 rounded bg-red-600 hover:bg-red-500 text-white text-center">Annuler</a>
+            <a href="{{ path('app_enseignant_index', {'id': enseignant.id}) }}" class="border-2 py-2 px-4 items-center justify-center rounded text-center text-white bg-red-500 hover:bg-red-600">Annuler</a>
         </div>
 
         {{ form_end(form) }}

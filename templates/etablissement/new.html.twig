@@ -9,11 +9,11 @@
 
             <a
                 href="{{ path('app_etablissement_index') }}"
-                class="inline-flex items-center gap-2 rounded-lg border border-green-200
-                bg-white px-4 py-2.5 mb-4 text-sm font-semibold text-green-700
-                transition-colors hover:bg-green-50
+                class="inline-flex items-center gap-2 rounded-lg border border-blue-200
+               bg-white px-4 py-2.5 text-sm font-semibold text-blue-700
+                transition-colors hover:bg-blue-50 
                 focus-visible:outline-none focus-visible:ring-2
-                focus-visible:ring-green-600 focus-visible:ring-offset-2">
+                focus-visible:ring-blue-600 focus-visible:ring-offset-2">
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="20"
@@ -30,7 +30,7 @@
                     <path d="m12 19-7-7 7-7"/>
                 </svg>
 
-                <span>Retour à la liste</span>
+                <span>Retour</span>
             </a>            
             
             <h1 class="font-display text-2xl font-bold text-vert-fonce mt-2">Créer un établissement</h1>
@@ -59,7 +59,7 @@
 
             <div class="flex flex-col gap-4 sm:flex-row">
                 <button type="submit" class="btn-adm">Créer l'établissement</button>
-                <a href="{{ path('app_etablissement_index') }}" class="px-4 py-2 rounded bg-red-700 hover:bg-red-500 text-white text-center">Annuler</a>
+                <a href="{{ path('app_etablissement_index') }}" class="border-2 py-2 px-4 items-center justify-center rounded text-center text-white bg-red-500 hover:bg-red-600">Annuler</a>
             </div>
 
         </section>

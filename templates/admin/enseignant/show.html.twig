@@ -3,15 +3,13 @@
 {% block title %}Fiche — {{ enseignant.utilisateur.prenom }} {{ enseignant.utilisateur.nom }}{% endblock %}
 
 {% block body %}
-
     <a
         href="{{ path('app_enseignant_index') }}"
         class="inline-flex items-center gap-2 rounded-lg border border-green-200
            bg-white px-4 py-2.5 text-sm font-semibold text-green-700
            transition-colors hover:bg-green-50
            focus-visible:outline-none focus-visible:ring-2
-           focus-visible:ring-green-600 focus-visible:ring-offset-2"
-    >
+           focus-visible:ring-green-600 focus-visible:ring-offset-2">
         <svg
             xmlns="http://www.w3.org/2000/svg"
             width="20"

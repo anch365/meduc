@@ -10,7 +10,7 @@
                bg-white px-4 py-2.5 text-sm font-semibold text-blue-700
                 transition-colors hover:bg-blue-50 
                 focus-visible:outline-none focus-visible:ring-2
-                focus-visible:ring-blue-600 focus-visible:ring-offset-2 mb-16">
+                focus-visible:ring-blue-600 focus-visible:ring-offset-2 mb-16" aria-label="Bouton de retour">
             <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="20"
@@ -185,11 +185,11 @@
 
         {# ══════════ 5. ACTIONS ══════════ #}
         <div class="flex flex-wrap gap-4 pt-8 pb-16">
-            <a href="{{ path('app_enseignant_edit', {'id': enseignant.id}) }}" class="btn-adm">Modifier</a>
+            <a href="{{ path('app_enseignant_edit', {'id': enseignant.id}) }}" class="btn-adm" aria-label="Bouton de modification">Modifier</a>
             
             {# Transférer : uniquement si en poste ET pas retraité (règles métier !) #}
             {% if enseignant.affectationActive and not enseignant.estRetraite %}
-                <a href="{{ path('app_affectation_transfert') }}">Transférer</a>
+                <a href="{{ path('app_affectation_transfert') }}" aria-label="Bouton de transfert">Transférer</a>
             {% endif %}
         </div>
     </section>

@@ -32,11 +32,11 @@
             <div>
                 <h1 class="font-display text-2xl font-bold text-vert-fonce">Les affectations</h1>
             </div>
-            <a href="{{ path('app_affectation_new') }}" class="btn-adm">+ Nouvelle affectation</a>
+            <a href="{{ path('app_affectation_new') }}" class="btn-adm" aria-label="Bouton pour faire une nouvelle affectation">+ Nouvelle affectation</a>
         </div>
 
         {# ══════════ BARRE DE RECHERCHE ══════════ #}
-        <form method="get" action="{{ path('app_affectation_index') }}" class="mb-6">
+        <form method="get" action="{{ path('app_affectation_index') }}" class="mb-6" aria-label="Barre de recherche">
 
             {# On conserve le tri courant pendant la recherche (sinon il se perd) #}
             <input type="hidden" name="sort" value="{{ sort }}">
@@ -62,7 +62,7 @@
             </div>
 
             {% if search %}
-                <a href="{{ path('app_affectation_index') }}" class="btn-header text-center mt-3 inline-block">
+                <a href="{{ path('app_affectation_index') }}" class="btn-header text-center mt-3 inline-block" aria-label="Effacer la recherche">
                     Effacer la recherche
                 </a>
             {% endif %}
@@ -77,7 +77,8 @@
                             <th class="px-4 py-3">{{ m.sortable('Établissement', 'etablissement', 'app_affectation_index', sort, order, search) }}</th>
                             <th class="px-4 py-3">{{ m.sortable('Classe', 'classe', 'app_affectation_index', sort, order, search) }}</th>
                             <th class="px-4 py-3">{{ m.sortable('Matière', 'matiere', 'app_affectation_index', sort, order, search) }}</th>
-                            <th class="px-4 py-3">{{ m.sortable('Début', 'debut', 'app_affectation_index', sort, order, search) }}</th>                            <th class="px-4 py-3">Fin</th>
+                            <th class="px-4 py-3">{{ m.sortable('Début', 'debut', 'app_affectation_index', sort, order, search) }}</th>                            
+                            <th class="px-4 py-3">Fin</th>
                             <th class="px-4 py-3">Statut</th>
                             <th class="px-4 py-3">Actions</th>
                         </tr>
@@ -103,7 +104,7 @@
                                     {% endif %}
                                 </td>
                                 <td class="px-4 py-3">
-                                    <a href="{{ path('app_affectation_transfert', {'id': affectation.id}) }}" class="">
+                                    <a href="{{ path('app_affectation_transfert', {'id': affectation.id}) }}" aria-label="Icône pour tranferer un enseignant">
                                         <svg
                                             xmlns="http://www.w3.org/2000/svg"
                                             fill="none"
@@ -131,7 +132,7 @@
                                         {{ search ? 'Aucun résultat pour « ' ~ search ~ ' »' : 'Aucune affectation' }}
                                     </p>
                                     {% if search %}
-                                        <a href="{{ path('app_affectation_index') }}" class="btn mt-4">Effacer la recherche</a>
+                                        <a href="{{ path('app_affectation_index') }}" class="btn mt-4" aria-label="Bouton pour effacer une recherche">Effacer la recherche</a>
                                     {% endif %}
                                 </td>
                             </tr>

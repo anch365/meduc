@@ -13,7 +13,7 @@
                bg-white px-4 py-2.5 text-sm font-semibold text-blue-700
                 transition-colors hover:bg-blue-50 
                 focus-visible:outline-none focus-visible:ring-2
-                focus-visible:ring-blue-600 focus-visible:ring-offset-2 mb-16">
+                focus-visible:ring-blue-600 focus-visible:ring-offset-2 mb-16" aria-label="Bouton de retour">
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="20"
@@ -80,7 +80,7 @@
                                 <td class="px-4 py-3">
                                     <div class="flex justify-between items-center gap-2">
                                         <a href="{{ path('app_enseignant_show', {'id': enseignant.id}) }}" class="btn-voir">                                            
-                                            <img src="{{ asset('/Icônes/voir.png') }}" alt="Icône oeil pour voir les informations d'un enseignant archivé" class="w-8 md:w-6">
+                                            <img src="{{ asset('/Icônes/voir.png') }}" alt="Bouton en icône oeil pour voir les informations d'un enseignant archivé" class="w-8 md:w-6">
                                         </a>
 
                                         {# ⭐ L'action INVERSÉE : Désarchiver (POST + CSRF) #}

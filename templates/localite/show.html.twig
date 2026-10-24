@@ -14,7 +14,7 @@
                bg-white px-4 py-2.5 text-sm font-semibold text-blue-700
                 transition-colors hover:bg-blue-50 
                 focus-visible:outline-none focus-visible:ring-2
-                focus-visible:ring-blue-600 focus-visible:ring-offset-2 mb-16">
+                focus-visible:ring-blue-600 focus-visible:ring-offset-2 mb-16" aria-label="Bouton de retour">
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="20"
@@ -67,10 +67,10 @@
                 </dl>
 
                 <div class="flex flex-col gap-2">
-                    <h2 class="font-display text-xl font-bold text-vert-fonce">En bref</h2>
+                    <h2 class="font-display text-xl font-bold text-vert-fonce">En résumé</h2>
                     <p class="font-display text-4xl font-bold text-vert-fonce mt-4">{{ localite.etablissements|length }}</p>
                     <p class="text-slate-600 text-sm">établissement(s)</p>
-                    <a href="{{ path('app_etablissement_new') }}" class="btn-adm mt-auto">+ Créer un établissement</a>
+                    <a href="{{ path('app_etablissement_new') }}" class="btn-adm mt-auto" aria-label="Bouton pour créer un établissement">+ Créer un établissement</a>
                 </div>
             </div>
         
@@ -103,7 +103,7 @@
                                     </td>
                                     <td class="px-4 py-3">
                                         <a href="{{ path('app_etablissement_show', {'id': etablissement.id}) }}">                                            
-                                            <img src="{{ asset('/Icônes/voir.png') }}" alt="Icône oeil pour voir les informations d'un établissement d'une localité" class="w-8 md:w-6">
+                                            <img src="{{ asset('/Icônes/voir.png') }}" alt="Bouton en icône oeil pour voir les informations d'un établissement d'une localité" class="w-8 md:w-6">
                                         </a>
                                     </td>
                                 </tr>
@@ -112,7 +112,7 @@
                                     <td colspan="3" class="px-4 py-12 text-center">
                                         <p class="text-4xl mb-2">🏫</p>
                                         <p class="text-slate-600 font-semibold">Aucun établissement dans cette localité</p>
-                                        <a href="{{ path('app_etablissement_new') }}" class="btn mt-4">+ Créer un établissement</a>
+                                        <a href="{{ path('app_etablissement_new') }}" class="btn mt-4" aria-label="Bouton pour créer un établissement">+ Créer un établissement</a>
                                     </td>
                                 </tr>
                             {% endfor %}
@@ -124,7 +124,7 @@
 
         {# ══════════ ACTIONS ══════════ #}
         <div class="flex flex-wrap gap-4 mt-8">
-            <a href="{{ path('app_localite_edit', {'id': localite.id}) }}" class="btn-adm">Modifier</a>
+            <a href="{{ path('app_localite_edit', {'id': localite.id}) }}" class="btn-adm" aria-label="Bouton de modification">Modifier</a>
         </div>
 
     </section>

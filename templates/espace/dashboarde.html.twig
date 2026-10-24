@@ -3,7 +3,7 @@
 {% block title %}Mon espace — MEDUC{% endblock %}
 
 {% block body %}
-    <section class="flex flex-col gap-8 px-4 py-8 md:px-8 md:py-16 lg:px-16 xl:px-32 2xl:px-40">
+    <section class="flex flex-col gap-8 px-4 py-8 md:px-8 lg:px-16 2xl:px-40">
 
         {# ══════════ EN-TÊTE ══════════ #}
         <div>
@@ -93,24 +93,9 @@
 
         {# ══════════ ACTIONS ══════════ #}
         <div class="flex flex-wrap gap-4">
-            <a href="{{ path('app_espace_mot_de_passe') }}" class="btn-adm">Changer mon mot de passe</a>
+            <a href="{{ path('app_espace_mot_de_passe') }}" class="px-4 py-2 rounded-lg bg-slate-600 hover:bg-slate-700 text-white ">Changer mon mot de passe</a>
 
-            <a href="{{ path('app_espace_historique') }}" class="btn-header flex items-center gap-2">
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke-width="1.5"
-                    stroke="currentColor"
-                    class="w-5 h-5"
-                    aria-hidden="true"
-                >
-                    <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"
-                    />
-                </svg>
+            <a href="{{ path('app_espace_historique') }}" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-center">
                 Voir mon historique ({{ historique|length }})
             </a>
         </div>

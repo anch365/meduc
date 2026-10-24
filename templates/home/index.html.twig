@@ -1,10 +1,11 @@
 
 {% extends 'base.html.twig' %}
 
-{% block title %}Gestion des enseignants aux Comores | MEDUC{% endblock %}
+{% block title %}Accueil | MEDUC{% endblock %}
 
 {% block meta_description %}
-    MEDUC centralise les dossiers des enseignants, les établissements scolaires et les affectations du ministère de l'Éducation de l'Union des Comores.
+    Découvrez MEDUC, la plateforme de gestion des enseignants,
+    des établissements scolaires et des affectations aux Comores.
 {% endblock %}
 
 {% block body %}
@@ -54,12 +55,14 @@
 
 
             {# ── Carte CTA sur l'image (le bouton blanc ressort bien) ── #}
-            <div class="absolute bottom-4 left-4 right-4 bg-white/90 rounded-lg shadow-lg p-4 flex flex-col sm:flex-row items-center justify-between gap-3">
-                <p class="text-sm font-semibold">
-                    Enseignant ? Retrouvez votre affectation.
-                </p>
-                <a href="{{ path('app_login') }}" class="btn-adm whitespace-nowrap">Mon espace</a>
-            </div>
+            {% if not is_granted('ROLE_ENSEIGNANT') and not is_granted('ROLE_ADMIN') %}
+                <div class="absolute bottom-4 left-4 right-4 bg-white/90 rounded-lg shadow-lg p-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+                    <p class="text-sm font-semibold">
+                        Enseignant ? Retrouvez votre affectation.
+                    </p>
+                    <a href="{{ path('app_login') }}" class="btn-adm whitespace-nowrap">Mon espace</a>
+                </div>
+            {% endif %}
         </div>
     </section>
 

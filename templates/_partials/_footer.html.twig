@@ -27,8 +27,7 @@
                 </ul>
             {% else %}
                 <ul class="space-y-2 text-sm text-menthe"> 
-                    <li><a href="{{ path('app_home') }}" class="hover:text-white">Accueil</a></li>
-
+                    <li><a href="{{ path('app_home') }}" class="hover:text-white" aria-label="Lien pour remonter en haut de la page d'accueil">Accueil</a></li>
                 </ul>
             {% endif %}
         </div>
@@ -36,10 +35,16 @@
         {# ── Colonne 2 : Le projet ── #}
         <div>
             <h2 class="font-bold mb-3">Le projet</h2>
+            {% if is_granted('ROLE_ADMIN') %}
             <ul class="space-y-2 text-sm text-menthe">
                 <li><a href="{{ path('app_home') }}#fonctionnalites" class="hover:text-white">Nos missions</a></li>
                 <li><a href="{{ path('app_localite_index') }}" class="hover:text-white">Les localités</a></li>
             </ul>
+            {% else %}
+            <ul class="space-y-2 text-sm text-menthe">
+                <li><a href="{{ path('app_home') }}#fonctionnalites" class="hover:text-white">Nos missions</a></li>
+            </ul>
+            {% endif %}
         </div>
 
         {# ── Colonne 3 : Contact ── #}

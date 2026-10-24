@@ -62,6 +62,7 @@
                     <a href="{{ path('app_localite_index') }}" class="btn-header {{ route == 'app_localite_index' ? 'active' : '' }}" aria-label="Bouton des localités">Localités</a>
                 {% else %}
                     <a href="{{ path('app_espace') }}" class="btn-header block {{ route == 'app_espace' ? 'active' : '' }}" aria-label="Bouton pour mon espace">Mon espace</a>
+                    <a href="{{ path('app_espace_historique') }}" class="btn-header block {{ route == 'app_espace_historique' ? 'active' : '' }}" aria-label="Bouton pour voir l'historique de mes affectations">Mes affectations</a>
                 {% endif %}
                 <a href="{{ path('app_logout') }}" class="rounded-xs px-2 py-2 text-red-600 hover:text-white hover:bg-red-600" aria-label="Bouton pour se déconnecter">Déconnexion</a>
             {% else %}

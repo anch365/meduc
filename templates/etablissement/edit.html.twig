@@ -13,7 +13,8 @@
                bg-white px-4 py-2.5 text-sm font-semibold text-blue-700
                 transition-colors hover:bg-blue-50 w-fit
                 focus-visible:outline-none focus-visible:ring-2
-                focus-visible:ring-blue-600 focus-visible:ring-offset-2 mb-16">
+                focus-visible:ring-blue-600 focus-visible:ring-offset-2 mb-16"
+            >
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="20"
@@ -51,18 +52,15 @@
                     {{ form_row(form.type) }}
                     {{ form_row(form.localite) }}
                 </div>
-                <div>
-                    {{ form_widget(form.actif) }}
-                </div>
             </div>
 
             <div class="flex flex-col gap-4 sm:flex-row">
-                <button type="submit" class="btn-adm">Créer l'établissement</button>
+                <button type="submit" class="btn-adm">Enregistrer</button>
                 <a href="{{ path('app_etablissement_index') }}" class="border-2 py-2 px-4 items-center justify-center rounded text-center text-white bg-red-500 hover:bg-red-600">Annuler</a>
             </div>
-
+            {{ form_end(form) }}
         </section>
-
+        
     </section>
 
 {% endblock %}

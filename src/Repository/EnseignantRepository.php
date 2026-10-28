@@ -51,6 +51,7 @@ class EnseignantRepository extends ServiceEntityRepository
             'nom'       => 'u.nom',
             default     => 'u.nom',
         };
+        
         $direction = strtoupper($order) === 'DESC' ? 'DESC' : 'ASC';
         $qb->orderBy($orderBy, $direction);
 

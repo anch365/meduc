@@ -27,7 +27,7 @@ class UtilisateurType extends AbstractType
             ])
             ->add('telephone', TextType::class, [
                 'label' => 'Téléphone',
-                'required' => false,          // ← optionnel : tout le monde n'a pas de téléphone
+                'required' => false,         
             ])
             ->add('email', EmailType::class, [
                 'label' => 'Email',

@@ -24,8 +24,10 @@
             <a href="{{ path(route, {page: page - 1, q: search, sort: sort, order: order}) }}"
                aria-label="Page précédente"
                class="mr-2 md:mr-4 {{ page <= 1 ? 'pointer-events-none opacity-40' : '' }}">
-                <svg width="9" height="16" viewBox="0 0 12 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                    <path d="M11 1L2 9.24242L11 17" stroke="#00792D" stroke-opacity="0.7" stroke-width="2" stroke-linecap="round"/>
+                <svg width="9" height="16" viewBox="0 0 12 18" fill="none"
+                xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M11 1L2 9.24242L11 17" stroke="#00792D" 
+                    stroke-opacity="0.7" stroke-width="2" stroke-linecap="round"/>
                 </svg>
             </a>
 
@@ -48,8 +50,10 @@
             <a href="{{ path(route, {page: page + 1, q: search, sort: sort, order: order}) }}"
                aria-label="Page suivante"
                class="ml-2 md:ml-4 {{ page >= totalPages ? 'pointer-events-none opacity-40' : '' }}">
-                <svg width="9" height="16" viewBox="0 0 12 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                    <path d="M1 1L10 9.24242L1 17" stroke="#00792D" stroke-opacity="0.7" stroke-width="2" stroke-linecap="round"/>
+                <svg width="9" height="16" viewBox="0 0 12 18" fill="none"
+                 xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M1 1L10 9.24242L1 17" stroke="#00792D"
+                 stroke-opacity="0.7" stroke-width="2" stroke-linecap="round"/>
                 </svg>
             </a>
         </nav>

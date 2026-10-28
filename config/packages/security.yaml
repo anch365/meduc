@@ -1,9 +1,7 @@
 security:
-    # https://symfony.com/doc/current/security.html#registering-the-user-hashing-passwords
     password_hashers:
         Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: "auto"
 
-    # https://symfony.com/doc/current/security.html#loading-the-user-the-user-provider
     providers:
         # used to reload user from session & other features (e.g. switch_user)
         app_user_provider:
@@ -36,18 +34,12 @@ security:
                 path: app_logout
 
                 # La redirection après déconnexion
-                # target: app_any_route
                 target: app_home
             remember_me:
                 secret: "%kernel.secret%"
                 lifetime: 604800
                 path: /
 
-            # Activate different ways to authenticate:
-            # https://symfony.com/doc/current/security.html#the-firewall
-
-            # https://symfony.com/doc/current/security/impersonating_user.html
-            # switch_user: true
 
     # Contrôle d'accès : première règle correspondante = appliquée
     access_control:
@@ -58,8 +50,7 @@ security:
 when@test:
     security:
         password_hashers:
-            # Password hashers are resource-intensive by design to ensure security.
-            # In tests, it's safe to reduce their cost to improve performance.
+        
             Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface:
                 algorithm: auto
                 cost: 4 # Lowest possible value for bcrypt

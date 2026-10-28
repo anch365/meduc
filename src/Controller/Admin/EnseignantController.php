@@ -20,7 +20,8 @@ use App\Repository\AffectationRepository;
 class EnseignantController extends AbstractController
 {
     #[Route('/', name: 'app_enseignant_index', methods: ['GET'])]
-    public function index(Request $request, EnseignantRepository $enseignantRepository, AffectationRepository $affectationRepository): Response
+    public function index(Request $request, EnseignantRepository $enseignantRepository,
+     AffectationRepository $affectationRepository): Response
     {
         $search = trim($request->query->get('q', ''));
         $sort   = $request->query->get('sort', 'nom');

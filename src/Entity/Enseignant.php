@@ -244,7 +244,6 @@ class Enseignant
      */
     public function estRetraite(): bool
     {
-        // 1. Aujourd'hui
         $aujourdhui = new \DateTimeImmutable();
 
         // 2. La date où il atteindra 64 ans (sa naissance + 64 ans)

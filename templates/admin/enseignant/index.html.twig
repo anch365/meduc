@@ -107,10 +107,12 @@
                                             <form
                                                 method="post"
                                                 action="{{ path('app_enseignant_archive', {'id': enseignant.id}) }}"
-                                                onsubmit="return confirm('Archiver {{ enseignant.utilisateur.prenom }} {{ enseignant.utilisateur.nom }} ?');"
+                                                onsubmit="return confirm('Archiver 
+                                                {{ enseignant.utilisateur.prenom }} {{ enseignant.utilisateur.nom }} ?');"
                                             >
                                                 <input type="hidden" name="_token" value="{{ csrf_token('archive' ~ enseignant.id) }}">
-                                                <button><img src="{{ asset('/Icônes/archiver.svg') }}" alt="Icône pour archiver un enseignant" class="w-8 md:w-6"></button>
+                                                <button><img src="{{ asset('/Icônes/archiver.svg') }}" alt="Icône pour archiver un enseignant"
+                                                 class="w-8 md:w-6"></button>
                                             </form>
                                         {% else %}
                                             <form

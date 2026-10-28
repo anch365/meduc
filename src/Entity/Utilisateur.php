@@ -40,8 +40,8 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $email = null;
 
     #[ORM\Column]
-    private ?bool $actif = true; // ← par défaut : le compte est ACTIF
-
+    private ?bool $actif = true;
+    
     #[ORM\Column(length: 100)]
     #[Assert\NotBlank(message: 'Le nom est obligatoire.')]
     private ?string $nom = null;
